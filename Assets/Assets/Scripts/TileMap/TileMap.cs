@@ -6,6 +6,8 @@ using System;
 // Dispatched when the map is clicked
 public class OnClickedEventArgs : EventArgs
 {
+    public int x { get; set; }
+    public int y { get; set; }
 }
 
 // Interface for the tilemap view
@@ -13,6 +15,7 @@ public interface ITileMapView
 {
     // Dispatched when the tilemap is clicked
     event EventHandler<OnClickedEventArgs> OnClicked;
+    void RedrawTile(int x, int y);
 
 }
 
@@ -48,10 +51,8 @@ public class TileMap : MonoBehaviour, ITileMapView {
             {
                 // Dispatch the 'on clicked' event
                 var eventArgs = new OnClickedEventArgs();
-                int x = Mathf.FloorToInt(hit.point.x / tileSize);
-                int y = Mathf.FloorToInt(hit.point.y / tileSize);
-                Debug.Log("Map Clicked at x: " + x + ", y: " + y);
-                RedrawTile(x, y);
+                eventArgs.x = Mathf.FloorToInt(hit.point.x / tileSize);
+                eventArgs.y = Mathf.FloorToInt(hit.point.y / tileSize);
                 OnClicked(this, eventArgs);
             }
         }
