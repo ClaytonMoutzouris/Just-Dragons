@@ -16,7 +16,7 @@ public interface ITileMapView
     // Dispatched when the tilemap is clicked
     event EventHandler<OnClickedEventArgs> OnClicked;
     void RedrawTile(int x, int y);
-
+    void DrawMap(Tile[,] tiles, int xSize, int ySize);
 }
 
 
@@ -24,7 +24,7 @@ public interface ITileMapView
 [RequireComponent(typeof(MeshCollider))]
 public class TileMap : MonoBehaviour, ITileMapView {
 
-    public int xSize, ySize;
+    const int MAXSIZEX = 100, MAXSIZEY = 100;
     public float tileSize = 1.0f;
     Texture2D texture;
     Color[][] tileTextures;
@@ -60,12 +60,36 @@ public class TileMap : MonoBehaviour, ITileMapView {
 
     public void Awake()
     {
-        //ChopUpTiles();
+        ChopUpTiles();
         GenerateMesh();
-        BuildTexture();
+        BuildInitialTexture();
     }
 
-    Color[][] ChopUpTiles()
+
+
+    public void DrawMap(Tile[,] tiles, int xSize, int ySize)
+    {
+
+        for (int y = 0; y < ySize; y++)
+        {
+            for (int x = 0; x < xSize; x++)
+            {
+                Color[] p = tileTextures[(int)tiles[x,y].TileType];
+                texture.SetPixels(x * tileResolution, y * tileResolution, tileResolution, tileResolution, p);
+            }
+        }
+
+        texture.filterMode = FilterMode.Point;
+        texture.wrapMode = TextureWrapMode.Clamp;
+        texture.Apply();
+
+        MeshRenderer mesh_renderer = GetComponent<MeshRenderer>();
+        mesh_renderer.sharedMaterials[0].mainTexture = texture;
+
+
+    }
+
+    void ChopUpTiles()
     {
         int numTilesPerRow = terrainTiles.width / tileResolution;
         int numRows = terrainTiles.height / tileResolution;
@@ -79,7 +103,7 @@ public class TileMap : MonoBehaviour, ITileMapView {
                 tiles[y*numTilesPerRow + x] = terrainTiles.GetPixels(x*tileResolution, y*tileResolution, tileResolution, tileResolution);
             }
         }
-        return tiles;
+        tileTextures = tiles;
 
     }
 
@@ -90,20 +114,20 @@ public class TileMap : MonoBehaviour, ITileMapView {
         texture.Apply();
     }
 
-    void BuildTexture()
+    void BuildInitialTexture()
     {
 
-        int texWidth = xSize * tileResolution;
-        int texHeight = ySize * tileResolution;
+        int texWidth = MAXSIZEX * tileResolution;
+        int texHeight = MAXSIZEY * tileResolution;
 
         texture = new Texture2D(texWidth, texHeight);
-        tileTextures = ChopUpTiles();
+       
 
-        for (int y = 0; y < ySize; y++)
+        for (int y = 0; y < MAXSIZEY; y++)
         {
-            for (int x = 0; x < xSize; x++)
+            for (int x = 0; x < MAXSIZEX; x++)
             {
-                Color[] p = tileTextures[UnityEngine.Random.Range(0, 4)];
+                Color[] p = tileTextures[0];
                 texture.SetPixels(x*tileResolution, y*tileResolution, tileResolution, tileResolution, p);
             }
         }
@@ -123,16 +147,16 @@ public class TileMap : MonoBehaviour, ITileMapView {
         GetComponent<MeshFilter>().mesh = mesh = new Mesh();
         mesh.name = "Procedural Grid";
 
-        vertices = new Vector3[(xSize + 1) * (ySize + 1)];
+        vertices = new Vector3[(MAXSIZEX + 1) * (MAXSIZEY + 1)];
         Vector2[] uv = new Vector2[vertices.Length];
         Vector4[] tangents = new Vector4[vertices.Length];
         Vector4 tangent = new Vector4(1f, 0f, 0f, -1f);
-        for (int i = 0, y = 0; y <= ySize; y++)
+        for (int i = 0, y = 0; y <= MAXSIZEY; y++)
         {
-            for (int x = 0; x <= xSize; x++, i++)
+            for (int x = 0; x <= MAXSIZEX; x++, i++)
             {
                 vertices[i] = new Vector3(x, y);
-                uv[i] = new Vector2((float)x / xSize, (float)y / ySize);
+                uv[i] = new Vector2((float)x / MAXSIZEX, (float)y / MAXSIZEY);
                 tangents[i] = tangent;
             }
         }
@@ -140,15 +164,15 @@ public class TileMap : MonoBehaviour, ITileMapView {
         mesh.uv = uv;
         mesh.tangents = tangents;
 
-        int[] triangles = new int[xSize * ySize * 6];
-        for (int ti = 0, vi = 0, y = 0; y < ySize; y++, vi++)
+        int[] triangles = new int[MAXSIZEX * MAXSIZEY * 6];
+        for (int ti = 0, vi = 0, y = 0; y < MAXSIZEY; y++, vi++)
         {
-            for (int x = 0; x < xSize; x++, ti += 6, vi++)
+            for (int x = 0; x < MAXSIZEX; x++, ti += 6, vi++)
             {
                 triangles[ti] = vi;
                 triangles[ti + 3] = triangles[ti + 2] = vi + 1;
-                triangles[ti + 4] = triangles[ti + 1] = vi + xSize + 1;
-                triangles[ti + 5] = vi + xSize + 2;
+                triangles[ti + 4] = triangles[ti + 1] = vi + MAXSIZEX + 1;
+                triangles[ti + 5] = vi + MAXSIZEX + 2;
             }
         }
         mesh.triangles = triangles;

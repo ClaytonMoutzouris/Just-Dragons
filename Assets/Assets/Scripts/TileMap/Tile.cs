@@ -36,4 +36,9 @@ public class Tile {
     }
 
     public Tile() { }
+
+    public Tile(int x, int y, TileType t) {
+        TilePosition = new Vector2(x, y);
+        TileType = t;
+    }
 }
