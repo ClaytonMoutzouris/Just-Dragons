@@ -58,6 +58,8 @@ public class TileMap : MonoBehaviour, ITileMapView {
         }
     }
 
+
+
     public void Awake()
     {
         ChopUpTiles();
@@ -69,13 +71,21 @@ public class TileMap : MonoBehaviour, ITileMapView {
 
     public void DrawMap(Tile[,] tiles, int xSize, int ySize)
     {
-
-        for (int y = 0; y < ySize; y++)
+        Color[] p;
+        for (int y = 0; y < MAXSIZEY; y++)
         {
-            for (int x = 0; x < xSize; x++)
+            for (int x = 0; x < MAXSIZEY; x++)
             {
-                Color[] p = tileTextures[(int)tiles[x,y].TileType];
+                if (x < xSize && y < ySize)
+                {
+                     p = tileTextures[(int)tiles[x, y].TileType];
+                    
+                } else
+                {
+                     p = tileTextures[(int)TileType.Dirt];
+                }
                 texture.SetPixels(x * tileResolution, y * tileResolution, tileResolution, tileResolution, p);
+
             }
         }
 

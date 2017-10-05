@@ -27,15 +27,10 @@ public class Application : MonoBehaviour {
     {
         if (Input.GetButton("Jump"))
         {
-            Model = new TileMapModel(50, 50);
+            Model = new TileMapModel(Random.Range(25, 80), Random.Range(25, 80));
             Handler.NewMap(Model);
         }
 
     }
-
-
-
-
-    
 	
 }
