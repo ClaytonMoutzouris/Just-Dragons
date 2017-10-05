@@ -4,31 +4,32 @@ using UnityEngine;
 
 public class Application : MonoBehaviour {
 
-    ITileMapView View;
-    ITileMapHandler Handler;
-    ITileMapModel Model;
+    ITileMapView MapView;
+    ITileMapHandler MapHandler;
+    ITileMapModel MapModel;
     // Use this for initialization
     void Awake () {
 
         var prefab = Resources.Load<GameObject>("Prefabs/TileMap");
         var instance = Instantiate(prefab);
-        View = instance.GetComponent<ITileMapView>();
+        MapView = instance.GetComponent<ITileMapView>();
+
+        MapHandler = new TileMapHandler(MapView);
+
+        MapModel = new TileMapModel(50, 50);
+        MapHandler.NewMap(MapModel);
+
 
         
 
-        Handler = new TileMapHandler(View);
-
-        Model = new TileMapModel(50, 50);
-        Handler.NewMap(Model);
-        
 	}
 
     private void Update()
     {
         if (Input.GetButton("Jump"))
         {
-            Model = new TileMapModel(Random.Range(25, 80), Random.Range(25, 80));
-            Handler.NewMap(Model);
+            MapModel = new TileMapModel(Random.Range(25, 80), Random.Range(25, 80));
+            MapHandler.NewMap(MapModel);
         }
 
     }

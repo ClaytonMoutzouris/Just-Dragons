@@ -5,13 +5,26 @@ public class CameraController : MonoBehaviour
 {
 
     public GameObject player;
+    public static CameraController instance;
 
     private Vector3 offset;
     int speed;
 
     void Start()
     {
-        speed = 5;
+        if(instance != null)
+        {
+            Destroy(this);
+        }
+
+        instance = this;
+
+        speed = 25;
+    }
+
+    public void SetToTile(int x, int y)
+    {
+        transform.position = new Vector3(Mathf.CeilToInt(x * 1), Mathf.CeilToInt(y * 1), -10);
     }
 
     void Update()

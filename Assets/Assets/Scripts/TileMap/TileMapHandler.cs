@@ -12,15 +12,15 @@ public class TileMapHandler : ITileMapHandler
 {
     // Keep references to the model and view
     //This is a list of all the maps in the game, ~TODO~ Make a better way to organize these, a list will do for now
-    private readonly List<ITileMapModel> models;
-    private ITileMapModel currentModel;
-    private readonly ITileMapView view;
+    private readonly List<ITileMapModel> mapModels;
+    private ITileMapModel currentMap;
+    private readonly ITileMapView mapView;
 
     // Controller depends on interfaces for the model and view
     public TileMapHandler( ITileMapView view)
     {
-        models = new List<ITileMapModel>();
-        this.view = view;
+        mapModels = new List<ITileMapModel>();
+        this.mapView = view;
 
         // Listen to input from the view
         view.OnClicked += HandleClicked;
@@ -35,23 +35,24 @@ public class TileMapHandler : ITileMapHandler
     public void NewMap(ITileMapModel model)
     {
         model.OnTileTypeChanged += HandleTileTypeChanged;
-        models.Add(model);
-        currentModel = model;
+        mapModels.Add(model);
+        currentMap = model;
         SyncCurrentMap();
         
     }
 
     private void SyncCurrentMap()
     {
-        view.DrawMap(currentModel.tiles, (int)currentModel.mapSize.x, (int)currentModel.mapSize.y);
+        mapView.DrawMap(currentMap.tiles, (int)currentMap.mapSize.x, (int)currentMap.mapSize.y);
     }
 
     // Called when the view is clicked
     private void HandleClicked(object sender, OnClickedEventArgs e)
     {
         // Do something to the model
-
-        view.RedrawTile(e.x, e.y);
+        
+        mapView.RedrawTile(e.x, e.y);
+        CameraController.instance.SetToTile(e.x, e.y);
     }
 
     private void HandleTileTypeChanged(object sender, TileTypeChangedEventArgs e)
