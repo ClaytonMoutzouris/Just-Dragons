@@ -7,6 +7,8 @@ public class Application : MonoBehaviour {
     ITileMapView MapView;
     ITileMapHandler MapHandler;
     ITileMapModel MapModel;
+
+    //IEnemyView EnemyViews;
     // Use this for initialization
     void Awake () {
 

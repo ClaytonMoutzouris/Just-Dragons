@@ -1,10 +1,11 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using UnityEngine;
 
 // Dispatched when the enemy's position changes
 public class TileTypeChangedEventArgs : EventArgs
 {
+
 }
 
 // Interface for the model
@@ -15,7 +16,7 @@ public interface ITileMapModel
     void BuildMap();
     Tile[,] tiles { get; }
     Vector2 mapSize { get; }
-    
+    //List<IEnemyController> enemyList { get; }
 }
 
 // Implementation of the enemy model interface
@@ -23,7 +24,7 @@ public class TileMapModel : ITileMapModel
 {
     public Vector2 mapSize { get; set; }
     public event EventHandler<TileTypeChangedEventArgs> OnTileTypeChanged = (sender, e) => { };
-
+    //public List<IEnemyController> enemyList { get; set; }
     public Tile[,] tiles { get; set; }
 
     public TileMapModel(int xSize, int ySize)
