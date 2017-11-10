@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileType { Floor, Wall, Dirt };
+public enum TileType { Blank, Floor, Wall, Dirt, Water };
 
 
-public class Tile {
+public class Tile
+{
     TileType _tileType;
-    Vector2 _tilePosition;
+    int tileX;
+    int tileY;
+    Character Occupant = null;
 
     public TileType TileType
     {
@@ -22,23 +25,45 @@ public class Tile {
         }
     }
 
-    public Vector2 TilePosition
+
+    public int TileX
     {
         get
         {
-            return _tilePosition;
+            return tileX;
         }
 
         set
         {
-            _tilePosition = value;
+            tileX = value;
+        }
+    }
+
+    public int TileY
+    {
+        get
+        {
+            return tileY;
+        }
+
+        set
+        {
+            tileY = value;
         }
     }
 
     public Tile() { }
 
-    public Tile(int x, int y, TileType t) {
-        TilePosition = new Vector2(x, y);
+    public Tile(int x, int y, TileType t)
+    {
+
+        tileX = x;
+        tileY = y;
         TileType = t;
+    }
+
+    public Vector3 GetWorldPos()
+    {
+        return new Vector3(TileMapHandler.instance.GetTileOffset() + tileX, TileMapHandler.instance.GetTileOffset() + tileY, 0.0f);
     }
 }

@@ -209,7 +209,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83065a77eeb773244822cc0347493b21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
   player: {fileID: 0}
+  smoothSpeed: 0.125
+  desiredPosition: {x: 0, y: 0, z: 0}
+  smoothedPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1046845175
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,7 +224,7 @@ GameObject:
   - component: {fileID: 1046845177}
   - component: {fileID: 1046845176}
   m_Layer: 0
-  m_Name: Application
+  m_Name: GameLoop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237,6 +241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2f74643bf3d7924db0c7b8e3ce53479, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characters: []
 --- !u!4 &1046845177
 Transform:
   m_ObjectHideFlags: 0

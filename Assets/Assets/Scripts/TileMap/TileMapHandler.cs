@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public interface ITileMapHandler
 {
     void NewMap(ITileMapModel model);
+    ITileMapModel CurrentMap { get; }
 }
 
 // Implementation of the enemy controller
@@ -15,10 +16,28 @@ public class TileMapHandler : ITileMapHandler
     private readonly List<ITileMapModel> mapModels;
     private ITileMapModel currentMap;
     private readonly ITileMapView mapView;
+    public static TileMapHandler instance;
+    public ITileMapModel CurrentMap
+    {
+        get
+        {
+            return currentMap;
+        }
+
+        set
+        {
+            currentMap = value;
+        }
+    }
 
     // Controller depends on interfaces for the model and view
     public TileMapHandler( ITileMapView view)
     {
+        if (instance == null)
+            instance = this;
+
+            
+
         mapModels = new List<ITileMapModel>();
         this.mapView = view;
 
@@ -36,45 +55,45 @@ public class TileMapHandler : ITileMapHandler
     {
         model.OnTileTypeChanged += HandleTileTypeChanged;
         mapModels.Add(model);
-        currentMap = model;
+        CurrentMap = model;
         SyncCurrentMap();
         
     }
 
+    public float GetTileOffset()
+    {
+        return mapView.TileOffset();
+    }
+
+    /*
+    public Vector3 GetTileWorldPos(Tile t)
+    {
+
+        return new Vector3(t.TileX + mapView.TileOffset(), t.TileY + mapView.TileOffset(), 0);
+    }
+    */
+
     private void SyncCurrentMap()
     {
-        mapView.DrawMap(currentMap.tiles, (int)currentMap.mapSize.x, (int)currentMap.mapSize.y);
+        mapView.DrawMap(CurrentMap.tiles, (int)CurrentMap.mapSize.x, (int)CurrentMap.mapSize.y);
     }
 
     // Called when the view is clicked
     private void HandleClicked(object sender, OnClickedEventArgs e)
     {
-        // Do something to the model
+
+
+        GameManager.instance.characters[0].GetComponent<Moveable>().MoveTo(currentMap.tiles[e.x, e.y], 10);
         
-        mapView.RedrawTile(e.x, e.y);
-        CameraController.instance.SetToTile(e.x, e.y);
+
+        //mapView.DrawTile(cTile);
+        //CameraController.instance.SetToTile(e.x, e.y);
     }
 
     private void HandleTileTypeChanged(object sender, TileTypeChangedEventArgs e)
     {
-       
 
+        mapView.DrawTile(e.tile);
     }
 
-    /*
-    // Called when the model's position changes
-    private void HandlePositionChanged(object sender, EnemyPositionChangedEventArgs e)
-    {
-        // Update the view with the new position
-        SyncPosition();
-    }
-    */
-
-    // Sync the view's position with the model's position
-    /*
-    private void SyncPosition()
-    {
-        view.Position = model.Position;
-    }
-    */
 }

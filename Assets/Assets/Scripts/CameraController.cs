@@ -3,12 +3,15 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour
 {
+    public Transform target;
 
     public GameObject player;
     public static CameraController instance;
-
-    private Vector3 offset;
+    public float smoothSpeed = 0.125f;
+    private Vector3 offset = new Vector3(0,0,-10);
     int speed;
+    public Vector3 desiredPosition;
+    public Vector3 smoothedPosition;
 
     void Start()
     {
@@ -19,31 +22,24 @@ public class CameraController : MonoBehaviour
 
         instance = this;
 
-        speed = 25;
+
     }
 
     public void SetToTile(int x, int y)
     {
-        transform.position = new Vector3(Mathf.CeilToInt(x * 1), Mathf.CeilToInt(y * 1), -10);
+        transform.position = new Vector3(x, y, -10);
     }
 
-    void Update()
+    public void SetPosition(float x, float y)
     {
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            transform.Translate(new Vector3(0, -speed * Time.deltaTime, 0));
-        }
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            transform.Translate(new Vector3(0, speed * Time.deltaTime, 0));
-        }
+        transform.position = new Vector3(x, y, -10);
+    }
+
+    void LateUpdate()
+    {
+        desiredPosition = target.position + offset;
+        smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        transform.position = smoothedPosition;
+
     }
 }

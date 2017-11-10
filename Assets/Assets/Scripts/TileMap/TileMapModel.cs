@@ -5,7 +5,7 @@ using UnityEngine;
 // Dispatched when the enemy's position changes
 public class TileTypeChangedEventArgs : EventArgs
 {
-
+    public Tile tile;
 }
 
 // Interface for the model
@@ -14,6 +14,7 @@ public interface ITileMapModel
     // Dispatched when the position changes
     event EventHandler<TileTypeChangedEventArgs> OnTileTypeChanged;
     void BuildMap();
+    void ChangeTile(int x, int y);
     Tile[,] tiles { get; }
     Vector2 mapSize { get; }
     //List<IEnemyController> enemyList { get; }
@@ -32,6 +33,30 @@ public class TileMapModel : ITileMapModel
         mapSize = new Vector2(xSize, ySize);
         tiles = new Tile[xSize, ySize];
         BuildMap();
+    }
+
+    public Tile GetTile(int x, int y)
+    {
+        return tiles[x, y];
+    }
+
+    
+    public void ChangeTile(int x, int y)
+    {
+        Tile cTile = tiles[x, y];
+        if ((int)cTile.TileType < 4)
+        {
+            cTile.TileType = cTile.TileType + 1;
+        }
+        else
+        {
+            cTile.TileType = TileType.Floor;
+        }
+
+        // Dispatch the 'on clicked' event
+        var eventArgs = new TileTypeChangedEventArgs();
+        eventArgs.tile = cTile;
+        OnTileTypeChanged(this, eventArgs);
     }
 
     public void BuildMap()
@@ -56,6 +81,8 @@ public class TileMapModel : ITileMapModel
 
     }
 
+
+    
     /*
     public Vector3 Position
     {
