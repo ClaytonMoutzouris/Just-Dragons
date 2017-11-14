@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileType { Blank, Floor, Wall, Dirt, Water };
-
+public enum TileType { Blank, Floor, Wall, Exit };
+public enum TileMoveCost { Invalid, Walkable };
 
 public class Tile
 {
@@ -11,7 +11,7 @@ public class Tile
     int tileX;
     int tileY;
     Character Occupant = null;
-
+    Exit exit;
     public TileType TileType
     {
         get
@@ -54,12 +54,37 @@ public class Tile
 
     public Tile() { }
 
-    public Tile(int x, int y, TileType t)
+    public Tile(int x, int y, TileType t, Exit e = null)
     {
 
         tileX = x;
         tileY = y;
         TileType = t;
+        exit = e;
+    }
+
+
+
+    public Exit GetExit()
+    {
+        return exit;
+    }
+
+    public int GetMovementCost()
+    {
+        switch (TileType)
+        {
+            case TileType.Blank:
+                return 0;
+            case TileType.Floor:
+                return 1;
+            case TileType.Wall:
+                return 0;
+            case TileType.Exit:
+                return 1;
+
+        }
+        return 0;
     }
 
     public Vector3 GetWorldPos()

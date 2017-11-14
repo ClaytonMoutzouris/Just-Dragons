@@ -1,0 +1,26 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BaseAttribute {
+
+    private int _baseValue;
+    private float _baseMultiplier;
+
+    public BaseAttribute(int value, float multiplier = 0)
+    {
+        _baseValue = value;
+        _baseMultiplier = multiplier;
+    }
+
+    public int baseValue()
+    {
+        return _baseValue;
+    }
+
+    public float baseMultiplier()
+    {
+        return _baseMultiplier;
+    }
+
+}

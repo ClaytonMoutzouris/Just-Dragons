@@ -1,11 +1,18 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
+
+public class MapChangedEventArgs : EventArgs
+{
+    public Exit exit;
+    public ITileMapModel map;
+}
 
 // Interface for the tilemap handler
 public interface ITileMapHandler
 {
-    void NewMap(ITileMapModel model);
     ITileMapModel CurrentMap { get; }
+    void SetUpTestWorld(List<ITileMapModel> models);
 }
 
 // Implementation of the enemy controller
@@ -51,13 +58,35 @@ public class TileMapHandler : ITileMapHandler
         //SyncPosition();
     }
 
-    public void NewMap(ITileMapModel model)
+
+    public void SetUpTestWorld(List<ITileMapModel> models)
     {
-        model.OnTileTypeChanged += HandleTileTypeChanged;
-        mapModels.Add(model);
-        CurrentMap = model;
+        foreach(ITileMapModel m in models)
+        {
+            m.OnTileTypeChanged += HandleTileTypeChanged;
+            mapModels.Add(m);
+        }
+        CurrentMap = models[0];
         SyncCurrentMap();
-        
+
+    }
+
+    public void ChangeMap(Exit e)
+    {
+        if(e.GetDestinationID() > mapModels.Count - 1)
+        {
+            CurrentMap = mapModels[0];
+        } else
+        {
+            CurrentMap = mapModels[e.GetDestinationID()];
+
+        }
+
+        Debug.Log("Changed to Map: " + currentMap.mapID);
+        SyncCurrentMap();
+        DelegatesAndEvents.TileMapChanged(e, currentMap);
+        //GameManager.instance.characters[0].SetTile(currentMap.tiles[e.Destination_X, e.Destination_Y], true);
+
     }
 
     public float GetTileOffset()
@@ -65,13 +94,6 @@ public class TileMapHandler : ITileMapHandler
         return mapView.TileOffset();
     }
 
-    /*
-    public Vector3 GetTileWorldPos(Tile t)
-    {
-
-        return new Vector3(t.TileX + mapView.TileOffset(), t.TileY + mapView.TileOffset(), 0);
-    }
-    */
 
     private void SyncCurrentMap()
     {
@@ -83,7 +105,7 @@ public class TileMapHandler : ITileMapHandler
     {
 
 
-        GameManager.instance.characters[0].GetComponent<Moveable>().MoveTo(currentMap.tiles[e.x, e.y], 10);
+        GameManager.instance.characters[0].SetTile(currentMap.tiles[e.x, e.y]);
         
 
         //mapView.DrawTile(cTile);

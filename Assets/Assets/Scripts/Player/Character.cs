@@ -1,17 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
+public class OnTileChangedEventArgs : EventArgs
+{
+    public Tile tile;
+}
 
 public class Character : MonoBehaviour {
 
     public Sprite characterSprite;
-    string name;
+    //string name;
     int level;
     int health;
     int speed = 5;
     bool inCombat = false;
     bool activePlayer = true;
     Tile tile;
+    //public event EventHandler<OnTileChangedEventArgs> TileChanged = (sender, e) => { };
+    public delegate void OnTileChanged (Tile t);
+    public event OnTileChanged TileChanged;
 
     public Tile Tile
     {
@@ -22,21 +31,76 @@ public class Character : MonoBehaviour {
 
         set
         {
-            tile = value;
+            Tile old = tile;
+            if (old != value)
+            {
+                tile = value;
+                TileChanged(tile);
+            }
+        }
+    }
+
+    public int Speed
+    {
+        get
+        {
+            return speed;
+        }
+
+        set
+        {
+            speed = value;
+        }
+    }
+
+    private void OnEnable()
+    {
+        DelegatesAndEvents.MapChanged += TileMapChanged;
+    }
+
+    public void CharacterTileChanged(Tile t)
+    {
+        // does this delegate have at least one subscriber? 
+        if (TileChanged != null)
+        {
+            TileChanged(t);
         }
     }
 
     private void Start()
     {
-        gameObject.AddComponent(typeof(Moveable));
+        //TileMapHandler.instance.MapChanged  += OnMapChanged;
+
+        Moveable m = gameObject.AddComponent(typeof(Moveable)) as Moveable;
+        TileChanged += m.CharacterTileChanged;
+        SetTile(TileMapHandler.instance.CurrentMap.tiles[25, 25]);
+        transform.SetPositionAndRotation(Tile.GetWorldPos(), Quaternion.identity);
+
     }
 
-    public void SetTile(Tile t)
+    public void TileMapChanged(Exit e, ITileMapModel map)
     {
+        SetTile(map.tiles[e.Destination_X, e.Destination_Y], true);
+    }
+
+
+
+    public void SetTile(Tile t, bool directSet = false)
+    {
+        if (t.GetMovementCost() == 0)
+            return;
+
         Tile = t;
-        //transform.SetPositionAndRotation(t.GetWorldPos(), Quaternion.identity);
-        TileMapHandler.instance.CurrentMap.ChangeTile(t.TileX, t.TileY);
-       
+        Moveable m = GetComponent<Moveable>();
+
+        if (directSet)
+        {
+            m.SetToTile();
+        } else
+        {
+            m.MoveToTile();
+        }
+        
     }
 
 
@@ -66,31 +130,26 @@ public class Character : MonoBehaviour {
         //Handle Movement
         if (!GetComponent<Moveable>().IsMoving())
         {
+            //Handle Orthogonal movement
             //Left
             if (Input.GetAxisRaw("Horizontal") == 1)
             {
-                Tile = TileMapHandler.instance.CurrentMap.tiles[Tile.TileX +1, Tile.TileY];
+                SetTile(TileMapHandler.instance.CurrentMap.tiles[Tile.TileX +1, Tile.TileY]);
 
-                Moveable m = GetComponent<Moveable>();
-                m.MoveTo(Tile, speed);
             }
 
             //Right
             if (Input.GetAxisRaw("Horizontal") == -1)
             {
-                Tile = TileMapHandler.instance.CurrentMap.tiles[Tile.TileX - 1, Tile.TileY];
+                SetTile(TileMapHandler.instance.CurrentMap.tiles[Tile.TileX - 1, Tile.TileY]);
 
-                Moveable m = GetComponent<Moveable>();
-                m.MoveTo(Tile, speed);
             }
 
             //Up
             if (Input.GetAxisRaw("Vertical") == 1)
             {
-                Tile = TileMapHandler.instance.CurrentMap.tiles[Tile.TileX, Tile.TileY + 1];
+                SetTile(TileMapHandler.instance.CurrentMap.tiles[Tile.TileX, Tile.TileY + 1]);
 
-                Moveable m = GetComponent<Moveable>();
-                m.MoveTo(Tile, speed);
             }
 
 
@@ -98,10 +157,8 @@ public class Character : MonoBehaviour {
             if (Input.GetAxisRaw("Vertical") == -1)
             {
 
-                Tile = TileMapHandler.instance.CurrentMap.tiles[Tile.TileX, Tile.TileY - 1];
+                SetTile(TileMapHandler.instance.CurrentMap.tiles[Tile.TileX, Tile.TileY - 1]);
 
-                Moveable m = GetComponent<Moveable>();
-                m.MoveTo(Tile, speed);
             }
         }
 

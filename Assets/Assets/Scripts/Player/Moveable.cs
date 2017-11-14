@@ -8,6 +8,11 @@ public class Moveable : MonoBehaviour {
     Tile target;
     int speed = 5;
 
+    void Start()
+    {
+
+    }
+
     public bool IsMoving()
     {
         return moving;
@@ -22,72 +27,32 @@ public class Moveable : MonoBehaviour {
             if (transform.position == target.GetWorldPos())
             {
                 moving = false;
-                TileMapHandler.instance.CurrentMap.ChangeTile(target.TileX, target.TileY);
-
+                //TileMapHandler.instance.CurrentMap.ChangeTile(target.TileX, target.TileY);
+                if(target.GetExit() != null)
+                {
+                    TileMapHandler.instance.ChangeMap(target.GetExit());
+                }
             }
         }
     }
 
-    public void MoveTo(Tile target, int speed)
+    public void MoveToTile()
     {
         if (!moving)
         {
             moving = true;
-            this.target = target;
-            this.speed = speed;
         }
     }
 
-
-    //Free movement controls for out of combat
-	public void FreeMoveUp(int speed)
+    public void SetToTile()
     {
-        gameObject.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + speed*Time.deltaTime);
+        transform.position = target.GetWorldPos();
     }
 
-    public void FreeMoveDown(int speed)
+    public void CharacterTileChanged(Tile t)
     {
-        gameObject.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - speed * Time.deltaTime);
-
+        target = t;
     }
 
-    public void FreeMoveLeft(int speed)
-    {
-        gameObject.transform.position = new Vector2(gameObject.transform.position.x + speed * Time.deltaTime, gameObject.transform.position.y);
 
-    }
-
-    public void FreeMoveRight(int speed)
-    {
-        gameObject.transform.position = new Vector2(gameObject.transform.position.x - speed * Time.deltaTime, gameObject.transform.position.y);
-
-    }
-
-    //Tile movement for in combat
-    public void TileMoveUp()
-    {
-        gameObject.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + tileSize);
-
-    }
-
-    //Tile movement for in combat
-    public void TileMoveDown()
-    {
-        gameObject.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - tileSize);
-
-    }
-
-    //Tile movement for in combat
-    public void TileMoveLeft()
-    {
-        gameObject.transform.position = new Vector2(gameObject.transform.position.x - tileSize, gameObject.transform.position.y);
-
-    }
-
-    //Tile movement for in combat
-    public void TileMoveRight()
-    {
-        gameObject.transform.position = new Vector2(gameObject.transform.position.x + tileSize, gameObject.transform.position.y);
-
-    }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Dispatched when the enemy's position changes
 public class TileTypeChangedEventArgs : EventArgs
 {
     public Tile tile;
@@ -11,12 +10,13 @@ public class TileTypeChangedEventArgs : EventArgs
 // Interface for the model
 public interface ITileMapModel
 {
-    // Dispatched when the position changes
+    // Dispatched when a Tiles type has been changed
     event EventHandler<TileTypeChangedEventArgs> OnTileTypeChanged;
     void BuildMap();
     void ChangeTile(int x, int y);
     Tile[,] tiles { get; }
     Vector2 mapSize { get; }
+    int mapID { get; }
     //List<IEnemyController> enemyList { get; }
 }
 
@@ -27,11 +27,15 @@ public class TileMapModel : ITileMapModel
     public event EventHandler<TileTypeChangedEventArgs> OnTileTypeChanged = (sender, e) => { };
     //public List<IEnemyController> enemyList { get; set; }
     public Tile[,] tiles { get; set; }
+    List<Exit> exits;
+    public int mapID { get; set; }
 
-    public TileMapModel(int xSize, int ySize)
+
+    public TileMapModel(int xSize, int ySize, int ID)
     {
         mapSize = new Vector2(xSize, ySize);
         tiles = new Tile[xSize, ySize];
+        mapID = ID;
         BuildMap();
     }
 
@@ -40,6 +44,10 @@ public class TileMapModel : ITileMapModel
         return tiles[x, y];
     }
 
+    public void ChangeMap()
+    {
+
+    }
     
     public void ChangeTile(int x, int y)
     {
@@ -61,7 +69,12 @@ public class TileMapModel : ITileMapModel
 
     public void BuildMap()
     {
-        for(int y = 0; y< mapSize.y; y++)
+        int exit_x, exit_y;
+        exit_x = (int)UnityEngine.Random.Range(1, mapSize.x - 2);
+        exit_y = (int)UnityEngine.Random.Range(1, mapSize.y - 2);
+        Debug.Log("Exit at: " + exit_x + ", " + exit_y);
+
+        for (int y = 0; y< mapSize.y; y++)
         {
             for (int x = 0; x < mapSize.x; x++)
             {
@@ -71,7 +84,14 @@ public class TileMapModel : ITileMapModel
                     tiles[x, y] = new Tile(x, y, TileType.Wall);
                 } else
                 {
-                    tiles[x, y] = new Tile(x, y, TileType.Floor);
+                    if (x == exit_x && y == exit_y)
+                    {
+                        tiles[x, y] = new Tile(x, y, TileType.Exit, new Exit(this, mapID +1, 25 , 25));
+                    }
+                    else
+                    {
+                        tiles[x, y] = new Tile(x, y, TileType.Floor);
+                    }
                 }
                 
                 //tiles[x, y] = new Tile(x, y, TileType.Floor);
@@ -79,6 +99,9 @@ public class TileMapModel : ITileMapModel
             }
         }
 
+
+        
+        //exits.Add(new Exit())
     }
 
 
