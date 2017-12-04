@@ -8,22 +8,15 @@ public class MapChangedEventArgs : EventArgs
     public ITileMapModel map;
 }
 
-// Interface for the tilemap handler
-public interface ITileMapHandler
-{
-    ITileMapModel CurrentMap { get; }
-    void SetUpTestWorld(List<ITileMapModel> models);
-}
-
 // Implementation of the enemy controller
-public class TileMapHandler : ITileMapHandler
+public class TileMapManager : MonoBehaviour
 {
     // Keep references to the model and view
     //This is a list of all the maps in the game, ~TODO~ Make a better way to organize these, a list will do for now
-    private readonly List<ITileMapModel> mapModels;
+    private List<ITileMapModel> mapModels;
     private ITileMapModel currentMap;
-    private readonly ITileMapView mapView;
-    public static TileMapHandler instance;
+    private ITileMapObject mapView;
+    public static TileMapManager Instance { get; private set; }
     public ITileMapModel CurrentMap
     {
         get
@@ -35,21 +28,39 @@ public class TileMapHandler : ITileMapHandler
         {
             currentMap = value;
         }
+
+    }
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+
     }
 
-    // Controller depends on interfaces for the model and view
-    public TileMapHandler( ITileMapView view)
-    {
-        if (instance == null)
-            instance = this;
+    
 
-            
+
+
+    // Controller depends on interfaces for the model and view
+    public void Initialize( ITileMapObject view)
+    {
+
 
         mapModels = new List<ITileMapModel>();
-        this.mapView = view;
-
         // Listen to input from the view
         view.OnClicked += HandleClicked;
+
+        mapView = view;
+
+        
         //model.OnTileTypeChanged += HandleTileTypeChanged;
         // Listen to changes in the model
         //model.OnPositionChanged += HandlePositionChanged;
@@ -61,14 +72,23 @@ public class TileMapHandler : ITileMapHandler
 
     public void SetUpTestWorld(List<ITileMapModel> models)
     {
+        //draws the initial map
         foreach(ITileMapModel m in models)
         {
-            m.OnTileTypeChanged += HandleTileTypeChanged;
+            m.OnTileChanged += HandleTileChanged;
             mapModels.Add(m);
         }
         CurrentMap = models[0];
         SyncCurrentMap();
 
+    }
+
+    public Tile GetTile(int x , int y)
+    {
+        if (x < 0 || x >= CurrentMap.mapSize.x || y < 0 || y >= CurrentMap.mapSize.y)
+            return null;
+
+        return CurrentMap.tiles[x, y];
     }
 
     public void ChangeMap(Exit e)
@@ -105,14 +125,14 @@ public class TileMapHandler : ITileMapHandler
     {
 
 
-        GameManager.instance.characters[0].SetTile(currentMap.tiles[e.x, e.y]);
+        //GameManager.instance.characters[0].SetTile(currentMap.tiles[e.x, e.y]);
         
 
         //mapView.DrawTile(cTile);
         //CameraController.instance.SetToTile(e.x, e.y);
     }
 
-    private void HandleTileTypeChanged(object sender, TileTypeChangedEventArgs e)
+    private void HandleTileChanged(object sender, TileChangedEventArgs e)
     {
 
         mapView.DrawTile(e.tile);

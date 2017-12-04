@@ -9,7 +9,6 @@ public class CameraController : MonoBehaviour
     public static CameraController instance;
     public float smoothSpeed = 0.125f;
     private Vector3 offset = new Vector3(0,0,-10);
-    int speed;
     public Vector3 desiredPosition;
     public Vector3 smoothedPosition;
 

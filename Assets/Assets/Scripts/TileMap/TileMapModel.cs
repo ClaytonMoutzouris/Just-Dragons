@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileTypeChangedEventArgs : EventArgs
+public class TileChangedEventArgs : EventArgs
 {
     public Tile tile;
 }
@@ -11,7 +11,7 @@ public class TileTypeChangedEventArgs : EventArgs
 public interface ITileMapModel
 {
     // Dispatched when a Tiles type has been changed
-    event EventHandler<TileTypeChangedEventArgs> OnTileTypeChanged;
+    event EventHandler<TileChangedEventArgs> OnTileChanged;
     void BuildMap();
     void ChangeTile(int x, int y);
     Tile[,] tiles { get; }
@@ -24,10 +24,10 @@ public interface ITileMapModel
 public class TileMapModel : ITileMapModel
 {
     public Vector2 mapSize { get; set; }
-    public event EventHandler<TileTypeChangedEventArgs> OnTileTypeChanged = (sender, e) => { };
+    public event EventHandler<TileChangedEventArgs> OnTileChanged = (sender, e) => { };
     //public List<IEnemyController> enemyList { get; set; }
     public Tile[,] tiles { get; set; }
-    List<Exit> exits;
+    //List<Exit> exits;
     public int mapID { get; set; }
 
 
@@ -62,9 +62,9 @@ public class TileMapModel : ITileMapModel
         }
 
         // Dispatch the 'on clicked' event
-        var eventArgs = new TileTypeChangedEventArgs();
+        var eventArgs = new TileChangedEventArgs();
         eventArgs.tile = cTile;
-        OnTileTypeChanged(this, eventArgs);
+        OnTileChanged(this, eventArgs);
     }
 
     public void BuildMap()
@@ -103,26 +103,4 @@ public class TileMapModel : ITileMapModel
         
         //exits.Add(new Exit())
     }
-
-
-    
-    /*
-    public Vector3 Position
-    {
-        get { return position; }
-        set
-        {
-            // Only if the position changes
-            if (position != value)
-            {
-                // Set new position
-                position = value;
-
-                // Dispatch the 'position changed' event
-                var eventArgs = new EnemyPositionChangedEventArgs();
-                OnPositionChanged(this, eventArgs);
-            }
-        }
-    }
-    */
 }

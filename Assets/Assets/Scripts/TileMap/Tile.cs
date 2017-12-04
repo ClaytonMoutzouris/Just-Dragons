@@ -10,7 +10,7 @@ public class Tile
     TileType _tileType;
     int tileX;
     int tileY;
-    Character Occupant = null;
+    Entity occupant = null;
     Exit exit;
     public TileType TileType
     {
@@ -52,6 +52,19 @@ public class Tile
         }
     }
 
+    public Entity Occupant
+    {
+        get
+        {
+            return occupant;
+        }
+
+        set
+        {
+            occupant = value;
+        }
+    }
+
     public Tile() { }
 
     public Tile(int x, int y, TileType t, Exit e = null)
@@ -89,6 +102,6 @@ public class Tile
 
     public Vector3 GetWorldPos()
     {
-        return new Vector3(TileMapHandler.instance.GetTileOffset() + tileX, TileMapHandler.instance.GetTileOffset() + tileY, 0.0f);
+        return new Vector3(TileMapManager.Instance.GetTileOffset() + tileX, TileMapManager.Instance.GetTileOffset() + tileY, 0.0f);
     }
 }

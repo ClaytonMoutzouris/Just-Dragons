@@ -11,7 +11,7 @@ public class OnClickedEventArgs : EventArgs
 }
 
 // Interface for the tilemap view
-public interface ITileMapView
+public interface ITileMapObject
 {
     // Dispatched when the tilemap is clicked
     event EventHandler<OnClickedEventArgs> OnClicked;
@@ -23,7 +23,7 @@ public interface ITileMapView
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
-public class TileMapView : MonoBehaviour, ITileMapView {
+public class TileMapObject : MonoBehaviour, ITileMapObject {
 
     const int MAXSIZEX = 100, MAXSIZEY = 100;
     private float tileSize = 1.0f;

@@ -17,10 +17,10 @@ public class DelegatesAndEvents : MonoBehaviour {
         }
     }
 
-    public delegate void OnCharTileChanged(Tile t, Character c);
+    public delegate void OnCharTileChanged(Tile t, Entity c);
     public static event OnCharTileChanged CharTileChanged;
 
-    public static void CharacterTileChanged(Tile t, Character c)
+    public static void CharacterTileChanged(Tile t, Entity c)
     {
         // does this delegate have at least one subscriber? 
         if (CharTileChanged != null)
