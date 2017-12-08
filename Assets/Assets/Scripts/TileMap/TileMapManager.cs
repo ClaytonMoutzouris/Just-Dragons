@@ -45,10 +45,6 @@ public class TileMapManager : MonoBehaviour
 
     }
 
-    
-
-
-
     // Controller depends on interfaces for the model and view
     public void Initialize( ITileMapObject view)
     {
@@ -60,13 +56,6 @@ public class TileMapManager : MonoBehaviour
 
         mapView = view;
 
-        
-        //model.OnTileTypeChanged += HandleTileTypeChanged;
-        // Listen to changes in the model
-        //model.OnPositionChanged += HandlePositionChanged;
-
-        // Set the view's initial state by synching with the model
-        //SyncPosition();
     }
 
 
@@ -89,6 +78,109 @@ public class TileMapManager : MonoBehaviour
             return null;
 
         return CurrentMap.tiles[x, y];
+    }
+
+    public Tile[] GetNeighbours(Tile target)
+    {
+        Tile[] tiles = new Tile[9];
+
+        //Top right neighbour
+        tiles[0] = GetTile(target.TileX - 1, target.TileY + 1);
+        //Top neighbour
+        tiles[1] = GetTile(target.TileX, target.TileY + 1);
+        //Top Left neighbour
+        tiles[2] = GetTile(target.TileX + 1, target.TileY + 1);
+        //right neighbour
+        tiles[3] = GetTile(target.TileX - 1, target.TileY);
+        //Tile in question
+        tiles[4] = target;
+        //Top Left neighbour
+        tiles[5] = GetTile(target.TileX + 1, target.TileY);
+        //Bottom right neighbour
+        tiles[6] = GetTile(target.TileX - 1, target.TileY - 1);
+        //Bottom neighbour
+        tiles[7] = GetTile(target.TileX, target.TileY - 1);
+        //Bottom Left neighbour
+        tiles[8] = GetTile(target.TileX + 1, target.TileY - 1);
+
+
+
+        return tiles;
+
+    }
+
+    public Tile GetNearestNeighbour(Tile start, Tile target)
+    {
+        Tile[] neighbours = GetNeighbours(target);
+        Tile nearestNeighbour = null;
+        if(start.TileX < target.TileX )
+        {
+            if (start.TileY < target.TileY)
+            {
+                nearestNeighbour = neighbours[6];
+            }
+            else if (start.TileY == target.TileY)
+            {
+                nearestNeighbour = neighbours[3];
+
+            }
+            else if (start.TileY > target.TileY)
+            {
+                nearestNeighbour = neighbours[0];
+
+            }
+
+        } else if (start.TileX == target.TileX)
+        {
+            if (start.TileY < target.TileY)
+            {
+                nearestNeighbour = neighbours[7];
+            }
+            else if (start.TileY > target.TileY)
+            {
+                nearestNeighbour = neighbours[1];
+
+            }
+
+        } else if (start.TileX > target.TileX)
+        {
+            if (start.TileY < target.TileY)
+            {
+                nearestNeighbour = neighbours[8];
+            }
+            else if (start.TileY == target.TileY)
+            {
+                nearestNeighbour = neighbours[5];
+            }
+            else if (start.TileY > target.TileY)
+            {
+                nearestNeighbour = neighbours[2];
+
+            }
+        }
+
+
+        return nearestNeighbour;
+    }
+
+    public List<Tile> GetTilesInRange(Tile tile, int range)
+    {
+        List<Tile> tilesInRange = new List<Tile>();
+        Tile temp;
+        for(int i = tile.TileX-range; i<tile.TileX + range; i++)
+        {
+            for (int j = tile.TileY - range; j < tile.TileY + range; j++)
+            {
+                //Starting in the bottom left
+                temp = GetTile(i, j);
+                if(temp != null)
+                tilesInRange.Add(temp);
+
+            }
+        }
+
+        return tilesInRange;
+
     }
 
     public void ChangeMap(Exit e)

@@ -42,6 +42,7 @@ public class CharacterMovement : MonoBehaviour {
             {
                 moving = false;
                 currentTile = destinationTile;
+                CurrentTile.Occupant = GetComponent<Entity>();
             }
         }
     }
@@ -49,6 +50,7 @@ public class CharacterMovement : MonoBehaviour {
     public void MoveToTile(Tile target)
     {
         destinationTile = target;
+        CurrentTile.Occupant = null;
         if (!moving)
         {
             moving = true;
@@ -68,6 +70,7 @@ public class CharacterMovement : MonoBehaviour {
     {
         CurrentTile = target;
         transform.position = CurrentTile.GetWorldPos();
+        CurrentTile.Occupant = GetComponent<Entity>();
     }
 
 

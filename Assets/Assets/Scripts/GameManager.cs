@@ -45,9 +45,12 @@ public class GameManager : MonoBehaviour {
 
         characters = new List<Entity>();
         GameObject characterTemp = null;
+        //create the player
         var prefab = Resources.Load<GameObject>("Prefabs/Entity");
         characterTemp = Instantiate(prefab);
         characterTemp.AddComponent<Player>();
+
+        //create the enemies
         characters.Add(characterTemp.GetComponent<Entity>());
         for (int i = 0; i < 5; i++)
         {
@@ -56,21 +59,22 @@ public class GameManager : MonoBehaviour {
             characters.Add(characterTemp.GetComponent<Entity>());
         }
         currentCharacterIndex = 0;
-        characters[0].GetComponent<TurnHandler>().currentState = TurnState.Start;
+        characters[0].GetComponent<ITurnHandler>().SetTurnState(TurnState.Start);
 
         TurnQueue.Instance.FillQueue(characters.Count);
+        //UIManager.Instance.
         //Camera.main.GetComponent<CameraController>().target = characters[0].transform;
     } 
 
     private void Update()
     {
-        if (Input.GetButton("Jump"))
+        if (Input.GetButtonUp("Fire1"))
         {
-            //MapHandler.NewMap(MapModel);
+            characters[0].GetComponent<Health>().TakeDamage(5);
 
         }
 
-        characters[currentCharacterIndex].GetComponent<TurnHandler>().HandleTurn();
+        characters[currentCharacterIndex].GetComponent<ITurnHandler>().HandleTurn();
 
     }
 
@@ -81,7 +85,7 @@ public class GameManager : MonoBehaviour {
         {
             currentCharacterIndex = 0;
         }
-        characters[currentCharacterIndex].GetComponent<TurnHandler>().currentState = TurnState.Start;
+        characters[currentCharacterIndex].GetComponent<ITurnHandler>().SetTurnState(TurnState.Start);
         TurnQueue.Instance.UpdateQueue();
     }
 	

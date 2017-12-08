@@ -10,7 +10,7 @@ public class Player : MonoBehaviour {
     void Awake () {
         //characterData = gameObject.AddComponent<Entity>();
         movement = gameObject.AddComponent<CharacterMovement>();
-        gameObject.AddComponent<TurnHandler>();
+        gameObject.AddComponent<PlayerTurnHandler>();
         movement.SetToTile(TileMapManager.Instance.GetTile(25, 25));
     }
 
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour {
 
     private void HandleMovementInput()
     {
-        if (GetComponent<TurnHandler>().currentState != TurnState.Action)
+        if (GetComponent<PlayerTurnHandler>().currentState != TurnState.Action)
             return;
         //Handle Keyboard Movement
         if (!movement.IsMoving())

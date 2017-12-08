@@ -61,6 +61,7 @@ public class Tile
 
         set
         {
+            Debug.Log("X: " + TileX + ", Y: " + TileY + " - Occupant: " + value);
             occupant = value;
         }
     }
@@ -81,6 +82,11 @@ public class Tile
     public Exit GetExit()
     {
         return exit;
+    }
+
+    public Tile GetNearestNeighbour()
+    {
+        return null;
     }
 
     public int GetMovementCost()

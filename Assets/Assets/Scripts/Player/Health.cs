@@ -6,13 +6,23 @@ public class Health : MonoBehaviour {
     public int MaxHealth;
     public int currentHealth;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public void Start()
+    {
+
+    }
+
+    public void Initialise(int startingHealth)
+    {
+        MaxHealth = startingHealth;
+        currentHealth = MaxHealth;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+            currentHealth = 0;
+        UIManager.Instance.getCPIBox().UpdateCurrentPlayer(GetComponent<Player>());
+
+    }
 }

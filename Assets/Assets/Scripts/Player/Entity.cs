@@ -9,10 +9,13 @@ using System;
 public class Entity : MonoBehaviour {
     SpriteRenderer spriteRenderer;
     //public event EventHandler<OnTileChangedEventArgs> TileChanged = (sender, e) => { };
+    Stats entityStats;
 
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        entityStats = gameObject.AddComponent<Stats>();
+        //Dictionary<string, int> entityStats = new Dictionary<string, int>();
         //TileMapHandler.instance.MapChanged  += OnMapChanged;
     }
 
@@ -26,6 +29,7 @@ public class Entity : MonoBehaviour {
     {
 
     }
+
 
     private void Update()
     {
