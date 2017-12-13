@@ -52,10 +52,11 @@ public class GameManager : MonoBehaviour {
 
         //create the enemies
         characters.Add(characterTemp.GetComponent<Entity>());
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 2; i++)
         {
             characterTemp = Instantiate(prefab);
             characterTemp.AddComponent<Enemy>();
+            characterTemp.GetComponent<Entity>().Name = "Monster " + (i+1);
             characters.Add(characterTemp.GetComponent<Entity>());
         }
         currentCharacterIndex = 0;
@@ -64,19 +65,16 @@ public class GameManager : MonoBehaviour {
         TurnQueue.Instance.FillQueue(characters.Count);
         //UIManager.Instance.
         //Camera.main.GetComponent<CameraController>().target = characters[0].transform;
-    } 
+    }
 
     private void Update()
     {
-        if (Input.GetButtonUp("Fire1"))
-        {
-            characters[0].GetComponent<Health>().TakeDamage(5);
-
-        }
 
         characters[currentCharacterIndex].GetComponent<ITurnHandler>().HandleTurn();
 
     }
+
+    
 
     public void NextTurn()
     {

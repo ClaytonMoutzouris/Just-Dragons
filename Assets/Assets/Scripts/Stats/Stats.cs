@@ -9,7 +9,7 @@ public class Stats : MonoBehaviour {
 	void Start () {
         statList = new Dictionary<string, Attribute>();
         health = gameObject.AddComponent<Health>();
-        health.Initialise(10);
+        health.Initialise(1000);
         InitializeStats();
     }
 	

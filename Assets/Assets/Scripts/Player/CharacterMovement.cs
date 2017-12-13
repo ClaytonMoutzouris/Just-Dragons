@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class CharacterMovement : MonoBehaviour {
     //static int tileSize = 1;
     bool moving = false;
@@ -47,9 +48,23 @@ public class CharacterMovement : MonoBehaviour {
         }
     }
 
+    public bool AtDestination()
+    {
+        if(currentTile == destinationTile)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public void MoveToTile(Tile target)
     {
         destinationTile = target;
+        //check to see if where we want to be is where we already are
+        if (AtDestination())
+            return;
+
         CurrentTile.Occupant = null;
         if (!moving)
         {

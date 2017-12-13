@@ -28,27 +28,12 @@ public class EnemyTurnHandler :  MonoBehaviour, ITurnHandler
                     break;
 
                 case TurnState.Action:
-                //The enemy must decide what to do
-                //Decisions:
-                //Is there a hostile in range?
-                //If yes, we have to move close enough to attack
-                //If we are done moving, are we close enough to attack?
-                //If yes, attack
-                //If no, end turn
 
+                //yield WaitForSeconds (2);
                 //GetComponent<EnemyAI>().MoveSomewhere();
-                Entity target = GetComponent<EnemyAIActions>().ChooseTarget();
-                    if (target != null){
-                    GetComponent<EnemyAIActions>().MoveToHostile(target);
-
-                    }
-
-                    if (!GetComponent<CharacterMovement>().IsMoving())
-                    {
-                        currentState = TurnState.End;
-
-                    }
-                    break;
+                ActionPhase();
+                                
+                break;
 
                 case TurnState.End:
                     //Clean up before we go on to the next turn
@@ -60,6 +45,45 @@ public class EnemyTurnHandler :  MonoBehaviour, ITurnHandler
             }
 
         
+    }
+    //Action phase Coroutine
+    //will atleast wait 1 second before ending the turn
+    public void ActionPhase()
+    {
+        //The enemy must decide what to do
+        //Decisions:
+        //Is there a hostile in range?
+        //If yes, we have to move close enough to attack
+        //If we are done moving, are we close enough to attack?
+        //If yes, attack
+        //If no, end turn
+        //This is a coroutine
+
+        Entity target = GetComponent<EnemyAIActions>().ChooseTarget();
+        if (target != null)
+        {
+            if(!GetComponent<EnemyAIActions>().TargetInRange(target, 1))
+            {
+                GetComponent<EnemyAIActions>().MoveToHostile(target);
+
+            } else
+            {
+                GetComponent<EnemyAIActions>().Attack(target);
+                currentState = TurnState.End;
+            }
+        } else
+        {
+            currentState = TurnState.End;
+        }
+
+       // yield return new WaitForSeconds(1.0f);    //Wait one second
+       /*
+        if (!GetComponent<CharacterMovement>().IsMoving())
+        {
+            currentState = TurnState.End;
+
+        }
+        */
     }
 
     public void EndTurn()

@@ -61,7 +61,7 @@ public class Tile
 
         set
         {
-            Debug.Log("X: " + TileX + ", Y: " + TileY + " - Occupant: " + value);
+            //Debug.Log("X: " + TileX + ", Y: " + TileY + " - Occupant: " + value);
             occupant = value;
         }
     }

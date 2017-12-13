@@ -26,7 +26,7 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
                 case TurnState.Action:
                     //Wait for player input
                     //options include moving, casting spells, attacking, inspecting stuff, etc.
-                    if (Input.GetButton("Jump"))
+                    if (Input.GetButton("Jump") && !GetComponent<CharacterMovement>().IsMoving())
                     {
                         currentState = TurnState.End;
                     }

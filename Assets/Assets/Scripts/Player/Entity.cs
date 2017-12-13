@@ -8,16 +8,37 @@ using System;
 
 public class Entity : MonoBehaviour {
     SpriteRenderer spriteRenderer;
+    string name;
+    Dictionary<string, Component> components;
+    List<Component> componentsList;
+
     //public event EventHandler<OnTileChangedEventArgs> TileChanged = (sender, e) => { };
     Stats entityStats;
+
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+
+        set
+        {
+            name = value;
+        }
+    }
 
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         entityStats = gameObject.AddComponent<Stats>();
+        gameObject.AddComponent<MouseOverTooltip>();
         //Dictionary<string, int> entityStats = new Dictionary<string, int>();
         //TileMapHandler.instance.MapChanged  += OnMapChanged;
-    }
+
+          
+            
+     }
 
     public void TileMapChanged(Exit e, ITileMapModel map)
     {
@@ -49,5 +70,13 @@ public class Entity : MonoBehaviour {
     {
 
 
+    }
+
+    public string GetTooltip()
+    {
+        string tooltip = "";
+        tooltip += name;
+
+        return tooltip;
     }
 }
