@@ -201,7 +201,7 @@ public class TileMapManager : MonoBehaviour
 
     }
 
-    public float GetTileOffset()
+    public Vector3 GetTileOffset()
     {
         return mapView.TileOffset();
     }
@@ -213,15 +213,25 @@ public class TileMapManager : MonoBehaviour
     }
 
     // Called when the view is clicked
-    private void HandleClicked(object sender, OnClickedEventArgs e)
+    private void HandleClicked(object sender, OnMapClickedEventArgs e)
     {
+        /*
+        Entity temp = GetTile(e.x, e.y).Occupant;
 
-
+        if (temp != null)
+        {
+            Debug.Log("Clicked on " + temp.Name);
+            temp.GetComponent<Selectable>().Select();
+        } else
+        {
+            GameManager.instance.ClearSelected();
+        }
         //GameManager.instance.characters[0].SetTile(currentMap.tiles[e.x, e.y]);
         
 
         //mapView.DrawTile(cTile);
         //CameraController.instance.SetToTile(e.x, e.y);
+        */
     }
 
     private void HandleTileChanged(object sender, TileChangedEventArgs e)

@@ -9,10 +9,11 @@ public interface IHasToolTip {
 
 public class Tooltip : MonoBehaviour {
     Text tooltipText;
+    //Vector3 offset;
     public void Awake()
     {
         tooltipText = GetComponentInChildren<Text>();
-        
+        //offset = new Vector2(TileMapManager.Instance.GetTileOffset(), TileMapManager.Instance.GetTileOffset());
         
     }
 
@@ -21,9 +22,9 @@ public class Tooltip : MonoBehaviour {
         tooltipText.text = entity.GetTooltip();
     }
 
-    public void MoveToMouse()
+    public void SetPosition(Vector3 position)
     {
-        gameObject.transform.SetPositionAndRotation(Input.mousePosition, Quaternion.identity);
+        gameObject.transform.SetPositionAndRotation(position, Quaternion.identity);
     }
 
 

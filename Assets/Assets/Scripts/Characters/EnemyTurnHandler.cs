@@ -22,7 +22,7 @@ public class EnemyTurnHandler :  MonoBehaviour, ITurnHandler
 
                     //Move on to action phase, where moving and selecting actions can happen
                     Camera.main.GetComponent<CameraController>().target = gameObject.transform;
-                    GetComponent<EnemyAIActions>().hasMoved = false;
+                    GetComponent<EntityActions>().hasMoved = false;
                     currentState = TurnState.Action;
 
                     break;
@@ -59,16 +59,16 @@ public class EnemyTurnHandler :  MonoBehaviour, ITurnHandler
         //If no, end turn
         //This is a coroutine
 
-        Entity target = GetComponent<EnemyAIActions>().ChooseTarget();
+        Entity target = GetComponent<EntityActions>().ChooseTarget();
         if (target != null)
         {
-            if(!GetComponent<EnemyAIActions>().TargetInRange(target, 1))
+            if(!GetComponent<EntityActions>().TargetInRange(target, 1))
             {
-                GetComponent<EnemyAIActions>().MoveToHostile(target);
+                GetComponent<EntityActions>().MoveToHostile(target);
 
             } else
             {
-                GetComponent<EnemyAIActions>().Attack(target);
+                GetComponent<EntityActions>().Attack(target);
                 currentState = TurnState.End;
             }
         } else

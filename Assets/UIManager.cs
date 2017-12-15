@@ -25,11 +25,14 @@ public class UIManager : MonoBehaviour {
         //tooltip = GetComponentInChildren<Tooltip>();
         //cpiBox.gameObject.SetActive(false);
         HideTooltip();
+
+        
+
     }
 
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
@@ -42,7 +45,7 @@ public class UIManager : MonoBehaviour {
     {
         tooltip.gameObject.SetActive(true);
         tooltip.SetTooltipText(entity);
-        tooltip.MoveToMouse();
+        tooltip.SetPosition(Camera.main.WorldToScreenPoint(entity.transform.position + TileMapManager.Instance.GetTileOffset()));
         
 
     }

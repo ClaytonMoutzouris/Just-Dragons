@@ -22,6 +22,8 @@ public class Health : MonoBehaviour {
         currentHealth -= damage;
         if (currentHealth <= 0)
             currentHealth = 0;
+
+        if(GetComponent<Player>() != null)
         UIManager.Instance.getCPIBox().UpdateCurrentPlayer(GetComponent<Player>());
 
     }

@@ -8,9 +8,11 @@ public class GameManager : MonoBehaviour {
     TileMapManager MapManager;
     public List<Entity> characters;
     int currentCharacterIndex;
+    public Entity selectedEntity = null;
     //IEnemyView EnemyViews;
     // Use this for initialization
     public static GameManager instance;
+    public SelectedObject selectionPrefab;
 
     void Awake () {
         GameManager.instance = this;
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour {
         MapManager = gameObject.AddComponent<TileMapManager>();
         MapManager.Initialize(MapView);
 
+        selectionPrefab = Resources.Load<GameObject>("Prefabs/SelectedObject").GetComponent<SelectedObject>();
         //Initialize the starting state of the game
         StartGame();
 
@@ -48,6 +51,7 @@ public class GameManager : MonoBehaviour {
         //create the player
         var prefab = Resources.Load<GameObject>("Prefabs/Entity");
         characterTemp = Instantiate(prefab);
+        characterTemp.GetComponent<Entity>().Name = "Player " + 1;
         characterTemp.AddComponent<Player>();
 
         //create the enemies
@@ -74,10 +78,22 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    public void ClearSelected()
+    {
+
+        if (selectedEntity != null)
+        {
+            Debug.Log("what");
+            selectedEntity.GetComponent<Selectable>().Select();
+
+        }
+
+    }
     
 
     public void NextTurn()
     {
+        ClearSelected();
         currentCharacterIndex++;
         if(currentCharacterIndex >= characters.Count)
         {

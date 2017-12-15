@@ -6,7 +6,7 @@ using UnityEngine;
 //consider making this a static class and giving each entity a list of actions they can potentially perform
 //this does not work with components so a solution would need to be found
 [RequireComponent(typeof(CharacterMovement))]
-public class EnemyAIActions : MonoBehaviour {
+public class EntityActions : MonoBehaviour {
     public bool hasMoved = false;
     public Entity target;
     public bool actionInProgress;
@@ -27,8 +27,8 @@ public class EnemyAIActions : MonoBehaviour {
     public bool TargetInRange(Entity target, int range)
     {
         Debug.Log("Checking");
-        Debug.Log(GetComponent<Entity>().Name + " X: " + GetComponent<CharacterMovement>().CurrentTile.TileX + target.Name + " X:" + target.GetComponent<CharacterMovement>().CurrentTile.TileX);
-        Debug.Log(GetComponent<Entity>().Name + " Y: " + GetComponent<CharacterMovement>().CurrentTile.TileY + target.Name + " Y:" + target.GetComponent<CharacterMovement>().CurrentTile.TileY);
+        //Debug.Log(GetComponent<Entity>().Name + " X: " + GetComponent<CharacterMovement>().CurrentTile.TileX + target.Name + " X:" + target.GetComponent<CharacterMovement>().CurrentTile.TileX);
+        //Debug.Log(GetComponent<Entity>().Name + " Y: " + GetComponent<CharacterMovement>().CurrentTile.TileY + target.Name + " Y:" + target.GetComponent<CharacterMovement>().CurrentTile.TileY);
 
 
         if (Mathf.Abs(GetComponent<CharacterMovement>().CurrentTile.TileX - target.GetComponent<CharacterMovement>().CurrentTile.TileX) <= range && Mathf.Abs(GetComponent<CharacterMovement>().CurrentTile.TileY - target.GetComponent<CharacterMovement>().CurrentTile.TileY) <= range)

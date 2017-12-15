@@ -25,7 +25,6 @@ public class Enemy : MonoBehaviour {
         //characterData = gameObject.AddComponent<Entity>();
         movement = gameObject.AddComponent<CharacterMovement>();
         movement.SetToTile(TileMapManager.Instance.GetTile(Random.Range(0,50), Random.Range(0, 50)));
-        gameObject.AddComponent<EnemyAIActions>();
         gameObject.AddComponent<EnemyTurnHandler>();
 
     }

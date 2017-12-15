@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 // Dispatched when the map is clicked
-public class OnClickedEventArgs : EventArgs
+public class OnMapClickedEventArgs : EventArgs
 {
     public int x { get; set; }
     public int y { get; set; }
@@ -14,10 +14,10 @@ public class OnClickedEventArgs : EventArgs
 public interface ITileMapObject
 {
     // Dispatched when the tilemap is clicked
-    event EventHandler<OnClickedEventArgs> OnClicked;
+    event EventHandler<OnMapClickedEventArgs> OnClicked;
     void DrawTile(Tile tile);
     void DrawMap(Tile[,] tiles, int xSize, int ySize);
-    float TileOffset();
+    Vector3 TileOffset();
 }
 
 
@@ -27,7 +27,7 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
 
     const int MAXSIZEX = 100, MAXSIZEY = 100;
     private float tileSize = 1.0f;
-
+    private Vector3 tileOffset;
 
     Texture2D texture;
     Color[][] tileTextures;
@@ -37,26 +37,52 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
 
     public Texture2D terrainTiles;
 
-    public float TileOffset()
+    public Vector3 TileOffset()
     {
-        return tileSize / 2;
+        return tileOffset;
     }
 
-    public event EventHandler<OnClickedEventArgs> OnClicked = (sender, e) => { };
+    public event EventHandler<OnMapClickedEventArgs> OnClicked = (sender, e) => { };
+
+    private void OnMouseOver()
+    {
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        //Use a raycast to see where on the tilemap the mouse is located;
+        Physics.Raycast(ray, out hit);
+        //Can refactor some of this so we dont need to repeat so much, will do for now
+        Vector2 tilePos = new Vector3(Mathf.FloorToInt(hit.point.x / tileSize) + TileOffset().x, Mathf.FloorToInt(hit.point.y / tileSize) + TileOffset().y);
+        TileSelectionIndicator.Instance.transform.SetPositionAndRotation(tilePos, Quaternion.identity);
+        
+        /*
+        if (Input.GetMouseButtonDown(0))
+        {
+            var eventArgs = new OnMapClickedEventArgs();
+            eventArgs.x = Mathf.FloorToInt(hit.point.x / tileSize);
+            eventArgs.y = Mathf.FloorToInt(hit.point.y / tileSize);
+            OnClicked(this, eventArgs);
+        }
+        */
+    }
 
     void Update()
     {
+
+
+        /*
         // If the primary mouse button was pressed this frame
         if (Input.GetMouseButtonDown(0))
         {
             // If the mouse hit the map
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (
-                Physics.Raycast(ray, out hit)
-                && hit.transform == transform
-            )
+            if (Physics.Raycast(ray, out hit) && hit.transform == transform)
             {
+                Vector2 tilePos = new Vector3(Mathf.FloorToInt(hit.point.x / tileSize) + TileOffset(), Mathf.FloorToInt(hit.point.y / tileSize) + TileOffset());
+                TileSelectionIndicator.Instance.transform.SetPositionAndRotation(tilePos, Quaternion.identity);
+
                 // Dispatch the 'on clicked' event
                 var eventArgs = new OnClickedEventArgs();
                 eventArgs.x = Mathf.FloorToInt(hit.point.x / tileSize);
@@ -64,6 +90,7 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
                 OnClicked(this, eventArgs);
             }
         }
+        */
     }
 
 
@@ -73,6 +100,7 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
         ChopUpTiles();
         GenerateMesh();
         BuildInitialTexture();
+        tileOffset = new Vector3(tileSize / 2, tileSize / 2, 0);
     }
 
 
