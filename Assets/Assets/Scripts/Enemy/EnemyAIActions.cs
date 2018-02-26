@@ -26,7 +26,7 @@ public class EntityActions : MonoBehaviour {
 
     public bool TargetInRange(Entity target, int range)
     {
-        Debug.Log("Checking");
+        //Debug.Log("Checking");
         //Debug.Log(GetComponent<Entity>().Name + " X: " + GetComponent<CharacterMovement>().CurrentTile.TileX + target.Name + " X:" + target.GetComponent<CharacterMovement>().CurrentTile.TileX);
         //Debug.Log(GetComponent<Entity>().Name + " Y: " + GetComponent<CharacterMovement>().CurrentTile.TileY + target.Name + " Y:" + target.GetComponent<CharacterMovement>().CurrentTile.TileY);
 
@@ -41,7 +41,7 @@ public class EntityActions : MonoBehaviour {
 
     public void Attack(Entity target)
     {
-        Debug.Log("Attacking " + target);
+        //Debug.Log("Attacking " + target);
         Health healthComponent = target.GetComponent<Health>();
         if(healthComponent != null)
         {

@@ -8,7 +8,8 @@ public class Health : MonoBehaviour {
 
     public void Start()
     {
-
+        if (GetComponent<Player>() != null)
+            UIManager.Instance.getCPIBox().UpdateCurrentPlayer(GetComponent<Player>());
     }
 
     public void Initialise(int startingHealth)
@@ -23,8 +24,8 @@ public class Health : MonoBehaviour {
         if (currentHealth <= 0)
             currentHealth = 0;
 
-        if(GetComponent<Player>() != null)
-        UIManager.Instance.getCPIBox().UpdateCurrentPlayer(GetComponent<Player>());
+        if (GetComponent<Player>() != null)
+            UIManager.Instance.getCPIBox().UpdateCurrentPlayer(GetComponent<Player>());
 
     }
 }

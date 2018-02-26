@@ -11,6 +11,14 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
     public bool attackingFlag = false;
     public bool endTurnFlag = false;
 
+    Entity entity;
+    EntityActions actions;
+    private void Start()
+    {
+        entity = GetComponent<Entity>();
+        actions = gameObject.AddComponent<EntityActions>();
+    }
+
     public void HandleTurn()
     {
 
@@ -41,16 +49,16 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
                 if (attackingFlag)
                 {
 
-                    if (!GetComponent<EntityActions>().TargetInRange(target, 1))
+                    if (!actions.TargetInRange(target, 1))
                     {
-                        GetComponent<EntityActions>().MoveToHostile(target);
+                        actions.MoveToHostile(target);
 
                     }
                     else
                     {
-                        GetComponent<EntityActions>().Attack(target);
+                        actions.Attack(target);
                         attackingFlag = false;
-
+                        endTurnFlag = true;
                     }
 
 
@@ -82,8 +90,12 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
         //what happens when we press the submit button
         if (Input.GetButtonDown("Submit"))
         {
+            Entity target = null;
             //get the selected entity from game manager
-            Entity target = GameManager.instance.selectedEntity;
+            if (Selectable.currentSelected != null)
+            {
+               target = Selectable.currentSelected.GetComponent<Entity>();
+            }
 
             //is there a target?
             if (target != null)

@@ -21,11 +21,18 @@ public class Stats : MonoBehaviour {
         statList.Add("Intelligence", new Attribute(10));
         statList.Add("Charisma", new Attribute(10));
         statList.Add("Wisdom", new Attribute(10));
+        statList.Add("Movement", new DependantAttribute(10));
     }
 
-    public Health getHealth()
+    public Attribute GetStat(string statname)
+    {
+        return statList[statname];
+    }
+
+    public Health GetHealth()
     {
         return health;
     }
+
 
 }

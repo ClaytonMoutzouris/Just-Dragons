@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour {
     //IEnemyView EnemyViews;
     // Use this for initialization
     public static GameManager instance;
-    public SelectedObject selectionPrefab;
+    public GameObject selectionPrefab;
+    public Dictionary<string, Item> itemLibrary;
 
     void Awake () {
         GameManager.instance = this;
@@ -25,7 +26,7 @@ public class GameManager : MonoBehaviour {
         MapManager = gameObject.AddComponent<TileMapManager>();
         MapManager.Initialize(MapView);
 
-        selectionPrefab = Resources.Load<GameObject>("Prefabs/SelectedObject").GetComponent<SelectedObject>();
+        selectionPrefab = Resources.Load<GameObject>("Prefabs/SelectedObject");
         //Initialize the starting state of the game
         StartGame();
 
@@ -84,7 +85,7 @@ public class GameManager : MonoBehaviour {
         if (selectedEntity != null)
         {
             Debug.Log("what");
-            selectedEntity.GetComponent<Selectable>().Select();
+            //selectedEntity.GetComponent<Selectable>().Select();
 
         }
 
@@ -103,4 +104,12 @@ public class GameManager : MonoBehaviour {
         TurnQueue.Instance.UpdateQueue();
     }
 	
+    public void CreateItemLibrary()
+    {
+        itemLibrary = new Dictionary<string, Item>();
+
+        //itemLibrary.Add("Sword", )
+
+    }
+
 }

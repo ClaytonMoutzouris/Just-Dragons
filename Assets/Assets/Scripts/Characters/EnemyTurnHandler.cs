@@ -7,6 +7,14 @@ public class EnemyTurnHandler :  MonoBehaviour, ITurnHandler
 {
 
     public TurnState currentState = TurnState.Waiting;
+    EntityActions actions;
+    Entity entity;
+
+    private void Start()
+    {
+        entity = GetComponent<Entity>();
+        actions = gameObject.AddComponent<EntityActions>();
+    }
 
     public void HandleTurn()
     {
@@ -22,7 +30,7 @@ public class EnemyTurnHandler :  MonoBehaviour, ITurnHandler
 
                     //Move on to action phase, where moving and selecting actions can happen
                     Camera.main.GetComponent<CameraController>().target = gameObject.transform;
-                    GetComponent<EntityActions>().hasMoved = false;
+                    actions.hasMoved = false;
                     currentState = TurnState.Action;
 
                     break;
@@ -59,16 +67,16 @@ public class EnemyTurnHandler :  MonoBehaviour, ITurnHandler
         //If no, end turn
         //This is a coroutine
 
-        Entity target = GetComponent<EntityActions>().ChooseTarget();
+        Entity target = actions.ChooseTarget();
         if (target != null)
         {
-            if(!GetComponent<EntityActions>().TargetInRange(target, 1))
+            if(!actions.TargetInRange(target, 1))
             {
-                GetComponent<EntityActions>().MoveToHostile(target);
+                actions.MoveToHostile(target);
 
             } else
             {
-                GetComponent<EntityActions>().Attack(target);
+                actions.Attack(target);
                 currentState = TurnState.End;
             }
         } else

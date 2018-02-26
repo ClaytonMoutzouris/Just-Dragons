@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour {
     //static int tileSize = 1;
+    Entity entity; // the entity this movement component belongs to
     bool moving = false;
     Tile destinationTile;
     Tile currentTile;
@@ -23,9 +24,23 @@ public class CharacterMovement : MonoBehaviour {
         }
     }
 
-    void Initialize(int speed = 5)
+    public Entity Entity
     {
-        this.speed = speed;
+        get
+        {
+            return entity;
+        }
+
+        set
+        {
+            entity = value;
+        }
+    }
+
+    private void Start()
+    {
+       
+
     }
 
     public bool IsMoving()
@@ -39,11 +54,12 @@ public class CharacterMovement : MonoBehaviour {
         {
             float step = speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, destinationTile.GetWorldPos(), step);
-            if (transform.position == destinationTile.GetWorldPos())
+            if (transform.position == destinationTile.GetWorldPos() /*|| entity.Stats.GetStat("Movement").finalValue() <= 0*/)
             {
                 moving = false;
                 currentTile = destinationTile;
-                CurrentTile.Occupant = GetComponent<Entity>();
+                CurrentTile.Occupant = Entity;
+                print(currentTile.TileX + ", " + currentTile.TileY);
             }
         }
     }
@@ -85,7 +101,8 @@ public class CharacterMovement : MonoBehaviour {
     {
         CurrentTile = target;
         transform.position = CurrentTile.GetWorldPos();
-        CurrentTile.Occupant = GetComponent<Entity>();
+        //print("setting " + Entity + " to " + CurrentTile);
+        CurrentTile.Occupant = Entity;
     }
 
 

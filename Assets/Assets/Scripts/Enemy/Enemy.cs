@@ -24,8 +24,10 @@ public class Enemy : MonoBehaviour {
     {
         //characterData = gameObject.AddComponent<Entity>();
         movement = gameObject.AddComponent<CharacterMovement>();
+        movement.Entity = GetComponent<Entity>();
         movement.SetToTile(TileMapManager.Instance.GetTile(Random.Range(0,50), Random.Range(0, 50)));
         gameObject.AddComponent<EnemyTurnHandler>();
+        gameObject.layer = LayerMask.NameToLayer("Characters");
 
     }
 

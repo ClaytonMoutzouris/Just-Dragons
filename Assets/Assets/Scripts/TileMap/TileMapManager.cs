@@ -72,6 +72,21 @@ public class TileMapManager : MonoBehaviour
 
     }
 
+
+    public Vector2 MouseToTilePosition(Vector2 mousePos)
+    {
+        int tilex = Mathf.FloorToInt(mousePos.x / mapView.TileSize());
+        int tiley = Mathf.FloorToInt(mousePos.y / mapView.TileSize());
+        return new Vector3(tilex, tiley) + mapView.TileOffset();
+    }
+
+    public Tile GetTileClicked(Vector2 mousePos)
+    {
+
+        Vector2 tilePos = MouseToTilePosition(mousePos);
+        return GetTile((int)tilePos.x, (int)tilePos.y);
+    }
+    
     public Tile GetTile(int x , int y)
     {
         if (x < 0 || x >= CurrentMap.mapSize.x || y < 0 || y >= CurrentMap.mapSize.y)

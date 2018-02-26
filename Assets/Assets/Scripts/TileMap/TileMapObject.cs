@@ -18,17 +18,20 @@ public interface ITileMapObject
     void DrawTile(Tile tile);
     void DrawMap(Tile[,] tiles, int xSize, int ySize);
     Vector3 TileOffset();
+    float TileSize();
 }
 
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-[RequireComponent(typeof(MeshCollider))]
+//[RequireComponent(typeof(MeshCollider))]
+//[RequireComponent(typeof(PolygonCollider2D))]
+[RequireComponent(typeof(BoxCollider2D))]
 public class TileMapObject : MonoBehaviour, ITileMapObject {
 
     const int MAXSIZEX = 100, MAXSIZEY = 100;
     private float tileSize = 1.0f;
     private Vector3 tileOffset;
-
+    Vector2 MapSize = new Vector2(MAXSIZEX, MAXSIZEY);
     Texture2D texture;
     Color[][] tileTextures;
     public int tileResolution;
@@ -37,6 +40,11 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
 
     public Texture2D terrainTiles;
 
+    public float TileSize()
+    {
+        return tileSize;
+    }
+
     public Vector3 TileOffset()
     {
         return tileOffset;
@@ -44,27 +52,10 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
 
     public event EventHandler<OnMapClickedEventArgs> OnClicked = (sender, e) => { };
 
-    private void OnMouseOver()
+
+    public Vector2 TilePosition(float x, float y)
     {
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        //Use a raycast to see where on the tilemap the mouse is located;
-        Physics.Raycast(ray, out hit);
-        //Can refactor some of this so we dont need to repeat so much, will do for now
-        Vector2 tilePos = new Vector3(Mathf.FloorToInt(hit.point.x / tileSize) + TileOffset().x, Mathf.FloorToInt(hit.point.y / tileSize) + TileOffset().y);
-        TileSelectionIndicator.Instance.transform.SetPositionAndRotation(tilePos, Quaternion.identity);
-        
-        /*
-        if (Input.GetMouseButtonDown(0))
-        {
-            var eventArgs = new OnMapClickedEventArgs();
-            eventArgs.x = Mathf.FloorToInt(hit.point.x / tileSize);
-            eventArgs.y = Mathf.FloorToInt(hit.point.y / tileSize);
-            OnClicked(this, eventArgs);
-        }
-        */
+        return new Vector3(Mathf.FloorToInt(x / tileSize) + TileOffset().x, Mathf.FloorToInt(y / tileSize) + TileOffset().y);
     }
 
     void Update()
@@ -101,6 +92,8 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
         GenerateMesh();
         BuildInitialTexture();
         tileOffset = new Vector3(tileSize / 2, tileSize / 2, 0);
+        gameObject.layer = LayerMask.NameToLayer("Ground");
+
     }
 
 
@@ -108,11 +101,12 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
     public void DrawMap(Tile[,] tiles, int xSize, int ySize)
     {
         Color[] p;
+        MapSize = new Vector2(xSize, ySize);
         for (int y = 0; y < MAXSIZEY; y++)
         {
             for (int x = 0; x < MAXSIZEY; x++)
             {
-                if (x < xSize && y < ySize)
+                if (x < MapSize.x && y < MapSize.y)
                 {
                      p = tileTextures[(int)tiles[x, y].TileType];
                     
@@ -130,6 +124,9 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
         texture.wrapMode = TextureWrapMode.Clamp;
         texture.Apply();
 
+        BoxCollider2D box_collider = GetComponent<BoxCollider2D>();
+        box_collider.size = MapSize;
+        box_collider.offset = MapSize / 2;
         MeshRenderer mesh_renderer = GetComponent<MeshRenderer>();
         mesh_renderer.sharedMaterials[0].mainTexture = texture;
 
@@ -241,8 +238,11 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
 
-        MeshCollider mesh_collider = GetComponent<MeshCollider>();
-        mesh_collider.sharedMesh = mesh;
+        //MeshCollider mesh_collider = GetComponent<MeshCollider>();
+        //mesh_collider.sharedMesh = mesh;
+        BoxCollider2D box_collider = GetComponent<BoxCollider2D>();
+        box_collider.size = MapSize;
+        box_collider.offset = MapSize / 2;
 
     }
 

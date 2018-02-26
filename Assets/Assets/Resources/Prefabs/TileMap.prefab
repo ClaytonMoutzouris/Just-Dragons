@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33116191591972520}
   - component: {fileID: 23767810292374376}
   - component: {fileID: 114180889278850852}
-  - component: {fileID: 64193492747363114}
+  - component: {fileID: 61184397279710490}
   m_Layer: 0
   m_Name: TileMap
   m_TagString: Untagged
@@ -82,20 +82,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1105642745121332}
   m_Mesh: {fileID: 0}
---- !u!64 &64193492747363114
-MeshCollider:
+--- !u!61 &61184397279710490
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1105642745121332}
+  m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.5, y: 0.5}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 0}
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!114 &114180889278850852
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,6 +118,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4490884064457c4aa94e81c1100e87c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileSize: 1
   tileResolution: 16
   terrainTiles: {fileID: 2800000, guid: 1f94d34a7756d474fac732ce7cfa3325, type: 3}

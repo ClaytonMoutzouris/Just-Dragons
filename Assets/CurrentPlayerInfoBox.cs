@@ -23,6 +23,6 @@ public class CurrentPlayerInfoBox : MonoBehaviour {
 	// Update is called once per frame
 	public void UpdateCurrentPlayer (Player p) {
         currentPlayer = p;
-        healthBar.setHealth(currentPlayer.GetComponent<Stats>().getHealth());
+        healthBar.setHealth(currentPlayer.GetComponent<Stats>().GetHealth());
 	}
 }

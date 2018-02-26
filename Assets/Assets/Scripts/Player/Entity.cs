@@ -16,10 +16,11 @@ public class Entity : MonoBehaviour {
     string name;
     Dictionary<string, Component> components;
     List<Component> componentsList;
+    Stats stats;
     //public event EventHandler<OnMapClickedEventArgs> OnEntityClicked = (sender, e) => { };
     //public event EventHandler<OnTileChangedEventArgs> TileChanged = (sender, e) => { };
-    Stats entityStats;
-    
+    //Stats entityStats;
+
     public string Name
     {
         get
@@ -33,15 +34,26 @@ public class Entity : MonoBehaviour {
         }
     }
 
+    public Stats Stats
+    {
+        get
+        {
+            return stats;
+        }
+
+        set
+        {
+            stats = value;
+        }
+    }
+
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        entityStats = gameObject.AddComponent<Stats>();
-        gameObject.AddComponent<MouseOverTooltip>();
-        gameObject.AddComponent<EntityActions>();
+        
+        gameObject.AddComponent<MouseOverTooltip>();       
         gameObject.AddComponent<Selectable>();
-        //Dictionary<string, int> entityStats = new Dictionary<string, int>();
-        //TileMapHandler.instance.MapChanged  += OnMapChanged;
+        Stats = gameObject.AddComponent<Stats>();
 
 
 
@@ -68,14 +80,6 @@ public class Entity : MonoBehaviour {
 
     private void LateUpdate()
     {
-
-    }
-
-    
-
-    private void HandleCombatInput()
-    {
-
 
     }
 

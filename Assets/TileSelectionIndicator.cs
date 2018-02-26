@@ -12,6 +12,11 @@ public class TileSelectionIndicator : MonoBehaviour {
 
         Instance = this;
 	}
+
+    public void SetPosition(Vector2 pos)
+    {
+        transform.SetPositionAndRotation(pos, Quaternion.identity);
+    }
 	
 
 }

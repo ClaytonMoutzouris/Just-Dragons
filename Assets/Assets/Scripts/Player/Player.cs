@@ -6,12 +6,15 @@ public class Player : MonoBehaviour {
     bool activePlayer = true;
    // Entity characterData;
     CharacterMovement movement;
+    
     // Use this for initialization
     void Awake () {
         //characterData = gameObject.AddComponent<Entity>();
         movement = gameObject.AddComponent<CharacterMovement>();
+        movement.Entity = GetComponent<Entity>();
         gameObject.AddComponent<PlayerTurnHandler>();
         movement.SetToTile(TileMapManager.Instance.GetTile(25, 25));
+        gameObject.layer = LayerMask.NameToLayer("Characters");
     }
 
     // Update is called once per frame

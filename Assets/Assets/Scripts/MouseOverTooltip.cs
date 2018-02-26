@@ -5,9 +5,16 @@ using UnityEngine;
 
 public class MouseOverTooltip : MonoBehaviour
 {
+    Entity entity;
+
+    private void Start()
+    {
+        entity = GetComponent<Entity>();
+    }
+
     void OnMouseOver()
     {
-        UIManager.Instance.ShowTooltip(GetComponent<Entity>());
+        UIManager.Instance.ShowTooltip(entity);
     }
 
     void OnMouseExit()
