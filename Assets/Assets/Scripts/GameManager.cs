@@ -14,6 +14,20 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance;
     public GameObject selectionPrefab;
     public Dictionary<string, Item> itemLibrary;
+    [SerializeField] ActionDatabase actionDB;
+
+    public ActionDatabase ActionDB
+    {
+        get
+        {
+            return actionDB;
+        }
+
+        set
+        {
+            actionDB = value;
+        }
+    }
 
     void Awake () {
         GameManager.instance = this;
@@ -66,7 +80,7 @@ public class GameManager : MonoBehaviour {
         }
         currentCharacterIndex = 0;
         characters[0].GetComponent<ITurnHandler>().SetTurnState(TurnState.Start);
-
+        //UIManager.Instance.SetCurrentPlayer(characters[0].GetComponent<Player>());
         TurnQueue.Instance.FillQueue(characters.Count);
         //UIManager.Instance.
         //Camera.main.GetComponent<CameraController>().target = characters[0].transform;

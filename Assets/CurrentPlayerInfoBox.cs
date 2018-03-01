@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class CurrentPlayerInfoBox : MonoBehaviour {
 
     //Parts of the info box
-    public SkillBar skillBar;
+    public ActionBar skillBar;
     public Image background, playerPortrait;
     public HealthBarScript healthBar;
     public ActionPointBar actioBar;
@@ -21,8 +21,19 @@ public class CurrentPlayerInfoBox : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	public void UpdateCurrentPlayer (Player p) {
-        currentPlayer = p;
-        healthBar.setHealth(currentPlayer.GetComponent<Stats>().GetHealth());
+	public void UpdateSkills () {
+        //healthBar.setHealth(currentPlayer.GetComponent<Stats>().GetHealth());
 	}
+
+    public void UpdateHealth()
+    {
+        healthBar.setHealth(currentPlayer.GetComponent<Stats>().GetHealth());
+    }
+
+    public void SetPlayer(Player p)
+    {
+        currentPlayer = p;
+        UpdateHealth();
+        UpdateSkills();
+    }
 }

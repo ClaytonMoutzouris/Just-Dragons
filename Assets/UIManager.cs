@@ -5,6 +5,7 @@ using UnityEngine;
 public class UIManager : MonoBehaviour {
     // partyPortraitPanel;
     CurrentPlayerInfoBox cpiBox;
+    ActionBar actionBar;
     public static UIManager Instance { get; private set; }
     public Tooltip tooltip;
     // Use this for initialization
@@ -22,6 +23,7 @@ public class UIManager : MonoBehaviour {
 
         //get references to its parts
         cpiBox = GetComponentInChildren<CurrentPlayerInfoBox>();
+        actionBar = GetComponentInChildren<ActionBar>();
         //tooltip = GetComponentInChildren<Tooltip>();
         //cpiBox.gameObject.SetActive(false);
         HideTooltip();
@@ -30,6 +32,19 @@ public class UIManager : MonoBehaviour {
 
     }
 
+
+
+    public void UpdatePlayerInfo()
+    {
+        cpiBox.UpdateHealth();
+        cpiBox.UpdateSkills();
+    }
+
+    public void SetCurrentPlayer(Player p)
+    {
+        cpiBox.SetPlayer(p);
+        actionBar.SetActions(p.Actions);
+    }
 
     // Update is called once per frame
     void Update () {

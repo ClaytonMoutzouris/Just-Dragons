@@ -25,17 +25,18 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
             switch (currentState)
             {
                 case TurnState.Start:
-                    //Set camera to character
-                    //regain AP
-                    //regain movement
-                    //Any start of turn ability or effects
+                //Set camera to character
+                //regain AP
+                //regain movement
+                //Any start of turn ability or effects
 
-                    //Move on to action phase, where moving and selecting actions can happen
-                    Camera.main.GetComponent<CameraController>().target = gameObject.transform;
-                    currentState = TurnState.Action;
-                    endTurnFlag = false;
+                //Move on to action phase, where moving and selecting actions can happen
+                StartTurn();
+                currentState = TurnState.Action;
+                endTurnFlag = false;
 
-                        break;
+
+                break;
 
                 case TurnState.Action:
                 //Wait for player input
@@ -118,7 +119,15 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
     }
 
-    public void EndTurn()
+    void StartTurn()
+    {
+        Camera.main.GetComponent<CameraController>().target = gameObject.transform;
+
+        //Populate skills bar, set the UI for the current player character
+
+    }
+
+    void EndTurn()
     {
         //target = null;
         GameManager.instance.NextTurn();
