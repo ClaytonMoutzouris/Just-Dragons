@@ -77,7 +77,7 @@ public class TileMapManager : MonoBehaviour
     {
         int tilex = Mathf.FloorToInt(mousePos.x / mapView.TileSize());
         int tiley = Mathf.FloorToInt(mousePos.y / mapView.TileSize());
-        return new Vector3(tilex, tiley) + mapView.TileOffset();
+        return new Vector3(tilex, tiley);
     }
 
     public Tile GetTileClicked(Vector2 mousePos)
@@ -225,6 +225,7 @@ public class TileMapManager : MonoBehaviour
     private void SyncCurrentMap()
     {
         mapView.DrawMap(CurrentMap.tiles, (int)CurrentMap.mapSize.x, (int)CurrentMap.mapSize.y);
+
     }
 
     // Called when the view is clicked

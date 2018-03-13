@@ -7,16 +7,24 @@ public enum Targeting { Self, CurrentTarget, AutoSelect }; // et cetera for othe
 
 
 //=== Individual Skills: =============================
-[CreateAssetMenu]
+
+[System.Serializable]
 public class Action : ScriptableObject
 {
+    [SerializeField]
     public Sprite image;
+    [SerializeField]
     public string skillName = string.Empty; // I always initialize variables.
+    [SerializeField]
     public float mpCost = 0;
+    [SerializeField]
     public Activation activation = Activation.Button;
+    [SerializeField]
     public string activationButton = "Fire1";
+    [SerializeField]
     public Targeting targeting = Targeting.CurrentTarget;
     // etc.
+    [SerializeField]
     public bool isActive = false;
 
     /*

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public enum TurnState { Start, Action, End, Waiting }
@@ -13,10 +14,45 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
     Entity entity;
     EntityActions actions;
+    Combat combat;
+
+    public Combat Combat
+    {
+        get
+        {
+            return combat;
+        }
+
+        set
+        {
+            combat = value;
+        }
+    }
+
+    public int Initiative
+    {
+        get
+        {
+            return initiative;
+        }
+
+        set
+        {
+            initiative = value;
+        }
+    }
+
+    private int initiative;
     private void Start()
     {
         entity = GetComponent<Entity>();
         actions = gameObject.AddComponent<EntityActions>();
+        Camera.main.GetComponent<CameraController>().target = gameObject.transform;
+    }
+
+    public void DeactivateTurnHandler()
+    {
+        Destroy(this);
     }
 
     public void HandleTurn()
@@ -101,12 +137,9 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
             //is there a target?
             if (target != null)
             {
+                SetTarget(target);
                 //if yes now set this characters target to that
-                this.target = target;
-
-                //if the target is an enemy, we're going to attack it
-                if (target.GetComponent<Enemy>() != null)
-                attackingFlag = true;
+                
             }
 
         }
@@ -117,6 +150,15 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
         }
 
+    }
+
+    public void SetTarget(Entity e)
+    {
+        target = e;
+
+        //if the target is an enemy, we're going to attack it
+        if (target.GetComponent<NonPlayerCharacter>() != null)
+            attackingFlag = true;
     }
 
     void StartTurn()
@@ -130,7 +172,9 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
     void EndTurn()
     {
         //target = null;
-        GameManager.instance.NextTurn();
+        if(Selectable.currentSelected != null)
+        Selectable.currentSelected.Deselect();
+        combat.NextTurn();
     }
 
     public TurnState GetTurnState()

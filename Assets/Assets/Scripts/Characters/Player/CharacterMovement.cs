@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface IMovementController
+{
+    bool IsMoving();
+    void MoveToTile(Tile target);
+    void SetToTile(Tile target);
+    void MoveXYSpaces(int x, int y);
+    int Speed { get; set; }
+}
 
-public class CharacterMovement : MonoBehaviour {
+
+public class CharacterMovement : MonoBehaviour, IMovementController {
     //static int tileSize = 1;
+
     Entity entity; // the entity this movement component belongs to
     bool moving = false;
     Tile destinationTile;
-    Tile currentTile;
-    int speed = 5;
+    Tile currentTile = null;
+    int speed = 10;
 
     public Tile CurrentTile
     {
@@ -24,16 +34,16 @@ public class CharacterMovement : MonoBehaviour {
         }
     }
 
-    public Entity Entity
+    public int Speed
     {
         get
         {
-            return entity;
+            return speed;
         }
 
         set
         {
-            entity = value;
+            speed = value;
         }
     }
 
@@ -52,14 +62,17 @@ public class CharacterMovement : MonoBehaviour {
     {
         if (moving && destinationTile != null)
         {
-            float step = speed * Time.deltaTime;
+            float step = Speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, destinationTile.GetWorldPos(), step);
             if (transform.position == destinationTile.GetWorldPos() /*|| entity.Stats.GetStat("Movement").finalValue() <= 0*/)
             {
                 moving = false;
                 currentTile = destinationTile;
-                CurrentTile.Occupant = Entity;
-                print(currentTile.TileX + ", " + currentTile.TileY);
+                CurrentTile.Occupant = entity;
+
+                //if(entity.GetComponent<ITurnHandler>().Combat == null)
+                CombatManager.instance.CheckForCombat(entity);
+
             }
         }
     }
@@ -76,6 +89,8 @@ public class CharacterMovement : MonoBehaviour {
 
     public void MoveToTile(Tile target)
     {
+        if (!target.IsWalkable())
+            return;
         destinationTile = target;
         //check to see if where we want to be is where we already are
         if (AtDestination())
@@ -102,8 +117,15 @@ public class CharacterMovement : MonoBehaviour {
         CurrentTile = target;
         transform.position = CurrentTile.GetWorldPos();
         //print("setting " + Entity + " to " + CurrentTile);
-        CurrentTile.Occupant = Entity;
+        CurrentTile.Occupant = entity;
     }
 
+
+    public static CharacterMovement CreateComponent(GameObject where)
+    {
+        CharacterMovement temp = where.AddComponent<CharacterMovement>();
+        temp.entity = where.GetComponent<Entity>();
+        return temp;
+    }
 
 }

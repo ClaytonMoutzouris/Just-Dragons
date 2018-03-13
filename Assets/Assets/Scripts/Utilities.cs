@@ -4,7 +4,8 @@ using UnityEngine;
 
 public enum Layer
 {
-    Ground = 10,
+    Ground = 11,
+    Structures = 10,
     Objects = 9,
     Characters = 8,
     RaycastEndStop = -1

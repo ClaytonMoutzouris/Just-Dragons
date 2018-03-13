@@ -4,16 +4,18 @@ using UnityEngine;
 
 public enum ItemRarity { Junk, Common, Uncommon, Rare, Unique };
 
-public class Item : MonoBehaviour {
+[System.Serializable]
+public class Item : ScriptableObject {
 
-    string itemName;
+    [SerializeField]
+    public string itemName;
+    [SerializeField]
     int value;
+    [SerializeField]
     ItemRarity rarity;
+    [SerializeField]
+    public Sprite sprite;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
 	
 
 }

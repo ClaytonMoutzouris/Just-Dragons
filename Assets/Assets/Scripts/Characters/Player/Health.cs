@@ -5,11 +5,11 @@ using UnityEngine;
 public class Health : MonoBehaviour {
     public int MaxHealth;
     public int currentHealth;
+    public bool isDead = false;
 
     public void Start()
     {
-        if (GetComponent<Player>() != null)
-            UIManager.Instance.SetCurrentPlayer(GetComponent<Player>());
+        
     }
 
     public void Initialise(int startingHealth)
@@ -22,10 +22,24 @@ public class Health : MonoBehaviour {
     {
         currentHealth -= damage;
         if (currentHealth <= 0)
-            currentHealth = 0;
+        {
 
-        if (GetComponent<Player>() != null)
+
+            currentHealth = 0;
+            isDead = true;
+            OnDeath();
+        }
+        if (GetComponent<PlayerCharacter>() != null)
             UIManager.Instance.UpdatePlayerInfo();
 
+    }
+
+    public void OnDeath()
+    {
+        GetComponent<ITurnHandler>().Combat.CurrentState = CombatState.End;
+        GetComponent<ITurnHandler>().DeactivateTurnHandler();
+        if(GetComponent<ILootable>() != null) 
+        GetComponent<ILootable>().LootFlag = true;
+        //Destroy(gameObject);
     }
 }

@@ -7,6 +7,8 @@ public class TileChangedEventArgs : EventArgs
     public Tile tile;
 }
 
+
+
 // Interface for the model
 public interface ITileMapModel
 {
@@ -27,9 +29,9 @@ public class TileMapModel : ITileMapModel
     public event EventHandler<TileChangedEventArgs> OnTileChanged = (sender, e) => { };
     //public List<IEnemyController> enemyList { get; set; }
     public Tile[,] tiles { get; set; }
+    public List<Entity> entities;
     //List<Exit> exits;
     public int mapID { get; set; }
-
 
     public TileMapModel(int xSize, int ySize, int ID)
     {
@@ -67,7 +69,7 @@ public class TileMapModel : ITileMapModel
         OnTileChanged(this, eventArgs);
     }
 
-    public void BuildMap()
+    public virtual void BuildMap()
     {
         int exit_x, exit_y;
         exit_x = (int)UnityEngine.Random.Range(1, mapSize.x - 2);
@@ -98,9 +100,11 @@ public class TileMapModel : ITileMapModel
 
             }
         }
-
-
-        
         //exits.Add(new Exit())
     }
+
+
+
+
+
 }

@@ -15,8 +15,8 @@ TagManager:
   - 
   - Characters
   - Objects
+  - Structures
   - Ground
-  - 
   - 
   - 
   - 
@@ -40,4 +40,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 1037361665
+    locked: 0
+  - name: Objects
+    uniqueID: 1431729419
+    locked: 0
+  - name: Characters
+    uniqueID: 2843022139
+    locked: 0
+  - name: Structures
+    uniqueID: 1092889105
+    locked: 0
+  - name: Foreground
+    uniqueID: 4078181747
+    locked: 0
+  - name: UI
+    uniqueID: 1170477943
     locked: 0

@@ -2,15 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface IStats
+{
+    void InitializeStats();
+    Attribute GetStat(string name);
+    Health GetHealth();
+
+}
+
 public class Stats : MonoBehaviour {
     Dictionary<string, Attribute> statList;
     Health health;
-	// Use this for initialization
-	void Start () {
-        statList = new Dictionary<string, Attribute>();
-        health = gameObject.AddComponent<Health>();
-        health.Initialise(1000);
-        InitializeStats();
+    // Use this for initialization
+
+
+    public static Stats CreateComponent(GameObject where)
+    {
+        Stats temp = where.AddComponent<Stats>();
+        temp.statList = new Dictionary<string, Attribute>();
+        temp.health = where.AddComponent<Health>();
+        temp.health.Initialise(15);
+        temp.InitializeStats();
+        return temp;
+    }
+
+    public static Stats CreateComponent(GameObject where, Dictionary<string, Attribute> stats)
+    {
+        Stats temp = where.AddComponent<Stats>();
+        temp.statList = new Dictionary<string, Attribute>();
+        temp.health = where.AddComponent<Health>();
+        temp.health.Initialise(15);
+        temp.InitializeStats();
+        return temp;
+    }
+
+
+    void Start () {
+
     }
 	
     void InitializeStats()

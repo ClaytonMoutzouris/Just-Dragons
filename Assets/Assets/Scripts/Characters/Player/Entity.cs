@@ -12,11 +12,12 @@ public class OnEntitySelectedEventArgs : EventArgs
 }
 
 public class Entity : MonoBehaviour {
-    SpriteRenderer spriteRenderer;
+    //List<Component> components;
+    //SpriteRenderer spriteRenderer;
     string name;
     Dictionary<string, Component> components;
-    List<Component> componentsList;
     Stats stats;
+    Tile currentTile;
     //public event EventHandler<OnMapClickedEventArgs> OnEntityClicked = (sender, e) => { };
     //public event EventHandler<OnTileChangedEventArgs> TileChanged = (sender, e) => { };
     //Stats entityStats;
@@ -47,16 +48,56 @@ public class Entity : MonoBehaviour {
         }
     }
 
+    public Tile CurrentTile
+    {
+        get
+        {
+            return currentTile;
+        }
+
+        set
+        {
+            currentTile = value;
+        }
+    }
+
+    public Dictionary<string, Component> Components
+    {
+        get
+        {
+            return components;
+        }
+
+        set
+        {
+            components = value;
+        }
+    }
+
     private void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        
+        //spriteRenderer = GetComponent<SpriteRenderer>();
         gameObject.AddComponent<MouseOverTooltip>();       
         gameObject.AddComponent<Selectable>();
-        Stats = gameObject.AddComponent<Stats>();
+        
+        //name = "Object";
 
 
+    }
 
+    public void AddComponent(Type t)
+    {
+        Component c = gameObject.AddComponent(t);
+        Components.Add(t.ToString(), c);
+            }
+
+    public void SetToTile(Tile target)
+    {
+
+        CurrentTile = target;
+        transform.position = CurrentTile.GetWorldPos();
+        //print("setting " + Entity + " to " + CurrentTile);
+        CurrentTile.Occupant = this;
     }
 
     public void TileMapChanged(Exit e, ITileMapModel map)

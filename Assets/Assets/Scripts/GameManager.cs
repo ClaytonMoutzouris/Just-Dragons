@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public GameObject selectionPrefab;
     public Dictionary<string, Item> itemLibrary;
     [SerializeField] ActionDatabase actionDB;
+    List<CharacterData> charPrototypes;
 
     public ActionDatabase ActionDB
     {
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    void Awake () {
+    void Start () {
         GameManager.instance = this;
         //Load the map prefab and initialize it
         var prefab = Resources.Load<GameObject>("Prefabs/TileMap");
@@ -42,44 +43,84 @@ public class GameManager : MonoBehaviour {
 
         selectionPrefab = Resources.Load<GameObject>("Prefabs/SelectedObject");
         //Initialize the starting state of the game
+        LoadCharData();
         StartGame();
 
     }
+
+    void LoadCharData()
+    {
+        var loadData = Resources.LoadAll<CharacterData>("Character Data");
+        charPrototypes = new List<CharacterData>();
+        charPrototypes.AddRange(loadData);
+        foreach(CharacterData cd in charPrototypes)
+        {
+            print(cd);
+        }
+    } 
 
     void StartGame()
     {
         //create a list of maps, this is for testing purposes at the moment
         //MapHandler.NewMap(MapModel);
         List<ITileMapModel> models = new List<ITileMapModel>();
-        models.Add(new TileMapModel(50, 50, models.Count));
-        models.Add(new TileMapModel(50, 50, models.Count));
-        models.Add(new TileMapModel(50, 50, models.Count));
-        models.Add(new TileMapModel(50, 50, models.Count));
-        models.Add(new TileMapModel(50, 50, models.Count));
+        models.Add(new TileMapTown(50, 50, models.Count));
+
 
 
         //give the map manager the list of maps we've made
         MapManager.SetUpTestWorld(models);
 
         characters = new List<Entity>();
-        GameObject characterTemp = null;
+        Entity characterTemp = null;
         //create the player
-        var prefab = Resources.Load<GameObject>("Prefabs/Entity");
+        var prefab = Resources.Load<Entity>("Prefabs/Entity") as Entity;
         characterTemp = Instantiate(prefab);
         characterTemp.GetComponent<Entity>().Name = "Player " + 1;
-        characterTemp.AddComponent<Player>();
+        PlayerCharacter.CreateComponent(characterTemp.gameObject);
 
+
+
+        //print(UIManager.Instance);
+        UIManager.Instance.SetCurrentPlayer(characterTemp.GetComponent<PlayerCharacter>());
         //create the enemies
         characters.Add(characterTemp.GetComponent<Entity>());
+        
         for (int i = 0; i < 2; i++)
         {
-            characterTemp = Instantiate(prefab);
-            characterTemp.AddComponent<Enemy>();
-            characterTemp.GetComponent<Entity>().Name = "Monster " + (i+1);
-            characters.Add(characterTemp.GetComponent<Entity>());
+            print(charPrototypes.Count);
+            print(characters.Count);
+            print(CharacterGenerator.instance);
+            characters.Add(CharacterGenerator.instance.CreateCharacter(charPrototypes[Random.Range(0, charPrototypes.Count)]));
+
         }
+        
         currentCharacterIndex = 0;
-        characters[0].GetComponent<ITurnHandler>().SetTurnState(TurnState.Start);
+        
+
+        var structPrefab = Resources.Load<Entity>("Prefabs/Structure");
+        Entity structureTemp = null;
+        for (int i = 0; i < 2; i++)
+        {
+            structureTemp = Instantiate(structPrefab);
+            structureTemp.GetComponent<Structure>().SetStructureParameters(Random.Range(1, 45), Random.Range(1, 45), 2, 2);
+            structureTemp.GetComponent<Structure>().SetToTiles();
+            structureTemp.GetComponent<Entity>().Name = "Struct " + i;
+
+            //structureTemp.Add
+        }
+
+        var objPrefab = Resources.Load<Entity>("Prefabs/Tree");
+        Entity objTemp = null;
+        for (int i = 0; i < 5; i++)
+        {
+            objTemp = Instantiate(objPrefab);
+            objTemp.GetComponent<Entity>().SetToTile(MapManager.GetTile(Random.Range(1,48), Random.Range(1,48)));
+            objTemp.GetComponent<Entity>().Name = "Tree " + i;
+
+        }
+
+
         //UIManager.Instance.SetCurrentPlayer(characters[0].GetComponent<Player>());
         TurnQueue.Instance.FillQueue(characters.Count);
         //UIManager.Instance.
@@ -89,7 +130,7 @@ public class GameManager : MonoBehaviour {
     private void Update()
     {
 
-        characters[currentCharacterIndex].GetComponent<ITurnHandler>().HandleTurn();
+        
 
     }
 
@@ -105,18 +146,6 @@ public class GameManager : MonoBehaviour {
 
     }
     
-
-    public void NextTurn()
-    {
-        ClearSelected();
-        currentCharacterIndex++;
-        if(currentCharacterIndex >= characters.Count)
-        {
-            currentCharacterIndex = 0;
-        }
-        characters[currentCharacterIndex].GetComponent<ITurnHandler>().SetTurnState(TurnState.Start);
-        TurnQueue.Instance.UpdateQueue();
-    }
 	
     public void CreateItemLibrary()
     {

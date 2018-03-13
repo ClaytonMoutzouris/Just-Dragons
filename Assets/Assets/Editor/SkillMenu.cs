@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class SkillMenu {
 
-    [MenuItem("Assets/Create/Skill")]
+    [MenuItem("Assets/Create/Action")]
     public static void CreateSkillAsset()
     {
         ScriptableObjectUtility.CreateAsset<Action>();
     }
 
-    [MenuItem("Assets/Create/Skill Database")]
+    [MenuItem("Assets/Create/Action Database")]
     public static void CreateSkillDatabaseAsset()
     {
         ScriptableObjectUtility.CreateAsset<ActionDatabase>();
