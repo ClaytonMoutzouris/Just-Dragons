@@ -18,9 +18,8 @@ public class CharacterGenerator : MonoBehaviour {
         var prefab = Resources.Load<Entity>("Prefabs/Entity") as Entity;
 
         characterTemp = Instantiate(prefab);
-            NonPlayerCharacter.CreateComponent(characterTemp.gameObject, cData.hostility, Stats.CreateComponent(characterTemp.gameObject));
-            characterTemp.GetComponent<Entity>().Name = cData.name;
-        characterTemp.GetComponent<SpriteRenderer>().sprite = cData.image;
+            NonPlayerCharacter.CreateComponent(characterTemp.gameObject, cData.hostility, Stats.CreateComponent(characterTemp.gameObject), cData);
+
         return characterTemp;
 
     }

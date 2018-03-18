@@ -7,9 +7,11 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
 {
 
     public TurnState currentState = TurnState.Waiting;
-    EntityActions actions;
     Entity entity;
     Combat combat;
+    NonPlayerCharacter character;
+    Entity target;
+    bool hasMoved;
 
     public Combat Combat
     {
@@ -36,12 +38,47 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
         }
     }
 
+    public Entity Entity
+    {
+        get
+        {
+            return entity;
+        }
+
+        set
+        {
+            entity = value;
+        }
+    }
+
+    public Character Character
+    {
+        get
+        {
+            return character;
+        }
+    }
+
+    public Entity Target
+    {
+        get
+        {
+            return target;
+        }
+
+        set
+        {
+            target = value;
+        }
+    }
+
     private int initiative;
 
     private void Start()
     {
-        entity = GetComponent<Entity>();
-        actions = gameObject.AddComponent<EntityActions>();
+        Entity = GetComponent<Entity>();
+    
+        character = GetComponent<NonPlayerCharacter>();
     }
 
     public void DeactivateTurnHandler()
@@ -63,7 +100,7 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
 
                     //Move on to action phase, where moving and selecting actions can happen
                     Camera.main.GetComponent<CameraController>().target = gameObject.transform;
-                    actions.hasMoved = false;
+                    hasMoved = false;
                     currentState = TurnState.Action;
 
                     break;
@@ -100,19 +137,20 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
         //If no, end turn
         //This is a coroutine
 
-        Entity target = actions.ChooseTarget();
+        target = EntityActions.ChooseTarget(character);
         if (target != null && GetComponent<NonPlayerCharacter>().Hostility == Hostility.Hostile)
         {
-            if(!actions.TargetInRange(target, 1))
+            if(!EntityActions.TargetInRange(entity, target, 1))
             {
-                actions.MoveToHostile(target);
+                if (!GetComponent<CharacterMovement>().IsMoving())
+                EntityActions.MoveToHostile(Entity, target);
 
             } else
             {
-                actions.Attack(target);
+                EntityActions.Attack(target);
                 currentState = TurnState.End;
             }
-        } else
+        } else if(!GetComponent<CharacterMovement>().IsMoving())
         {
             currentState = TurnState.End;
         }

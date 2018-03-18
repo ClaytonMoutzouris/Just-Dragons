@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Name: Shield
   m_EditorClassIdentifier: 
   itemName: Shield
-  value: 0
+  value: 5
   rarity: 0
   sprite: {fileID: 21300104, guid: f1d0bd0618116ef4cbee941012c5cf9e, type: 3}

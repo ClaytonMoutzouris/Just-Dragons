@@ -36,7 +36,8 @@ public class Health : MonoBehaviour {
 
     public void OnDeath()
     {
-        GetComponent<ITurnHandler>().Combat.CurrentState = CombatState.End;
+        
+        GetComponent<ITurnHandler>().Combat.RemoveFromCombat(GetComponent<ITurnHandler>());
         GetComponent<ITurnHandler>().DeactivateTurnHandler();
         if(GetComponent<ILootable>() != null) 
         GetComponent<ILootable>().LootFlag = true;

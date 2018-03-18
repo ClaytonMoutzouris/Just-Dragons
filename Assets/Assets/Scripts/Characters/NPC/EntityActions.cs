@@ -5,33 +5,28 @@ using UnityEngine;
 
 //consider making this a static class and giving each entity a list of actions they can potentially perform
 //this does not work with components so a solution would need to be found
-[RequireComponent(typeof(CharacterMovement))]
-public class EntityActions : MonoBehaviour {
-    public bool hasMoved = false;
-    public Entity target;
-    public bool actionInProgress;
 
+public static class EntityActions {
 
-
-    public void MoveToHostile(Entity e)
+    public static void MoveToHostile(Entity mover, Entity target)
     {
-        CharacterMovement movement = GetComponent<CharacterMovement>();
+        
 
         
-        movement.MoveToTile(TileMapManager.Instance.GetNearestNeighbour(movement.CurrentTile, e.GetComponent<CharacterMovement>().CurrentTile));
+        mover.GetComponent<CharacterMovement>().MoveToTile(TileMapManager.Instance.GetNearestNeighbour(mover.GetComponent<CharacterMovement>().CurrentTile, target.GetComponent<CharacterMovement>().GetComponent<CharacterMovement>().CurrentTile));
 
         
 
     }
 
-    public bool TargetInRange(Entity target, int range)
+    public static bool TargetInRange(Entity looker, Entity target, int range)
     {
         //Debug.Log("Checking");
         //Debug.Log(GetComponent<Entity>().Name + " X: " + GetComponent<CharacterMovement>().CurrentTile.TileX + target.Name + " X:" + target.GetComponent<CharacterMovement>().CurrentTile.TileX);
         //Debug.Log(GetComponent<Entity>().Name + " Y: " + GetComponent<CharacterMovement>().CurrentTile.TileY + target.Name + " Y:" + target.GetComponent<CharacterMovement>().CurrentTile.TileY);
 
 
-        if (Mathf.Abs(GetComponent<CharacterMovement>().CurrentTile.TileX - target.GetComponent<CharacterMovement>().CurrentTile.TileX) <= range && Mathf.Abs(GetComponent<CharacterMovement>().CurrentTile.TileY - target.GetComponent<CharacterMovement>().CurrentTile.TileY) <= range)
+        if (Mathf.Abs(looker.GetComponent<CharacterMovement>().CurrentTile.TileX - target.GetComponent<CharacterMovement>().CurrentTile.TileX) <= range && Mathf.Abs(looker.GetComponent<CharacterMovement>().CurrentTile.TileY - target.GetComponent<CharacterMovement>().CurrentTile.TileY) <= range)
         {
             return true;
         }
@@ -39,7 +34,7 @@ public class EntityActions : MonoBehaviour {
         return false;
     }
 
-    public void Attack(Entity target)
+    public static void Attack(Entity target)
     {
         //Debug.Log("Attacking " + target);
         Health healthComponent = target.GetComponent<Health>();
@@ -54,10 +49,10 @@ public class EntityActions : MonoBehaviour {
 
     }
 
-    public List<Entity> FindHostiles()
+    public static List<Entity> FindHostiles(Character e)
     {
         List<Entity> hostiles = new List<Entity>();
-        foreach (Tile t in TileMapManager.Instance.GetTilesInRange(GetComponent<CharacterMovement>().CurrentTile, GetComponent<NonPlayerCharacter>().SightRange))
+        foreach (Tile t in TileMapManager.Instance.GetTilesInRange(e.GetComponent<CharacterMovement>().CurrentTile, e.GetComponent<NonPlayerCharacter>().SightRange))
         {
             if (t.Occupant != null && t.Occupant.GetComponent<PlayerCharacter>() != null)
             {
@@ -68,12 +63,12 @@ public class EntityActions : MonoBehaviour {
         return hostiles;
     }
 
-    public Entity ChooseTarget()
+    public static Entity ChooseTarget(Character e)
     {
-        List<Entity> possibleTargets = FindHostiles();
+        List<Entity> possibleTargets = FindHostiles(e);
 
         if (possibleTargets.Count > 0)
-            return FindHostiles()[0];
+            return possibleTargets[0];
         else
             return null;
 

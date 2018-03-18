@@ -8,13 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a8232ebe98425344b3dff5e4f7c88c9, type: 3}
-  m_Name: Defend
-  m_EditorClassIdentifier: 
+  m_Script: {fileID: 0}
+  m_Name: Basic Attack
+  m_EditorClassIdentifier: Assembly-CSharp::AttackAction
   image: {fileID: 21300000, guid: 10279bea9390e784c9726dabc04209cb, type: 3}
-  skillName: Defend
+  skillName: Basic Attack
   mpCost: 0
-  activation: 0
-  activationButton: Fire1
   targeting: 1
-  isActive: 0

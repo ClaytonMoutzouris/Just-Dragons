@@ -34,6 +34,7 @@ public class CurrentPlayerInfoBox : MonoBehaviour {
     public void SetPlayer(PlayerCharacter p)
     {
         currentPlayer = p;
+        playerPortrait.sprite = currentPlayer.GetComponent<SpriteRenderer>().sprite;
         UpdateHealth();
         UpdateSkills();
     }

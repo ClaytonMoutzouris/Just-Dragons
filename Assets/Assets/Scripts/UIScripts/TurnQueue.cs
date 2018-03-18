@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TurnQueue : MonoBehaviour {
-    List<GameObject> queuedObjects;
-    int index;
+    List<QueueObject> queuedObjects;
+    QueueObject prefab;
     public static TurnQueue Instance;
 
     private void Awake()
@@ -15,32 +15,58 @@ public class TurnQueue : MonoBehaviour {
             Instance = this;
         }
 
-
-        queuedObjects = new List<GameObject>();
-        index = 0;
+        prefab = Resources.Load<QueueObject>("Prefabs/QueueObject");
+        queuedObjects = new List<QueueObject>();
     }
 
-    public void FillQueue(int n)
-    {
-        for(int i = 0; i < n; i++)
+    public void FillQueue(List<ITurnHandler> characters)
+    { 
+        for(int i = 0; i < characters.Count; i++)
         {
-            var prefab = Resources.Load<GameObject>("Prefabs/QueueObject");
-            GameObject newObject = Instantiate(prefab);
-            newObject.transform.SetParent(this.transform);
-            newObject.GetComponentInChildren<Image>().color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
+            
+            QueueObject newObject = Instantiate(prefab);
+            newObject.transform.SetParent(transform);
+
+            newObject.SetObject(characters[i].Character.Portrait, characters[i].Character.Hostility);
             queuedObjects.Add(newObject);
         }
 
     }
 
-    public void UpdateQueue()
+    public void EmptyQueue()
     {
-        queuedObjects[index].transform.SetAsLastSibling();
+        foreach(QueueObject q in queuedObjects)
+        {
+            Destroy(q.gameObject);
+        }
+        queuedObjects.Clear();
+    }
 
-        index++;
+    public void RemoveAtIndex(int index)
+    {
+        QueueObject temp = queuedObjects[index];
+        queuedObjects.RemoveAt(index);
+        Destroy(temp.gameObject);
 
-        if (index >= queuedObjects.Count)     
-            index = 0;
+    }
+
+    public void AddToQueue(ITurnHandler c)
+    {
+        QueueObject newObject = Instantiate(prefab);
+        newObject.transform.SetParent(transform);
+
+        newObject.SetObject(c.Character.Portrait, c.Character.Hostility);
+        queuedObjects.Add(newObject);
+    }
+
+    public void UpdateQueue(int index)
+    {
+        print("TurnQueue queue index " + index);
+        queuedObjects[index].transform.SetAsFirstSibling();
+
+        
+
+        
 
         
 

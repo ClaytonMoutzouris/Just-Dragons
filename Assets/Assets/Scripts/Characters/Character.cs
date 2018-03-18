@@ -2,11 +2,56 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public abstract class Character : MonoBehaviour {
     protected IMovementController movement;
     protected Entity entity;
     protected Stats stats;
     protected bool activePlayer = true;
+    private CharacterData charData;
 
+    public CharacterData CharData
+    {
+        get
+        {
+            return charData;
+        }
+
+        set
+        {
+            charData = value;
+        }
+    }
+
+    public Hostility Hostility
+    {
+        get
+        {
+            return hostility;
+        }
+
+        set
+        {
+            hostility = value;
+        }
+    }
+
+    public Sprite Portrait
+    {
+        get
+        {
+            return portrait;
+        }
+
+        set
+        {
+            portrait = value;
+        }
+    }
+
+    private Hostility hostility;
+
+    protected Sprite portrait;
 
 }

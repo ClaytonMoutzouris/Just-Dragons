@@ -33,9 +33,10 @@ public class PlayerCharacter : Character {
         temp.gameObject.layer = LayerMask.NameToLayer("Characters");
         temp.Actions = new List<Action>();
         temp.inventory = Inventory.CreateComponent(where);
-        
+        temp.Hostility = Hostility.Friendly;
+        temp.Portrait = temp.GetComponent<SpriteRenderer>().sprite;
 
-        foreach (Action a in GameManager.instance.ActionDB.actions)
+        foreach (Action a in Resources.LoadAll<Action>("Actions"))
         {
             if (a != null)
             {

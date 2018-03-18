@@ -16,12 +16,7 @@ public class CombatManager : MonoBehaviour {
 
     public void NewCombat(List<ITurnHandler> entities)
     {
-        print("New combat!");
-        print("Participants:");
-        foreach(ITurnHandler e in entities)
-        {
-            print(e);
-        }
+
         Combat temp = new Combat(entities);
         combats.Add(temp);
 
@@ -79,8 +74,9 @@ public class CombatManager : MonoBehaviour {
                 temp.Add(e.GetComponent<ITurnHandler>());
 
                 NewCombat(temp);
+
             }
-          
+
         }
 
     }

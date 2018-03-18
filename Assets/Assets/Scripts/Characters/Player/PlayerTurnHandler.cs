@@ -6,15 +6,14 @@ public enum TurnState { Start, Action, End, Waiting }
 public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
     public TurnState currentState = TurnState.Waiting;
     public List<string> flags;
-    public Entity target;
-
+    private Entity target;
     //we can probably make this into a list of flags for easiness
     public bool attackingFlag = false;
     public bool endTurnFlag = false;
-
+    PlayerCharacter character;
     Entity entity;
-    EntityActions actions;
     Combat combat;
+
 
     public Combat Combat
     {
@@ -42,11 +41,47 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
         }
     }
 
+    public Entity Entity
+    {
+        get
+        {
+            return entity;
+        }
+
+        set
+        {
+            entity = value;
+        }
+    }
+
+    public Character Character
+    {
+        get
+        {
+            return character;
+        }
+
+
+    }
+
+    public Entity Target
+    {
+        get
+        {
+            return target;
+        }
+
+        set
+        {
+            target = value;
+        }
+    }
+
     private int initiative;
     private void Start()
     {
-        entity = GetComponent<Entity>();
-        actions = gameObject.AddComponent<EntityActions>();
+        Entity = GetComponent<Entity>();
+        character = GetComponent<PlayerCharacter>();
         Camera.main.GetComponent<CameraController>().target = gameObject.transform;
     }
 
@@ -79,6 +114,13 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
                 //options include moving, casting spells, attacking, inspecting stuff, etc.
                 //need to figure out how to get input here, as combining multiple things into one actions isnt working
 
+                //get the selected entity from game manager
+                if (Selectable.currentSelected != null)
+                {
+                    target = Selectable.currentSelected.GetComponent<Entity>();
+                }
+
+
                 //while in action phase, await player input
                 HandlePlayerInput();
 
@@ -86,14 +128,14 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
                 if (attackingFlag)
                 {
 
-                    if (!actions.TargetInRange(target, 1))
+                    if (!EntityActions.TargetInRange(entity, Target, 1))
                     {
-                        actions.MoveToHostile(target);
+                        EntityActions.MoveToHostile(entity, Target);
 
                     }
                     else
                     {
-                        actions.Attack(target);
+                        character.Actions[0].Use(entity);
                         attackingFlag = false;
                         endTurnFlag = true;
                     }
@@ -124,25 +166,7 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
     public void HandlePlayerInput()
     {
-        //what happens when we press the submit button
-        if (Input.GetButtonDown("Submit"))
-        {
-            Entity target = null;
-            //get the selected entity from game manager
-            if (Selectable.currentSelected != null)
-            {
-               target = Selectable.currentSelected.GetComponent<Entity>();
-            }
 
-            //is there a target?
-            if (target != null)
-            {
-                SetTarget(target);
-                //if yes now set this characters target to that
-                
-            }
-
-        }
 
         if (Input.GetButtonDown("Jump")){
 
@@ -150,14 +174,21 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
         }
 
+
+        //Looking for action bar keys
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            attackingFlag = true;
+
+        }
+
     }
 
     public void SetTarget(Entity e)
     {
-        target = e;
 
         //if the target is an enemy, we're going to attack it
-        if (target.GetComponent<NonPlayerCharacter>() != null)
+        if (Target.GetComponent<NonPlayerCharacter>() != null)
             attackingFlag = true;
     }
 
@@ -174,6 +205,10 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
         //target = null;
         if(Selectable.currentSelected != null)
         Selectable.currentSelected.Deselect();
+
+        //GetComponent<CharacterMovement>().
+        attackingFlag = false;
+        Target = null;
         combat.NextTurn();
     }
 

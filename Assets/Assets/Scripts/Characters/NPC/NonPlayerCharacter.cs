@@ -7,7 +7,6 @@ public enum Hostility { Friendly, Neutral, Hostile };
 public class NonPlayerCharacter : Character {
 
     int sightRange = 10;
-    Hostility hostility = Hostility.Neutral;
     
 
     public int SightRange
@@ -23,21 +22,9 @@ public class NonPlayerCharacter : Character {
         }
     }
 
-    public Hostility Hostility
-    {
-        get
-        {
-            return hostility;
-        }
-
-        set
-        {
-            hostility = value;
-        }
-    }
 
 
-    public static NonPlayerCharacter CreateComponent(GameObject where, Hostility hostile, Stats stats)
+    public static NonPlayerCharacter CreateComponent(GameObject where, Hostility hostile, Stats stats, CharacterData cData)
     {
         NonPlayerCharacter temp = where.AddComponent<NonPlayerCharacter>();
         temp.movement = CharacterMovement.CreateComponent(where);
@@ -48,10 +35,18 @@ public class NonPlayerCharacter : Character {
         temp.movement.SetToTile(TileMapManager.Instance.GetTile(Random.Range(1,48), Random.Range(1,48)));
         temp.gameObject.layer = LayerMask.NameToLayer("Characters");
         //temp.Actions = new List<Action>();
+        temp.CharData = cData;
+
+        temp.GetComponent<Entity>().Name = cData.name;
+        temp.GetComponent<SpriteRenderer>().sprite = cData.image;
+
+
+        temp.Portrait = cData.image;
+
 
         temp.Hostility = hostile;
         temp.stats = stats;
-        print(UIManager.Instance);
+
         //
         return temp;
     }

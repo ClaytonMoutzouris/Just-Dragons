@@ -35,6 +35,5 @@ public class ActionIconObject : MonoBehaviour, IPointerDownHandler {
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log("Clicked! " + action.skillName);
-        action.Use();
     }
 }

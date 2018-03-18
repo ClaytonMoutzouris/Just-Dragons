@@ -14,21 +14,9 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance;
     public GameObject selectionPrefab;
     public Dictionary<string, Item> itemLibrary;
-    [SerializeField] ActionDatabase actionDB;
+    public Dictionary<int, Action> actionDatabase;
     List<CharacterData> charPrototypes;
 
-    public ActionDatabase ActionDB
-    {
-        get
-        {
-            return actionDB;
-        }
-
-        set
-        {
-            actionDB = value;
-        }
-    }
 
     void Start () {
         GameManager.instance = this;
@@ -53,10 +41,7 @@ public class GameManager : MonoBehaviour {
         var loadData = Resources.LoadAll<CharacterData>("Character Data");
         charPrototypes = new List<CharacterData>();
         charPrototypes.AddRange(loadData);
-        foreach(CharacterData cd in charPrototypes)
-        {
-            print(cd);
-        }
+
     } 
 
     void StartGame()
@@ -86,11 +71,9 @@ public class GameManager : MonoBehaviour {
         //create the enemies
         characters.Add(characterTemp.GetComponent<Entity>());
         
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 10; i++)
         {
-            print(charPrototypes.Count);
-            print(characters.Count);
-            print(CharacterGenerator.instance);
+
             characters.Add(CharacterGenerator.instance.CreateCharacter(charPrototypes[Random.Range(0, charPrototypes.Count)]));
 
         }
@@ -122,7 +105,6 @@ public class GameManager : MonoBehaviour {
 
 
         //UIManager.Instance.SetCurrentPlayer(characters[0].GetComponent<Player>());
-        TurnQueue.Instance.FillQueue(characters.Count);
         //UIManager.Instance.
         //Camera.main.GetComponent<CameraController>().target = characters[0].transform;
     }
@@ -147,10 +129,10 @@ public class GameManager : MonoBehaviour {
     }
     
 	
-    public void CreateItemLibrary()
+    public void CreateLibraries()
     {
         itemLibrary = new Dictionary<string, Item>();
-
+        
         //itemLibrary.Add("Sword", )
 
     }

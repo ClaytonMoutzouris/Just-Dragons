@@ -40,6 +40,8 @@ public class Combat {
         }
         currentState = CombatState.ActiveCombat;
         combatants[0].SetTurnState(TurnState.Start);
+        TurnQueue.Instance.FillQueue(combatants);
+
     }
 
     public void JoinCombat(ITurnHandler e)
@@ -48,8 +50,9 @@ public class Combat {
         if (!combatants.Contains(e))
         {
             Debug.Log("Joining combat!");
+            e.Combat = this;
             combatants.Add(e);
-
+            TurnQueue.Instance.AddToQueue(e);
         }
     }
 
@@ -61,6 +64,16 @@ public class Combat {
             c.Combat = null;
         }
         combatants.Clear();
+        TurnQueue.Instance.EmptyQueue();
+    }
+
+    public void CheckFinished()
+    {
+        if (combatants.Count <= 1)
+        {
+            currentState = CombatState.End;
+        }
+
     }
 
     public void Update()
@@ -74,7 +87,8 @@ public class Combat {
                 CombatSetUp();
                 break;
             case CombatState.ActiveCombat:
-                Debug.Log("ActiveTurn combat");
+                Debug.Log("ActiveTurn combat for : " + currentCombatantIndex);
+                //Debug.Log(combatants[currentCombatantIndex]);
 
                 combatants[currentCombatantIndex].HandleTurn();
                 break;
@@ -87,17 +101,34 @@ public class Combat {
 
     }
 
+    public void RemoveFromCombat(ITurnHandler toRemove)
+    {
+        toRemove.Combat = null;
+        int index = combatants.IndexOf(toRemove);
+        if (index < currentCombatantIndex)
+            currentCombatantIndex--;
+        TurnQueue.Instance.RemoveAtIndex(index);
+        combatants.Remove(toRemove);
+        Debug.Log(toRemove + " removed from combat");
+        CheckFinished();
+    }
+
     public void NextTurn()
     {
 
         GameManager.instance.ClearSelected();
+
         currentCombatantIndex++;
         if (currentCombatantIndex >= combatants.Count)
         {
             currentCombatantIndex = 0;
         }
+
+
         combatants[currentCombatantIndex].SetTurnState(TurnState.Start);
-        TurnQueue.Instance.UpdateQueue();
+
+        Debug.Log("Being called twice for some reason");
+        TurnQueue.Instance.UpdateQueue(currentCombatantIndex);
 
 
     }

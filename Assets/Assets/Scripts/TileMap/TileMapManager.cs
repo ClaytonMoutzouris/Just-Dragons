@@ -128,7 +128,7 @@ public class TileMapManager : MonoBehaviour
     {
         Tile[] neighbours = GetNeighbours(target);
         Tile nearestNeighbour = null;
-        if(start.TileX < target.TileX )
+        if (start.TileX < target.TileX)
         {
             if (start.TileY < target.TileY)
             {
@@ -145,7 +145,8 @@ public class TileMapManager : MonoBehaviour
 
             }
 
-        } else if (start.TileX == target.TileX)
+        }
+        else if (start.TileX == target.TileX)
         {
             if (start.TileY < target.TileY)
             {
@@ -157,7 +158,8 @@ public class TileMapManager : MonoBehaviour
 
             }
 
-        } else if (start.TileX > target.TileX)
+        }
+        else if (start.TileX > target.TileX)
         {
             if (start.TileY < target.TileY)
             {
@@ -177,6 +179,7 @@ public class TileMapManager : MonoBehaviour
 
         return nearestNeighbour;
     }
+
 
     public List<Tile> GetTilesInRange(Tile tile, int range)
     {
