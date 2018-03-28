@@ -50,7 +50,7 @@ public class Cursor : MonoBehaviour {
                             if (clicked.GetComponent<ILootable>() != null)
                                 clicked.GetComponent<ILootable>().OnClick();
 
-                            GameManager.instance.characters[0].GetComponent<PlayerTurnHandler>().SetTarget(Selectable.currentSelected.GetComponent<Entity>());
+                            GameManager.instance.characters[0].GetComponent<PlayerTurnHandler>().SetTarget();
                         }
                         
                     }

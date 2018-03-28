@@ -36,8 +36,10 @@ public class PlayerCharacter : Character {
         temp.Hostility = Hostility.Friendly;
         temp.Portrait = temp.GetComponent<SpriteRenderer>().sprite;
 
+        print("looking for actions");
         foreach (Action a in Resources.LoadAll<Action>("Actions"))
         {
+            print("Loading an action");
             if (a != null)
             {
                 temp.Actions.Add(a);

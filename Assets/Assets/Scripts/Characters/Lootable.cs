@@ -57,10 +57,11 @@ public class Lootable : MonoBehaviour, ILootable {
     void Start () {
         Entity = GetComponent<Entity>();
         loot = new List<Item>();
-        loot.Add(Resources.Load<Item>("Items/Sword"));
-        loot.Add(Resources.Load<Item>("Items/Shield"));
+        loot.Add(ItemDatabase.GetItem(Random.Range(1, 3)));
+        loot.Add(ItemDatabase.GetItem(Random.Range(1, 3)));
+
     }
-	
+
     public void OnClick()
     {
         if(LootFlag)

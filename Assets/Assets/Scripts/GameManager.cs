@@ -16,10 +16,16 @@ public class GameManager : MonoBehaviour {
     public Dictionary<string, Item> itemLibrary;
     public Dictionary<int, Action> actionDatabase;
     List<CharacterData> charPrototypes;
+    
 
 
     void Start () {
+        //Set the game managers instance to this so that we can access it statically
         GameManager.instance = this;
+
+        //Initialise the item database
+        ItemDatabase.LoadDatabase();
+
         //Load the map prefab and initialize it
         var prefab = Resources.Load<GameObject>("Prefabs/TileMap");
         var instance = Instantiate(prefab);

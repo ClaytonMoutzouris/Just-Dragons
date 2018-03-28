@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 813ffb51fd096f04bb5f009354a3de22, type: 3}
+  m_Name: Random Transform Potion
+  m_EditorClassIdentifier: 
+  itemID: 4
+  itemName: Random Transform Potion
+  goldValue: 100
+  rarity: 3
+  sprite: {fileID: 21300138, guid: f1d0bd0618116ef4cbee941012c5cf9e, type: 3}
+  color: 
+  sprites:
+  - {fileID: 21300038, guid: cd77d07a116c23c4483a0fcd6f44e0d2, type: 3}
+  - {fileID: 21300052, guid: cd77d07a116c23c4483a0fcd6f44e0d2, type: 3}
+  - {fileID: 21300070, guid: cd77d07a116c23c4483a0fcd6f44e0d2, type: 3}
+  - {fileID: 21300128, guid: cd77d07a116c23c4483a0fcd6f44e0d2, type: 3}
+  - {fileID: 21300058, guid: cd77d07a116c23c4483a0fcd6f44e0d2, type: 3}

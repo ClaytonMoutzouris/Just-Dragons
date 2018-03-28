@@ -125,23 +125,7 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
                 HandlePlayerInput();
 
 
-                if (attackingFlag)
-                {
-
-                    if (!EntityActions.TargetInRange(entity, Target, 1))
-                    {
-                        EntityActions.MoveToHostile(entity, Target);
-
-                    }
-                    else
-                    {
-                        character.Actions[0].Use(entity);
-                        attackingFlag = false;
-                        endTurnFlag = true;
-                    }
-
-
-                }
+                
 
                 //If we flagged the end of the turn and are done attacking
                 if(endTurnFlag && !attackingFlag)
@@ -174,22 +158,49 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
         }
 
+        //Use a potion with Left Control, for some reason
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+
+            Potion p = (Potion)ItemDatabase.GetItem(1);
+            p.Use(Entity);
+
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+
+            Potion p = (Potion)ItemDatabase.GetItem(4);
+            p.Use(Entity);
+
+        }
 
         //Looking for action bar keys
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            attackingFlag = true;
+
+            if (!EntityActions.TargetInRange(entity, Target, 1))
+            {
+                EntityActions.MoveToHostile(entity, Target);
+
+            }
+            else
+            {
+                if (character.Actions[0] != null)
+                    character.Actions[0].Use(entity);
+
+                attackingFlag = false;
+                endTurnFlag = true;
+            }    
 
         }
 
     }
 
-    public void SetTarget(Entity e)
+    public void SetTarget()
     {
-
-        //if the target is an enemy, we're going to attack it
-        if (Target.GetComponent<NonPlayerCharacter>() != null)
-            attackingFlag = true;
+        target = Selectable.currentSelected.GetComponent<Entity>();
     }
 
     void StartTurn()
