@@ -10,6 +10,7 @@ public abstract class Character : MonoBehaviour {
     protected Stats stats;
     protected bool activePlayer = true;
     private CharacterData charData;
+    protected List<Action> actions;
 
     public CharacterData CharData
     {
@@ -47,6 +48,19 @@ public abstract class Character : MonoBehaviour {
         set
         {
             portrait = value;
+        }
+    }
+
+    public List<Action> Actions
+    {
+        get
+        {
+            return actions;
+        }
+
+        set
+        {
+            actions = value;
         }
     }
 

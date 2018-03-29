@@ -47,6 +47,11 @@ public class NonPlayerCharacter : Character {
         temp.Hostility = hostile;
         temp.stats = stats;
 
+        //Set the characters actions
+        temp.Actions = new List<Action>();
+        temp.Actions.Add(ActionDatabase.GetAction(0));
+        temp.Actions.Add(ActionDatabase.GetAction(1));
+        
         //
         return temp;
     }

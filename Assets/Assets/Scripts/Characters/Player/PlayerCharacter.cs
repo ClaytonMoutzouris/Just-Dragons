@@ -31,12 +31,13 @@ public class PlayerCharacter : Character {
         temp.gameObject.AddComponent<PlayerTurnHandler>();
         temp.movement.SetToTile(TileMapManager.Instance.GetTile(25, 25));
         temp.gameObject.layer = LayerMask.NameToLayer("Characters");
-        temp.Actions = new List<Action>();
+        
         temp.inventory = Inventory.CreateComponent(where);
         temp.Hostility = Hostility.Friendly;
         temp.Portrait = temp.GetComponent<SpriteRenderer>().sprite;
 
         print("looking for actions");
+        temp.Actions = new List<Action>();
         temp.Actions.Add(ActionDatabase.GetAction(0));
         temp.Actions.Add(ActionDatabase.GetAction(1));
         temp.stats = Stats.CreateComponent(where);

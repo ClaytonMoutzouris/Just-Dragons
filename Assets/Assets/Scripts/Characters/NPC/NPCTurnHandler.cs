@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +12,8 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
     Entity target;
     bool hasMoved;
     bool guard = false;
+    int actionIndex;
+
     public Combat Combat
     {
         get
@@ -117,6 +118,9 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
                     currentState = TurnState.Action;
                 guard = false;
 
+                print("There are " + character.Actions.Count + " actions");
+                actionIndex = Random.Range(0, character.Actions.Count);
+
                 break;
 
                 case TurnState.Action:
@@ -152,31 +156,39 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
         //This is a coroutine
 
         target = EntityActions.ChooseTarget(character);
-        if (target != null && GetComponent<NonPlayerCharacter>().Hostility == Hostility.Hostile)
+
+        if(target != null && character.Hostility == Hostility.Hostile)
         {
-            if(!EntityActions.TargetInRange(entity, target, 1))
+            if (!EntityActions.TargetInRange(entity, target, 1))
             {
                 if (!GetComponent<CharacterMovement>().IsMoving())
-                EntityActions.MoveToEntity(Entity, target);
+                    EntityActions.MoveToEntity(Entity, target);
 
             } else
             {
-                EntityActions.Attack(target);
+                print("Using action " + actionIndex);
+                character.Actions[actionIndex].Use(entity);
                 currentState = TurnState.End;
             }
-        } else if(!GetComponent<CharacterMovement>().IsMoving())
-        {
+        }
+        else {
             currentState = TurnState.End;
         }
 
-       // yield return new WaitForSeconds(1.0f);    //Wait one second
-       /*
-        if (!GetComponent<CharacterMovement>().IsMoving())
-        {
-            currentState = TurnState.End;
 
-        }
-        */
+
+
+
+
+
+        // yield return new WaitForSeconds(1.0f);    //Wait one second
+        /*
+         if (!GetComponent<CharacterMovement>().IsMoving())
+         {
+             currentState = TurnState.End;
+
+         }
+         */
     }
 
     public void EndTurn()

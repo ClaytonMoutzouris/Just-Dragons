@@ -29,5 +29,9 @@ public abstract class Action : ScriptableObject
         
     }
     
+    public virtual bool CheckValid(Entity user)
+    {
+        return true;
+    }
 }
 

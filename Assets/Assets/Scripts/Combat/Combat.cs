@@ -87,7 +87,7 @@ public class Combat {
                 CombatSetUp();
                 break;
             case CombatState.ActiveCombat:
-                Debug.Log("ActiveTurn combat for : " + currentCombatantIndex);
+
                 //Debug.Log(combatants[currentCombatantIndex]);
 
                 combatants[currentCombatantIndex].HandleTurn();
