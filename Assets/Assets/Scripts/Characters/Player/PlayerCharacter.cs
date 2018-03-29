@@ -37,15 +37,8 @@ public class PlayerCharacter : Character {
         temp.Portrait = temp.GetComponent<SpriteRenderer>().sprite;
 
         print("looking for actions");
-        foreach (Action a in Resources.LoadAll<Action>("Actions"))
-        {
-            print("Loading an action");
-            if (a != null)
-            {
-                temp.Actions.Add(a);
-            }
-
-        }
+        temp.Actions.Add(ActionDatabase.GetAction(0));
+        temp.Actions.Add(ActionDatabase.GetAction(1));
         temp.stats = Stats.CreateComponent(where);
         temp.GetComponent<Health>().Initialise(50);
 

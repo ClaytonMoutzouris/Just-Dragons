@@ -12,7 +12,7 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
     NonPlayerCharacter character;
     Entity target;
     bool hasMoved;
-
+    bool guard = false;
     public Combat Combat
     {
         get
@@ -72,6 +72,19 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
         }
     }
 
+    public bool Guard
+    {
+        get
+        {
+            return guard;
+        }
+
+        set
+        {
+            guard = value;
+        }
+    }
+
     private int initiative;
 
     private void Start()
@@ -102,8 +115,9 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
                     Camera.main.GetComponent<CameraController>().target = gameObject.transform;
                     hasMoved = false;
                     currentState = TurnState.Action;
+                guard = false;
 
-                    break;
+                break;
 
                 case TurnState.Action:
 
@@ -143,7 +157,7 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
             if(!EntityActions.TargetInRange(entity, target, 1))
             {
                 if (!GetComponent<CharacterMovement>().IsMoving())
-                EntityActions.MoveToHostile(Entity, target);
+                EntityActions.MoveToEntity(Entity, target);
 
             } else
             {

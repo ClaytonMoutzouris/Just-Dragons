@@ -42,7 +42,7 @@ public class Selectable : MonoBehaviour {
 
     public void Select2()
     {
-
+        print("Selecting " + this);
         if (currentSelected != this)
         {
             selected = true;

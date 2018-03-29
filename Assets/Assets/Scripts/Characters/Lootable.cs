@@ -57,8 +57,10 @@ public class Lootable : MonoBehaviour, ILootable {
     void Start () {
         Entity = GetComponent<Entity>();
         loot = new List<Item>();
-        loot.Add(ItemDatabase.GetItem(Random.Range(1, 3)));
-        loot.Add(ItemDatabase.GetItem(Random.Range(1, 3)));
+
+        for(int i = 0; i < Random.Range(1,5); i++)
+        loot.Add(ItemDatabase.GetRandomItem());
+        
 
     }
 

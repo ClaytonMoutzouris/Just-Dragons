@@ -8,7 +8,7 @@ using UnityEngine;
 
 public static class EntityActions {
 
-    public static void MoveToHostile(Entity mover, Entity target)
+    public static void MoveToEntity(Entity mover, Entity target)
     {
         
 
@@ -36,7 +36,7 @@ public static class EntityActions {
     {
         //Debug.Log("Attacking " + target);
         Health healthComponent = target.GetComponent<Health>();
-        if(healthComponent != null)
+        if(healthComponent != null && !target.GetComponent<ITurnHandler>().Guard)
         {
             healthComponent.TakeDamage(Random.Range(2, 8));
             if (healthComponent.isDead)

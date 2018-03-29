@@ -53,4 +53,11 @@ public static class ItemDatabase
         return null;
     }
 
+    static public Item GetRandomItem()
+    {
+        ValidateDatabase();
+        Item item = itemsList[Random.Range(0, itemsList.Count)];
+        return ScriptableObject.Instantiate(item) as Item;
+    }
+
 }

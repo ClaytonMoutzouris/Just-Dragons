@@ -10,6 +10,7 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
     //we can probably make this into a list of flags for easiness
     public bool attackingFlag = false;
     public bool endTurnFlag = false;
+    private bool guard = false;
     PlayerCharacter character;
     Entity entity;
     Combat combat;
@@ -74,6 +75,19 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
         set
         {
             target = value;
+        }
+    }
+
+    public bool Guard
+    {
+        get
+        {
+            return guard;
+        }
+
+        set
+        {
+            guard = value;
         }
     }
 
@@ -179,20 +193,31 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
         //Looking for action bar keys
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-
-            if (!EntityActions.TargetInRange(entity, Target, 1))
+            if (Target != null && !Target.GetComponent<Health>().isDead)
             {
-                EntityActions.MoveToHostile(entity, Target);
 
+                if (!EntityActions.TargetInRange(entity, Target, 1))
+                {
+                    EntityActions.MoveToEntity(entity, Target);
+
+                }
+                else
+                {
+                    if (character.Actions[0] != null)
+                        character.Actions[0].Use(entity);
+
+                    attackingFlag = false;
+                    endTurnFlag = true;
+                }
             }
-            else
-            {
-                if (character.Actions[0] != null)
-                    character.Actions[0].Use(entity);
+        }
 
-                attackingFlag = false;
-                endTurnFlag = true;
-            }    
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (character.Actions[1] != null)
+                character.Actions[1].Use(entity);
+
+            endTurnFlag = true;
 
         }
 
@@ -207,6 +232,13 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
     {
         Camera.main.GetComponent<CameraController>().target = gameObject.transform;
 
+        print(target);
+        if(target != null)
+        {
+           target.GetComponent<Selectable>().Select2();
+        }
+
+        guard = false;
         //Populate skills bar, set the UI for the current player character
 
     }
@@ -219,7 +251,6 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
         //GetComponent<CharacterMovement>().
         attackingFlag = false;
-        Target = null;
         combat.NextTurn();
     }
 

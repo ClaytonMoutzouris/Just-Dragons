@@ -12,6 +12,7 @@ public interface ITurnHandler {
     Character Character { get; }
     void DeactivateTurnHandler();
     Entity Target { get; set; }
+    bool Guard { get; set; }
 }
 
 public interface ICharacterInfo
