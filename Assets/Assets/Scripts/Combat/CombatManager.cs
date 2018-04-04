@@ -47,13 +47,15 @@ public class CombatManager : MonoBehaviour {
        
     }
 
+    //Right now only ever called by the player
+
     public void CheckForCombat(Entity e)
     {
         
         List<ITurnHandler> temp = new List<ITurnHandler>();
-        foreach(Tile t in TileMapManager.Instance.GetTilesInRange(e.GetComponent<CharacterMovement>().CurrentTile, 5))
+        foreach(Tile t in TileMapManager.Instance.GetTilesInRange(e.GetComponent<IMovementController>().CurrentTile, 5))
         {
-            if(t.Occupant != null && t.Occupant != e && !temp.Contains(t.Occupant.GetComponent<ITurnHandler>()) && t.Occupant.GetComponent<ITurnHandler>() != null)
+            if(t.Occupant != null && t.Occupant != e && t.Occupant.GetComponent<ITurnHandler>() != null && !temp.Contains(t.Occupant.GetComponent<ITurnHandler>()) && t.Occupant.GetComponent<Character>() != null && t.Occupant.GetComponent<Character>().Hostility == Hostility.Hostile)
             {
                 temp.Add(t.Occupant.GetComponent<ITurnHandler>());
             }

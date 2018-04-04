@@ -76,7 +76,8 @@ public class GameManager : MonoBehaviour {
         UIManager.Instance.SetCurrentPlayer(characterTemp.GetComponent<PlayerCharacter>());
         //create the enemies
         characters.Add(characterTemp.GetComponent<Entity>());
-        
+        Cursor.instance.currentPlayer = characters[0].GetComponent<PlayerCharacter>();
+
         for (int i = 0; i < 10; i++)
         {
 

@@ -14,7 +14,7 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
     PlayerCharacter character;
     Entity entity;
     Combat combat;
-
+    public Spell spellToConfirm = null;
 
     public Combat Combat
     {
@@ -117,8 +117,7 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
                 //Move on to action phase, where moving and selecting actions can happen
                 StartTurn();
-                currentState = TurnState.Action;
-                endTurnFlag = false;
+
 
 
                 break;
@@ -134,9 +133,24 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
                     target = Selectable.currentSelected.GetComponent<Entity>();
                 }
 
+                
 
-                //while in action phase, await player input
-                HandlePlayerInput();
+                if (spellToConfirm != null)
+                {
+                    print("Waiting to confirm " + spellToConfirm.spellName);
+                    if (Input.GetKeyDown(KeyCode.Escape))
+                    {
+                        spellToConfirm.Deselect(entity);
+                    } 
+
+                    //We have a spell at the ready, just waiting on a target
+
+                } else
+                {
+                    //while in action phase, await player input
+                    HandlePlayerInput();
+                }
+                
 
 
                 
@@ -165,6 +179,7 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
     public void HandlePlayerInput()
     {
 
+        
 
         if (Input.GetButtonDown("Jump")){
 
@@ -190,6 +205,14 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
         }
 
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            //We are going to test casting spells here
+            Resources.Load<Spell>("Actions/Spells/Fireball").Select(entity);
+            Cursor.instance.cursorState = CursorState.ConfirmTarget;
+        }
+
+        
         //Looking for action bar keys
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -203,8 +226,8 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
                 }
                 else
                 {
-                    if (character.Actions[0] != null)
-                        character.Actions[0].Use(entity);
+                    if (character.ActionList[0] != null)
+                        character.ActionList[0].Use(entity);
 
                     attackingFlag = false;
                     endTurnFlag = true;
@@ -214,8 +237,8 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (character.Actions[1] != null)
-                character.Actions[1].Use(entity);
+            if (character.ActionList[1] != null)
+                character.ActionList[1].Use(entity);
 
             endTurnFlag = true;
 
@@ -239,6 +262,7 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
         }
 
         guard = false;
+        currentState = TurnState.Action;
         //Populate skills bar, set the UI for the current player character
 
     }
@@ -251,6 +275,8 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
         //GetComponent<CharacterMovement>().
         attackingFlag = false;
+        endTurnFlag = false;
+
         combat.NextTurn();
     }
 

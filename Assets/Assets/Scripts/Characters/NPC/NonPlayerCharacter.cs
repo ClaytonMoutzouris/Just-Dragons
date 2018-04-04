@@ -27,7 +27,7 @@ public class NonPlayerCharacter : Character {
     public static NonPlayerCharacter CreateComponent(GameObject where, Hostility hostile, Stats stats, CharacterData cData)
     {
         NonPlayerCharacter temp = where.AddComponent<NonPlayerCharacter>();
-        temp.movement = CharacterMovement.CreateComponent(where);
+        temp.movement = NPCMovement.CreateComponent(where);
         
         temp.gameObject.AddComponent<NPCTurnHandler>();
         temp.gameObject.AddComponent<Lootable>();

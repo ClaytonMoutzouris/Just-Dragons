@@ -16,4 +16,10 @@ public class SkillMenu {
         ScriptableObjectUtility.CreateAsset<GuardAction>();
     }
 
+    [MenuItem("Assets/Create/Spells/Damage Spells")]
+    public static void CreateDamageSpellAsset()
+    {
+        ScriptableObjectUtility.CreateAsset<DamageSpell>();
+    }
+
 }

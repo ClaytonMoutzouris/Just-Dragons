@@ -13,7 +13,7 @@ public static class EntityActions {
         
 
         
-        mover.GetComponent<CharacterMovement>().MoveToTile(TileMapManager.Instance.GetNearestNeighbour(mover.GetComponent<CharacterMovement>().CurrentTile, target.GetComponent<CharacterMovement>().GetComponent<CharacterMovement>().CurrentTile));
+        mover.GetComponent<IMovementController>().MoveToTile(TileMapManager.Instance.GetNearestNeighbour(mover.GetComponent<IMovementController>().CurrentTile, target.GetComponent<IMovementController>().CurrentTile));
 
         
 
@@ -24,7 +24,7 @@ public static class EntityActions {
 
 
 
-        if (Mathf.Abs(looker.GetComponent<CharacterMovement>().CurrentTile.TileX - target.GetComponent<CharacterMovement>().CurrentTile.TileX) <= range && Mathf.Abs(looker.GetComponent<CharacterMovement>().CurrentTile.TileY - target.GetComponent<CharacterMovement>().CurrentTile.TileY) <= range)
+        if (Mathf.Abs(looker.GetComponent<IMovementController>().CurrentTile.TileX - target.GetComponent<IMovementController>().CurrentTile.TileX) <= range && Mathf.Abs(looker.GetComponent<IMovementController>().CurrentTile.TileY - target.GetComponent<IMovementController>().CurrentTile.TileY) <= range)
         {
             return true;
         }
@@ -50,7 +50,7 @@ public static class EntityActions {
     public static List<Entity> FindHostiles(Character e)
     {
         List<Entity> hostiles = new List<Entity>();
-        foreach (Tile t in TileMapManager.Instance.GetTilesInRange(e.GetComponent<CharacterMovement>().CurrentTile, e.GetComponent<NonPlayerCharacter>().SightRange))
+        foreach (Tile t in TileMapManager.Instance.GetTilesInRange(e.GetComponent<IMovementController>().CurrentTile, e.GetComponent<NonPlayerCharacter>().SightRange))
         {
             if (t.Occupant != null && t.Occupant.GetComponent<PlayerCharacter>() != null)
             {

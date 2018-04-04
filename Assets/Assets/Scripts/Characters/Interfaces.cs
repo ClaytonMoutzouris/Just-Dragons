@@ -21,5 +21,6 @@ public interface ICharacterInfo
     IMovementController movement { get; }
     Stats Stats { get; set; }
     bool ActivePlayer { get; set; }
+    Hostility Hostility { get; set; }
 
 }

@@ -161,7 +161,7 @@ public class NPCTurnHandler :  MonoBehaviour, ITurnHandler
         {
             if (!EntityActions.TargetInRange(entity, target, 1))
             {
-                if (!GetComponent<CharacterMovement>().IsMoving())
+                if (!GetComponent<IMovementController>().IsMoving())
                     EntityActions.MoveToEntity(Entity, target);
 
             } else

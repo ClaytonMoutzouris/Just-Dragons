@@ -58,8 +58,10 @@ public class Health : MonoBehaviour {
     {
         if (GetComponent<ITurnHandler>() != null)
         {
-            GetComponent<ITurnHandler>().Combat.RemoveFromCombat(GetComponent<ITurnHandler>());
-
+            if (GetComponent<ITurnHandler>().Combat != null)
+            {
+                GetComponent<ITurnHandler>().Combat.RemoveFromCombat(GetComponent<ITurnHandler>());
+            }
             GetComponent<ITurnHandler>().DeactivateTurnHandler();
         }
         if(GetComponent<ILootable>() != null) 

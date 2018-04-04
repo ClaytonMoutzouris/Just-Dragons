@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour {
     public void SetCurrentPlayer(PlayerCharacter p)
     {
         cpiBox.SetPlayer(p);
-        actionBar.SetActions(p.Actions);
+        actionBar.SetActions(p.ActionList);
     }
 
     // Update is called once per frame

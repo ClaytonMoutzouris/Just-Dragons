@@ -7,26 +7,26 @@ public class PlayerCharacter : Character {
 
     
    // Entity characterData;
-    List<Action> actions;
+    List<Action> actionList;
     Inventory inventory;
 
-    public List<Action> Actions
+    public List<Action> ActionList
     {
         get
         {
-            return actions;
+            return actionList;
         }
 
         set
         {
-            actions = value;
+            actionList = value;
         }
     }
 
     public static PlayerCharacter CreateComponent (GameObject where)
     {
         PlayerCharacter temp = where.AddComponent<PlayerCharacter>();
-        temp.movement = CharacterMovement.CreateComponent(where);
+        temp.movement = PlayerCharacterMovement.CreateComponent(where);
 
         temp.gameObject.AddComponent<PlayerTurnHandler>();
         temp.movement.SetToTile(TileMapManager.Instance.GetTile(25, 25));
@@ -37,9 +37,9 @@ public class PlayerCharacter : Character {
         temp.Portrait = temp.GetComponent<SpriteRenderer>().sprite;
 
         print("looking for actions");
-        temp.Actions = new List<Action>();
-        temp.Actions.Add(ActionDatabase.GetAction(0));
-        temp.Actions.Add(ActionDatabase.GetAction(1));
+        temp.ActionList = new List<Action>();
+        temp.ActionList.Add(ActionDatabase.GetAction(0));
+        temp.ActionList.Add(ActionDatabase.GetAction(1));
         temp.stats = Stats.CreateComponent(where);
         temp.GetComponent<Health>().Initialise(50);
 
@@ -51,9 +51,10 @@ public class PlayerCharacter : Character {
 
     // Update is called once per frame
     void Update () {
-        HandleMovementInput();
+       // HandleMovementInput();
 
     }
+
 
     private void HandleMovementInput()
     {
