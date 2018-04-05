@@ -10,7 +10,7 @@ public class ActionBar : MonoBehaviour {
         actions = GetComponentsInChildren<ActionIconObject>();
     }
 
-    public void SetActions(List<Action> playerActions)
+    public void SetActions(List<Skill> playerActions)
     {
 
         for(int i = 0; i < actions.Length; i++)
@@ -27,7 +27,7 @@ public class ActionBar : MonoBehaviour {
 
     }
 
-    public void SetAction(Action action, int index)
+    public void SetAction(Skill action, int index)
     {
 
         actions[index].SetAction(action);

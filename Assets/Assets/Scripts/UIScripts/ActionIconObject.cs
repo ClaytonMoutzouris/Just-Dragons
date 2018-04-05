@@ -8,14 +8,14 @@ using UnityEngine.UI;
 public class ActionIconObject : MonoBehaviour, IPointerDownHandler {
 
     Image image;
-    Action action;
+    Skill action;
     int index;
 	// Use this for initialization
 	void Start () {
         image = GetComponent<Image>();
 	}
 
-    public void SetAction(Action a)
+    public void SetAction(Skill a)
     {
         action = a;
         image.sprite = a.image;
@@ -35,6 +35,6 @@ public class ActionIconObject : MonoBehaviour, IPointerDownHandler {
     public void OnPointerDown(PointerEventData eventData)
     {
         if(action != null)
-        Debug.Log("Clicked! " + action.skillName);
+        Debug.Log("Clicked! " + action.ActionName);
     }
 }

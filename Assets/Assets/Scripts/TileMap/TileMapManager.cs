@@ -8,7 +8,7 @@ public class MapChangedEventArgs : EventArgs
     public ITileMapModel map;
 }
 
-// Implementation of the enemy controller
+// This will serve as a sort of database for the tilemaps
 public class TileMapManager : MonoBehaviour
 {
     // Keep references to the model and view
@@ -77,7 +77,7 @@ public class TileMapManager : MonoBehaviour
     {
         int tilex = Mathf.FloorToInt(mousePos.x / mapView.TileSize());
         int tiley = Mathf.FloorToInt(mousePos.y / mapView.TileSize());
-        return new Vector3(tilex, tiley);
+        return new Vector3(tilex, tiley) + GetTileOffset();
     }
 
     public Tile GetTileClicked(Vector2 mousePos)

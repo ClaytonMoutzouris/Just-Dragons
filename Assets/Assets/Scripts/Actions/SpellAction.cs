@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class SpellAction : Action
+public class SpellAction : Skill
 {
-    [SerializeField]
     public Spell spell;
+    public bool awaitingConfirm = false;
 
+    public SpellAction(Spell spell)
+    {
+        this.spell = spell;
+        image = spell.image;
+    }
 
     public override void Use(Entity user)
     {
-        spell.Select(user);
+            spell.Select(user);
+            Cursor.instance.cursorState = CursorState.ConfirmTarget;
 
     }
 

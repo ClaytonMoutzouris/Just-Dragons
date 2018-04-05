@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileMapTown : TileMapModel {
+public class TileMapTown : TileMapData {
 
     List<Entity> objects;
 

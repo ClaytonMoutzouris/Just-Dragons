@@ -48,9 +48,9 @@ public class NonPlayerCharacter : Character {
         temp.stats = stats;
 
         //Set the characters actions
-        temp.Actions = new List<Action>();
-        temp.Actions.Add(ActionDatabase.GetAction(0));
-        temp.Actions.Add(ActionDatabase.GetAction(1));
+        temp.Actions = new List<Skill>();
+        temp.Actions.Add(new AttackAction());
+        temp.Actions.Add(new GuardAction());
         
         //
         return temp;

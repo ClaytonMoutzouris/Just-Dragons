@@ -10,7 +10,7 @@ public abstract class Character : MonoBehaviour {
     protected Stats stats;
     protected bool activePlayer = true;
     private CharacterData charData;
-    protected List<Action> actions;
+    protected List<Skill> actions;
 
     public CharacterData CharData
     {
@@ -51,7 +51,7 @@ public abstract class Character : MonoBehaviour {
         }
     }
 
-    public List<Action> Actions
+    public List<Skill> Actions
     {
         get
         {

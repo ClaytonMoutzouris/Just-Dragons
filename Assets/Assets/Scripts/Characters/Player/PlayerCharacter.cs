@@ -7,10 +7,10 @@ public class PlayerCharacter : Character {
 
     
    // Entity characterData;
-    List<Action> actionList;
+    List<Skill> actionList;
     Inventory inventory;
 
-    public List<Action> ActionList
+    public List<Skill> ActionList
     {
         get
         {
@@ -37,9 +37,10 @@ public class PlayerCharacter : Character {
         temp.Portrait = temp.GetComponent<SpriteRenderer>().sprite;
 
         print("looking for actions");
-        temp.ActionList = new List<Action>();
-        temp.ActionList.Add(ActionDatabase.GetAction(0));
-        temp.ActionList.Add(ActionDatabase.GetAction(1));
+        temp.ActionList = new List<Skill>();
+        temp.ActionList.Add(new AttackAction());
+        temp.ActionList.Add(new GuardAction());
+        temp.ActionList.Add(new SpellAction(SpellDatabase.GetAction(0)));
         temp.stats = Stats.CreateComponent(where);
         temp.GetComponent<Health>().Initialise(50);
 

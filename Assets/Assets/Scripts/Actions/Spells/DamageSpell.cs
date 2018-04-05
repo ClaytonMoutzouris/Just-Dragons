@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class DamageSpell : Spell
 {
-    [SerializeField]
-    SpellTargeting targeting;
+    
     [SerializeField]
     Vector2 DamageRange;
-    [SerializeField]
-    int range;
+    
 
-    public override bool Cast(Entity caster, List<Entity> Targets)
+    public override void Use(Entity caster, List<Entity> Targets)
     {
 
         switch (targeting)
@@ -25,7 +23,6 @@ public class DamageSpell : Spell
         }
         caster.GetComponent<ITurnHandler>().SetTurnState(TurnState.End);
         Deselect(caster);
-        return true;
     }
 
     public override void Select(Entity caster)

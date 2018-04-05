@@ -137,7 +137,7 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
                 if (spellToConfirm != null)
                 {
-                    print("Waiting to confirm " + spellToConfirm.spellName);
+                    print("Waiting to confirm " + spellToConfirm);
                     if (Input.GetKeyDown(KeyCode.Escape))
                     {
                         spellToConfirm.Deselect(entity);
@@ -156,7 +156,7 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
                 
 
                 //If we flagged the end of the turn and are done attacking
-                if(endTurnFlag && !attackingFlag)
+                if(endTurnFlag)
                 {
                     currentState = TurnState.End;
                 }
@@ -205,44 +205,15 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
 
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
+        for (int i = 0; i < 3; ++i)
         {
-            //We are going to test casting spells here
-            Resources.Load<Spell>("Actions/Spells/Fireball").Select(entity);
-            Cursor.instance.cursorState = CursorState.ConfirmTarget;
-        }
-
-        
-        //Looking for action bar keys
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            if (Target != null && !Target.GetComponent<Health>().isDead)
+            if (Input.GetKeyDown("" + (i +1)))
             {
-
-                if (!EntityActions.TargetInRange(entity, Target, 1))
-                {
-                    EntityActions.MoveToEntity(entity, Target);
-
-                }
-                else
-                {
-                    if (character.ActionList[0] != null)
-                        character.ActionList[0].Use(entity);
-
-                    attackingFlag = false;
-                    endTurnFlag = true;
-                }
+                if (character.ActionList[i] != null)
+                    character.ActionList[i].Use(entity);
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (character.ActionList[1] != null)
-                character.ActionList[1].Use(entity);
-
-            endTurnFlag = true;
-
-        }
 
     }
 
@@ -255,7 +226,6 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
     {
         Camera.main.GetComponent<CameraController>().target = gameObject.transform;
 
-        print(target);
         if(target != null)
         {
            target.GetComponent<Selectable>().Select2();
@@ -274,7 +244,6 @@ public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
         Selectable.currentSelected.Deselect();
 
         //GetComponent<CharacterMovement>().
-        attackingFlag = false;
         endTurnFlag = false;
 
         combat.NextTurn();

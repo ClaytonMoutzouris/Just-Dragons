@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Name: Fireball
   m_EditorClassIdentifier: 
   spellID: 0
-  image: {fileID: 0}
-  spellName: Fireball
+  image: {fileID: 21300270, guid: f1d0bd0618116ef4cbee941012c5cf9e, type: 3}
+  spellName: 
   mpCost: 0
   targeting: 0
-  DamageRange: {x: 5, y: 15}
   range: 10
+  DamageRange: {x: 5, y: 15}

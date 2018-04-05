@@ -23,7 +23,7 @@ public interface ITileMapModel
 }
 
 // Implementation of the enemy model interface
-public class TileMapModel : ITileMapModel
+public class TileMapData : ITileMapModel
 {
     public Vector2 mapSize { get; set; }
     public event EventHandler<TileChangedEventArgs> OnTileChanged = (sender, e) => { };
@@ -33,7 +33,10 @@ public class TileMapModel : ITileMapModel
     //List<Exit> exits;
     public int mapID { get; set; }
 
-    public TileMapModel(int xSize, int ySize, int ID)
+    //a map holds its own pathfinding object, as it will sometimes need updating
+    
+
+    public TileMapData(int xSize, int ySize, int ID)
     {
         mapSize = new Vector2(xSize, ySize);
         tiles = new Tile[xSize, ySize];

@@ -3,21 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class AttackAction : Action
+public class AttackAction : Skill
 {
 
-
+    public AttackAction()
+    {
+        image = Resources.Load<Sprite>("Textures and Sprites/SwordSprite_1");
+    }
 
     public override void Use(Entity user)
     {
-        if (user.GetComponent<ITurnHandler>().Target != null)
+        ITurnHandler turnhandler = user.GetComponent<ITurnHandler>();
+        if (turnhandler.Target != null && !turnhandler.Target.GetComponent<Health>().isDead)
         {
-            EntityActions.Attack(user.GetComponent<ITurnHandler>().Target);
-        }
-        else
+
+            if (!EntityActions.TargetInRange(user, turnhandler.Target, 1))
+            {
+                Debug.Log("Target not in range");
+
+                EntityActions.MoveToEntity(user, turnhandler.Target);
+
+            }
+            else
+            {
+                Debug.Log("Attacking target");
+
+                EntityActions.Attack(user.GetComponent<ITurnHandler>().Target);
+                user.GetComponent<ITurnHandler>().SetTurnState(TurnState.End);
+            }
+        } else
         {
-            Debug.Log("No Target");
+            Debug.Log("Target dead or null");
         }
+
 
     }
 

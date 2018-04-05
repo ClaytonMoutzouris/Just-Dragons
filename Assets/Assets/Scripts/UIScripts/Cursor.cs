@@ -130,7 +130,7 @@ public class Cursor : MonoBehaviour {
                     if (clicked != null)
                     {
 
-                        currentPlayer.GetComponent<PlayerTurnHandler>().spellToConfirm.Cast(currentPlayer.GetComponent<Entity>(), new List<Entity>() { clicked });
+                        currentPlayer.GetComponent<PlayerTurnHandler>().spellToConfirm.Use(currentPlayer.GetComponent<Entity>(), new List<Entity>() { clicked });
 
                         cursorState = CursorState.FreeRoam;
 

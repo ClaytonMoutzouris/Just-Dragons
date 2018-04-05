@@ -53,11 +53,6 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
     public event EventHandler<OnMapClickedEventArgs> OnClicked = (sender, e) => { };
 
 
-    public Vector2 TilePosition(float x, float y)
-    {
-        return new Vector3(Mathf.FloorToInt(x / tileSize) + TileOffset().x, Mathf.FloorToInt(y / tileSize) + TileOffset().y);
-    }
-
     void Update()
     {
 
@@ -151,12 +146,14 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
 
     }
 
+    //If we need to update 1 tile
     public void DrawTile(Tile tile)
     {
         texture.SetPixels(tile.TileX * tileResolution, tile.TileY * tileResolution, tileResolution, tileResolution, tileTextures[(int)tile.TileType]);
         texture.Apply();
     }
 
+    //redraw a tile, using a new random one (for test purposes)
     public void RedrawTile(int x, int y)
     {
         Color[] p = tileTextures[UnityEngine.Random.Range(0, 4)];
@@ -164,6 +161,7 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
         texture.Apply();
     }
 
+    //Used for updating a group of tiles at once
     public void DrawMultiTiles(List<Tile> tiles)
     {
 

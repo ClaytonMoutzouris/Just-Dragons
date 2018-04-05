@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance;
     public GameObject selectionPrefab;
     public Dictionary<string, Item> itemLibrary;
-    public Dictionary<int, Action> actionDatabase;
+    public Dictionary<int, Skill> actionDatabase;
     List<CharacterData> charPrototypes;
     
 

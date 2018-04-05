@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Exit {
 
-    TileMapModel map;
+    TileMapData map;
     int TargetMapID;
     int destination_X;
     int destination_Y;
@@ -35,7 +35,7 @@ public class Exit {
         }
     }
 
-    public TileMapModel Map
+    public TileMapData Map
     {
         get
         {
@@ -53,7 +53,7 @@ public class Exit {
         return TargetMapID;
     }
 
-    public Exit (TileMapModel m, int ID, int x, int y)
+    public Exit (TileMapData m, int ID, int x, int y)
     {
         Map = m;
         TargetMapID = ID;

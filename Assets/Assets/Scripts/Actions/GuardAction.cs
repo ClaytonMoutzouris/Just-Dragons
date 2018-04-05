@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class GuardAction : Action
+public class GuardAction : Skill
 {
 
-
+    public GuardAction()
+    {
+        image = Resources.Load<Sprite>("Textures and Sprites/SwordSprite_1");
+    }
 
     public override void Use(Entity user)
     {

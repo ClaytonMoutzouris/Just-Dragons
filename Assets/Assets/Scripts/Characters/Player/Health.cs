@@ -66,6 +66,8 @@ public class Health : MonoBehaviour {
         }
         if(GetComponent<ILootable>() != null) 
         GetComponent<ILootable>().LootFlag = true;
+
+        transform.Rotate(new Vector3(0,0,90));
         //Destroy(gameObject);
     }
 }

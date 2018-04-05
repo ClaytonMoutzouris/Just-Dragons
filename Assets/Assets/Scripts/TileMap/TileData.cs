@@ -122,6 +122,6 @@ public class Tile
 
     public Vector3 GetWorldPos()
     {
-        return new Vector3(tileX, tileY, 0.0f);
+        return new Vector3(tileX, tileY, 0.0f) + TileMapManager.Instance.GetTileOffset();
     }
 }
