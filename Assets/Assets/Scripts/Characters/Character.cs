@@ -9,10 +9,10 @@ public abstract class Character : MonoBehaviour {
     protected Entity entity;
     protected Stats stats;
     protected bool activePlayer = true;
-    private CharacterData charData;
+    private NPCPrototype charData;
     protected List<Skill> actions;
 
-    public CharacterData CharData
+    public NPCPrototype CharData
     {
         get
         {

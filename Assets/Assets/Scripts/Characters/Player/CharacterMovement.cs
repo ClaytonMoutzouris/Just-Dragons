@@ -12,6 +12,7 @@ public interface IMovementController
     Tile CurrentTile { get; set; }
 }
 
+//this class controls where the character is on the screen, and how it moves around
 
 public class NPCMovement : MonoBehaviour, IMovementController {
     //static int tileSize = 1;
@@ -50,7 +51,7 @@ public class NPCMovement : MonoBehaviour, IMovementController {
 
     private void Start()
     {
-       
+        entity = GetComponent<Entity>();
 
     }
 

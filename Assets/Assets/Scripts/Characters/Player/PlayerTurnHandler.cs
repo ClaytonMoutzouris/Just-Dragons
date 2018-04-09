@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public enum TurnState { Start, Action, End, Waiting }
+
+
+
 public class PlayerTurnHandler : MonoBehaviour, ITurnHandler {
     public TurnState currentState = TurnState.Waiting;
     public List<string> flags;

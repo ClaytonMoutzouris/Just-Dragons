@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
     public GameObject selectionPrefab;
     public Dictionary<string, Item> itemLibrary;
     public Dictionary<int, Skill> actionDatabase;
-    List<CharacterData> charPrototypes;
+    
     
 
 
@@ -37,18 +37,10 @@ public class GameManager : MonoBehaviour {
 
         selectionPrefab = Resources.Load<GameObject>("Prefabs/SelectedObject");
         //Initialize the starting state of the game
-        LoadCharData();
         StartGame();
 
     }
 
-    void LoadCharData()
-    {
-        var loadData = Resources.LoadAll<CharacterData>("Character Data");
-        charPrototypes = new List<CharacterData>();
-        charPrototypes.AddRange(loadData);
-
-    } 
 
     void StartGame()
     {
@@ -78,13 +70,7 @@ public class GameManager : MonoBehaviour {
         characters.Add(characterTemp.GetComponent<Entity>());
         Cursor.instance.currentPlayer = characters[0].GetComponent<PlayerCharacter>();
 
-        for (int i = 0; i < 10; i++)
-        {
 
-            characters.Add(CharacterGenerator.instance.CreateCharacter(charPrototypes[Random.Range(0, charPrototypes.Count)]));
-
-        }
-        
         currentCharacterIndex = 0;
         
 

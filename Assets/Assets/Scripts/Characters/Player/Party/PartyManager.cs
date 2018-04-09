@@ -18,4 +18,11 @@ public class PartyManager : MonoBehaviour {
         return partyMembers;
     }
 	
+    //When the party changes maps, update the current map (draw the new one).
+    public void PartyMapChange()
+    {
+
+    }
+
+
 }

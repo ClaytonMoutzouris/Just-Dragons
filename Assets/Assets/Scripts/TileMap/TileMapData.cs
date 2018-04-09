@@ -1,11 +1,7 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileChangedEventArgs : EventArgs
-{
-    public Tile tile;
-}
 
 
 
@@ -13,12 +9,12 @@ public class TileChangedEventArgs : EventArgs
 public interface ITileMapModel
 {
     // Dispatched when a Tiles type has been changed
-    event EventHandler<TileChangedEventArgs> OnTileChanged;
     void BuildMap();
     void ChangeTile(int x, int y);
     Tile[,] tiles { get; }
     Vector2 mapSize { get; }
     int mapID { get; }
+    List<NPCPrototype> Characters { get; set; }
     //List<IEnemyController> enemyList { get; }
 }
 
@@ -26,22 +22,34 @@ public interface ITileMapModel
 public class TileMapData : ITileMapModel
 {
     public Vector2 mapSize { get; set; }
-    public event EventHandler<TileChangedEventArgs> OnTileChanged = (sender, e) => { };
     //public List<IEnemyController> enemyList { get; set; }
     public Tile[,] tiles { get; set; }
-    public List<Entity> entities;
+    private List<NPCPrototype> characters;
     //List<Exit> exits;
     public int mapID { get; set; }
 
+    public List<NPCPrototype> Characters
+    {
+        get
+        {
+            return characters;
+        }
+
+        set
+        {
+            characters = value;
+        }
+    }
+
     //a map holds its own pathfinding object, as it will sometimes need updating
-    
+
 
     public TileMapData(int xSize, int ySize, int ID)
     {
+        characters = new List<NPCPrototype>();
         mapSize = new Vector2(xSize, ySize);
         tiles = new Tile[xSize, ySize];
         mapID = ID;
-        BuildMap();
     }
 
     public Tile GetTile(int x, int y)
@@ -67,9 +75,6 @@ public class TileMapData : ITileMapModel
         }
 
         // Dispatch the 'on clicked' event
-        var eventArgs = new TileChangedEventArgs();
-        eventArgs.tile = cTile;
-        OnTileChanged(this, eventArgs);
     }
 
     public virtual void BuildMap()
@@ -106,7 +111,14 @@ public class TileMapData : ITileMapModel
         //exits.Add(new Exit())
     }
 
+    protected void AddEntities()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            Characters.Add(CharacterDatabase.GetRandomChar());
 
+        }
+    }
 
 
 

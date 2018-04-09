@@ -24,7 +24,7 @@ public class NonPlayerCharacter : Character {
 
 
 
-    public static NonPlayerCharacter CreateComponent(GameObject where, Hostility hostile, Stats stats, CharacterData cData)
+    public static NonPlayerCharacter CreateComponent(GameObject where, NPCPrototype cData)
     {
         NonPlayerCharacter temp = where.AddComponent<NonPlayerCharacter>();
         temp.movement = NPCMovement.CreateComponent(where);
@@ -44,8 +44,8 @@ public class NonPlayerCharacter : Character {
         temp.Portrait = cData.image;
 
 
-        temp.Hostility = hostile;
-        temp.stats = stats;
+        temp.Hostility = cData.hostility;
+        temp.stats = Stats.CreateComponent(temp.gameObject);
 
         //Set the characters actions
         temp.Actions = new List<Skill>();

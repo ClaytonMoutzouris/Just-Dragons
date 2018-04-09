@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CharTurnState { StartTurn, MovementPhase, ActionPhase, EndTurn, Idle}
-public class CharacterState : MonoBehaviour {
+public class AnimationController : MonoBehaviour {
 
-    
 	// Use this for initialization
 	void Start () {
 		
@@ -13,7 +11,6 @@ public class CharacterState : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
 		
 	}
 }

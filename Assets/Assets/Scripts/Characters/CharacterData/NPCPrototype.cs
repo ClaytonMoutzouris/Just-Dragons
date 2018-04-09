@@ -6,8 +6,10 @@ using UnityEngine;
 public enum CharacterRace { Human, Goblin, Elf, Dwarf };
 
 [System.Serializable]
-public class CharacterData : ScriptableObject
+public class NPCPrototype : ScriptableObject
 {
+    [SerializeField]
+    public int charID;
     [SerializeField]
     public Sprite image;
     [SerializeField]

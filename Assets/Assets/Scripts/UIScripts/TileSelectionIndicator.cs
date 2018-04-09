@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TileSelectionIndicator : MonoBehaviour {
     public static TileSelectionIndicator Instance;
+    public List<Sprite> sprites;
 	// Use this for initialization
 	void Start () {
 

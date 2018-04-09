@@ -16,6 +16,8 @@ public class TileMapManager : MonoBehaviour
     private List<ITileMapModel> mapModels;
     private ITileMapModel currentMap;
     private ITileMapObject mapView;
+    List<Entity> entities;
+
     public static TileMapManager Instance { get; private set; }
     public ITileMapModel CurrentMap
     {
@@ -49,7 +51,7 @@ public class TileMapManager : MonoBehaviour
     public void Initialize( ITileMapObject view)
     {
 
-
+        entities = new List<Entity>();
         mapModels = new List<ITileMapModel>();
         // Listen to input from the view
         view.OnClicked += HandleClicked;
@@ -64,10 +66,10 @@ public class TileMapManager : MonoBehaviour
         //draws the initial map
         foreach(ITileMapModel m in models)
         {
-            m.OnTileChanged += HandleTileChanged;
             mapModels.Add(m);
         }
         CurrentMap = models[0];
+        print("Map is set up");
         SyncCurrentMap();
 
     }
@@ -227,8 +229,17 @@ public class TileMapManager : MonoBehaviour
 
     private void SyncCurrentMap()
     {
+        foreach(Entity e in entities)
+        {
+            Destroy(e.gameObject);
+        }
         mapView.DrawMap(CurrentMap.tiles, (int)CurrentMap.mapSize.x, (int)CurrentMap.mapSize.y);
+        
 
+        foreach (NPCPrototype cd in currentMap.Characters)
+        {
+            entities.Add(CharacterDatabase.CreateCharacter(cd));
+        }
     }
 
     // Called when the view is clicked
@@ -253,10 +264,5 @@ public class TileMapManager : MonoBehaviour
         */
     }
 
-    private void HandleTileChanged(object sender, TileChangedEventArgs e)
-    {
-
-        mapView.DrawTile(e.tile);
-    }
 
 }

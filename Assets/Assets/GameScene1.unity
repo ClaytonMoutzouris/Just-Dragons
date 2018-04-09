@@ -1940,6 +1940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a728918f4b368144a50137e8828b269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprites: []
 --- !u!1 &1254658668
 GameObject:
   m_ObjectHideFlags: 0

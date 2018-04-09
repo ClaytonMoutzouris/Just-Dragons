@@ -8,10 +8,9 @@ public class TileMapTown : TileMapData {
 
     public TileMapTown(int xSize, int ySize, int ID) : base(xSize, ySize, ID)
     {
-        mapSize = new Vector2(xSize, ySize);
-        tiles = new Tile[xSize, ySize];
-        mapID = ID;
         BuildMap();
+        AddEntities();
+
     }
 
     public override void BuildMap()
