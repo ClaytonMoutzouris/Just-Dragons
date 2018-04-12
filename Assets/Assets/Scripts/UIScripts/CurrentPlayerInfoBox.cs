@@ -10,7 +10,7 @@ public class CurrentPlayerInfoBox : MonoBehaviour {
     public Image background, playerPortrait;
     public HealthBarScript healthBar;
     public ActionPointBar actioBar;
-    public PlayerCharacter currentPlayer;
+    public Entity currentPlayer;
 
     // Use this for initialization
     void Awake () {
@@ -28,13 +28,13 @@ public class CurrentPlayerInfoBox : MonoBehaviour {
     public void UpdateHealth()
     {
 
-        healthBar.setHealth(currentPlayer.GetComponent<Stats>().GetHealth());
+        healthBar.setHealth(currentPlayer.Stats.GetHealth());
     }
 
-    public void SetPlayer(PlayerCharacter p)
+    public void SetPlayer(Entity p)
     {
         currentPlayer = p;
-        playerPortrait.sprite = currentPlayer.GetComponent<SpriteRenderer>().sprite;
+        playerPortrait.sprite = currentPlayer.Graphics.sRenderer.sprite;
         UpdateHealth();
         UpdateSkills();
     }

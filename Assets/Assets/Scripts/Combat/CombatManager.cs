@@ -14,7 +14,7 @@ public class CombatManager : MonoBehaviour {
         instance = this;
     }
 
-    public void NewCombat(List<ITurnHandler> entities)
+    public void NewCombat(List<Entity> entities)
     {
 
         Combat temp = new Combat(entities);
@@ -52,12 +52,12 @@ public class CombatManager : MonoBehaviour {
     public void CheckForCombat(Entity e)
     {
         
-        List<ITurnHandler> temp = new List<ITurnHandler>();
-        foreach(Tile t in TileMapManager.Instance.GetTilesInRange(e.GetComponent<IMovementController>().CurrentTile, 5))
+        List<Entity> temp = new List<Entity>();
+        foreach(Tile t in TileMapManager.Instance.GetTilesInRange(e.CurrentTile, 5))
         {
-            if(t.Occupant != null && t.Occupant != e && t.Occupant.GetComponent<ITurnHandler>() != null && !temp.Contains(t.Occupant.GetComponent<ITurnHandler>()) && t.Occupant.GetComponent<Character>() != null && t.Occupant.GetComponent<Character>().Hostility == Hostility.Hostile)
+            if(t.Occupant != null && t.Occupant != e && !t.Occupant.Stats.GetHealth().isDead && !temp.Contains(t.Occupant) && t.Occupant.character is NPCCharacterComponent)
             {
-                temp.Add(t.Occupant.GetComponent<ITurnHandler>());
+                temp.Add(t.Occupant);
             }
         }
 
@@ -65,15 +65,15 @@ public class CombatManager : MonoBehaviour {
 
         if(temp.Count > 0)
         {
-            if (e.GetComponent<ITurnHandler>().Combat != null)
+            if (e.character.controller.combat != null)
             {
-                foreach(ITurnHandler it in temp)
+                foreach(Entity it in temp)
                 {
-                    e.GetComponent<ITurnHandler>().Combat.JoinCombat(it);
+                    e.character.controller.combat.JoinCombat(it);
                 }
             } else
             {
-                temp.Add(e.GetComponent<ITurnHandler>());
+                temp.Add(e);
 
                 NewCombat(temp);
 

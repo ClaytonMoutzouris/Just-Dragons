@@ -14,7 +14,7 @@ public class GuardAction : Skill
     public override void Use(Entity user)
     {
         Debug.Log("Guarding!");
-        user.GetComponent<ITurnHandler>().Guard = true;
+       // user.character.controller.Guard = true;
 
     }
 

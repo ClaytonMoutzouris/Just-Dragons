@@ -51,7 +51,7 @@ public class NPCMovement : MonoBehaviour, IMovementController {
 
     private void Start()
     {
-        entity = GetComponent<Entity>();
+        //entity = GetComponent<Entity>();
 
     }
 

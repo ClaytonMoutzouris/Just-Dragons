@@ -425,7 +425,6 @@ MonoBehaviour:
   playerPortrait: {fileID: 376464800}
   healthBar: {fileID: 293133206}
   actioBar: {fileID: 1070918203}
-  currentPlayer: {fileID: 0}
 --- !u!1 &271623193
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,7 +670,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 320751686}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 50, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1402,7 +1401,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 43.461536, y: 0}
+  m_AnchoredPosition: {x: 43.942978, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &774691856
@@ -1597,7 +1596,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b30b76ed34b964bb6eb1d9288f3776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPlayer: {fileID: 0}
   cursorState: 0
 --- !u!114 &1024643923
 MonoBehaviour:
@@ -1651,8 +1649,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2f74643bf3d7924db0c7b8e3ce53479, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characters: []
-  selectedEntity: {fileID: 0}
   selectionPrefab: {fileID: 0}
 --- !u!4 &1046845177
 Transform:

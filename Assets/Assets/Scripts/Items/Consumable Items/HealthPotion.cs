@@ -11,12 +11,12 @@ public class HealthPotion : Potion
     {
         base.Use(user);
 
-        user.GetComponent<Health>().GainLife(hpValue);
+        user.Stats.GetHealth().GainLife(hpValue);
     }
 
     public override bool CheckValid(Entity user)
     {
-        if (user.GetComponent<Health>().IsHealthMax())
+        if (user.Stats.GetHealth().IsHealthMax())
         {
             return false;
         } else

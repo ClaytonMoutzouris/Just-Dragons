@@ -7,7 +7,7 @@ public enum CombatState { Initializing, ActiveCombat, End };
 public class Combat {
 
     //Probably change these to combatcontrollers
-    List<ITurnHandler> combatants;
+    List<Entity> combatants;
     CombatState currentState = CombatState.Initializing;
     int currentCombatantIndex = 0;
 
@@ -24,7 +24,7 @@ public class Combat {
         }
     }
 
-    public Combat(List<ITurnHandler> entities)
+    public Combat(List<Entity> entities)
     {
         combatants = entities;
         
@@ -34,23 +34,24 @@ public class Combat {
 
     public void CombatSetUp()
     {
-        foreach(ITurnHandler c in combatants)
+        foreach(Entity c in combatants)
         {
-            c.Combat = this;
+            Debug.Log("Adding to combat");
+            c.character.controller.combat = this;
         }
         currentState = CombatState.ActiveCombat;
-        combatants[0].SetTurnState(TurnState.Start);
+        combatants[0].character.controller.turnstate = TurnState.StartPhase;
         TurnQueue.Instance.FillQueue(combatants);
 
     }
 
-    public void JoinCombat(ITurnHandler e)
+    public void JoinCombat(Entity e)
     {
 
         if (!combatants.Contains(e))
         {
             Debug.Log("Joining combat!");
-            e.Combat = this;
+            e.character.controller.combat = this;
             combatants.Add(e);
             TurnQueue.Instance.AddToQueue(e);
         }
@@ -59,9 +60,9 @@ public class Combat {
     public void EndCombat()
     {
         Debug.Log("End Combat");
-        foreach (ITurnHandler c in combatants)
+        foreach (Entity c in combatants)
         {
-            c.Combat = null;
+            c.character.controller.combat = null;
         }
         combatants.Clear();
         TurnQueue.Instance.EmptyQueue();
@@ -90,7 +91,7 @@ public class Combat {
 
                 //Debug.Log(combatants[currentCombatantIndex]);
 
-                combatants[currentCombatantIndex].HandleTurn();
+                combatants[currentCombatantIndex].character.controller.HandleTurn();
                 break;
 
             case CombatState.End:
@@ -101,12 +102,14 @@ public class Combat {
 
     }
 
-    public void RemoveFromCombat(ITurnHandler toRemove)
+    public void RemoveFromCombat(Entity toRemove)
     {
-        toRemove.Combat = null;
+        toRemove.character.controller.combat = null;
+
         int index = combatants.IndexOf(toRemove);
         if (index < currentCombatantIndex)
             currentCombatantIndex--;
+
         TurnQueue.Instance.RemoveAtIndex(index);
         combatants.Remove(toRemove);
         Debug.Log(toRemove + " removed from combat");
@@ -125,7 +128,7 @@ public class Combat {
         }
 
 
-        combatants[currentCombatantIndex].SetTurnState(TurnState.Start);
+        combatants[currentCombatantIndex].character.controller.turnstate = TurnState.StartPhase;
 
         Debug.Log("Being called twice for some reason");
         TurnQueue.Instance.UpdateQueue(currentCombatantIndex);

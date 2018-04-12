@@ -10,7 +10,7 @@ public class TransformPotion : Potion {
     {
         base.Use(user);
 
-        user.GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0, sprites.Count - 1)];
+        user.Graphics.sRenderer.sprite = sprites[Random.Range(0, sprites.Count - 1)];
     }
 
     public override bool CheckValid(Entity user)

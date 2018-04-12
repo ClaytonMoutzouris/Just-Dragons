@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Health : MonoBehaviour {
+public class Health {
     public int MaxHealth;
     public int currentHealth;
     public bool isDead = false;
+    public Entity entity;
 
-    public void Start()
+    public Health(Entity entity)
     {
-        
+        this.entity = entity;
     }
 
     public void Initialise(int startingHealth)
@@ -28,8 +29,8 @@ public class Health : MonoBehaviour {
         }
 
         //update the player info in the UI
-        if (GetComponent<PlayerCharacter>() != null)
-            UIManager.Instance.UpdatePlayerInfo();
+        //if (GetComponent<PlayerCharacter>() != null)
+         //   UIManager.Instance.UpdatePlayerInfo();
 
     }
 
@@ -49,25 +50,24 @@ public class Health : MonoBehaviour {
             isDead = true;
             OnDeath();
         }
-        if (GetComponent<PlayerCharacter>() != null)
-            UIManager.Instance.UpdatePlayerInfo();
+       // if (GetComponent<PlayerCharacter>() != null)
+        //    UIManager.Instance.UpdatePlayerInfo();
 
     }
 
     public void OnDeath()
     {
-        if (GetComponent<ITurnHandler>() != null)
+        if (entity.character.controller != null)
         {
-            if (GetComponent<ITurnHandler>().Combat != null)
+            if (entity.character.controller.combat != null)
             {
-                GetComponent<ITurnHandler>().Combat.RemoveFromCombat(GetComponent<ITurnHandler>());
+                entity.character.controller.combat.RemoveFromCombat(entity);
             }
-            GetComponent<ITurnHandler>().DeactivateTurnHandler();
         }
-        if(GetComponent<ILootable>() != null) 
-        GetComponent<ILootable>().LootFlag = true;
+       // if(GetComponent<ILootable>() != null) 
+      //  GetComponent<ILootable>().LootFlag = true;
 
-        transform.Rotate(new Vector3(0,0,90));
+        entity.Graphics.entity.transform.Rotate(new Vector3(0,0,90));
         //Destroy(gameObject);
     }
 }

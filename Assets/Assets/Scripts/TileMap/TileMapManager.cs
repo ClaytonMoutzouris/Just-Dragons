@@ -16,7 +16,7 @@ public class TileMapManager : MonoBehaviour
     private List<ITileMapModel> mapModels;
     private ITileMapModel currentMap;
     private ITileMapObject mapView;
-    List<Entity> entities;
+    public List<Entity> entities;
 
     public static TileMapManager Instance { get; private set; }
     public ITileMapModel CurrentMap
@@ -91,6 +91,7 @@ public class TileMapManager : MonoBehaviour
     
     public Tile GetTile(int x , int y)
     {
+
         if (x < 0 || x >= CurrentMap.mapSize.x || y < 0 || y >= CurrentMap.mapSize.y)
             return null;
 
@@ -192,6 +193,7 @@ public class TileMapManager : MonoBehaviour
             for (int j = tile.TileY - range; j < tile.TileY + range; j++)
             {
                 //Starting in the bottom left
+                
                 temp = GetTile(i, j);
                 if(temp != null)
                 tilesInRange.Add(temp);
@@ -231,7 +233,7 @@ public class TileMapManager : MonoBehaviour
     {
         foreach(Entity e in entities)
         {
-            Destroy(e.gameObject);
+            Destroy(e.Graphics.entity);
         }
         mapView.DrawMap(CurrentMap.tiles, (int)CurrentMap.mapSize.x, (int)CurrentMap.mapSize.y);
         

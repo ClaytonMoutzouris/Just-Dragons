@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class AttackAction : Skill
 {
-
+    
     public AttackAction()
     {
         image = Resources.Load<Sprite>("Textures and Sprites/SwordSprite_1");
@@ -13,24 +13,12 @@ public class AttackAction : Skill
 
     public override void Use(Entity user)
     {
-        ITurnHandler turnhandler = user.GetComponent<ITurnHandler>();
-        if (turnhandler.Target != null && !turnhandler.Target.GetComponent<Health>().isDead)
+        CharacterCombatComponent turnhandler = user.character.controller;
+        if (turnhandler.target != null && !turnhandler.target.Stats.GetHealth().isDead)
         {
+            Debug.Log("Attacking");
 
-            if (!EntityActions.TargetInRange(user, turnhandler.Target, 1))
-            {
-                Debug.Log("Target not in range");
-
-                EntityActions.MoveToEntity(user, turnhandler.Target);
-
-            }
-            else
-            {
-                Debug.Log("Attacking target");
-
-                EntityActions.Attack(user.GetComponent<ITurnHandler>().Target);
-                user.GetComponent<ITurnHandler>().SetTurnState(TurnState.End);
-            }
+            turnhandler.target.Stats.GetHealth().TakeDamage(Random.Range(0,2));
         } else
         {
             Debug.Log("Target dead or null");

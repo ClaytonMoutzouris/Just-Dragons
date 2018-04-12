@@ -5,10 +5,9 @@ using UnityEngine;
 
 
 public abstract class Character : MonoBehaviour {
-    protected IMovementController movement;
-    protected Entity entity;
+
     protected Stats stats;
-    protected bool activePlayer = true;
+    protected bool activeCharacter = true;
     private NPCPrototype charData;
     protected List<Skill> actions;
 

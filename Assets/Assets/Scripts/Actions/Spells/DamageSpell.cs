@@ -15,25 +15,25 @@ public class DamageSpell : Spell
         switch (targeting)
         {
             case SpellTargeting.Single:
-                Targets[0].GetComponent<Health>().TakeDamage((int)Random.Range(DamageRange.x, DamageRange.y));
+                //Targets[0].character.GetComponent<Health>().TakeDamage((int)Random.Range(DamageRange.x, DamageRange.y));
                 break;
             case SpellTargeting.Area:
 
                 break;
         }
-        caster.GetComponent<ITurnHandler>().SetTurnState(TurnState.End);
+        //caster.character.GetComponent<ITurnHandler>().SetTurnState(TurnState.End);
         Deselect(caster);
     }
 
     public override void Select(Entity caster)
     {
         //Check to see if the requirements are met
-        caster.GetComponent<PlayerTurnHandler>().spellToConfirm = this;
+        //caster.character.controller.spellToConfirm = this;
     }
 
     public override void Deselect(Entity caster)
     {
         //Check to see if the requirements are met
-        caster.GetComponent<PlayerTurnHandler>().spellToConfirm = null;
+        //caster.character.GetComponent<PlayerTurnHandler>().spellToConfirm = null;
     }
 }

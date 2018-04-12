@@ -6,7 +6,6 @@ public static class CharacterDatabase {
 
     public static List<NPCPrototype> charPrototypes;
     static private bool isDatabaseLoaded = false;
-    public static Entity prefab = Resources.Load<Entity>("Prefabs/Entity");
     // Use this for initialization
     static private void ValidateDatabase() // Is list null and/or loaded?
     {
@@ -62,8 +61,10 @@ public static class CharacterDatabase {
 
     static public Entity CreateCharacter(NPCPrototype cd)
     {
-        Entity entity = GameObject.Instantiate<Entity>(prefab, Vector3.zero, Quaternion.identity);
-        NonPlayerCharacter.CreateComponent(entity.gameObject, cd);
+        Entity entity = null;
+        entity = new Entity(new CharacterAIInputComponent(), new NPCMovementComponent());
+        entity.character = new NPCCharacterComponent(entity, cd);
+
         return entity;
     }
 

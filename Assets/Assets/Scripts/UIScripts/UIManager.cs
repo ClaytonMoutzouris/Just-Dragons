@@ -40,10 +40,10 @@ public class UIManager : MonoBehaviour {
         cpiBox.UpdateSkills();
     }
 
-    public void SetCurrentPlayer(PlayerCharacter p)
+    public void SetCurrentPlayer(Entity p)
     {
         cpiBox.SetPlayer(p);
-        actionBar.SetActions(p.ActionList);
+        actionBar.SetActions(p.character.actions);
     }
 
     // Update is called once per frame
@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour {
     {
         tooltip.gameObject.SetActive(true);
         tooltip.SetTooltipText(entity);
-        tooltip.SetPosition(Camera.main.WorldToScreenPoint(entity.transform.position + TileMapManager.Instance.GetTileOffset()));
+        tooltip.SetPosition(Camera.main.WorldToScreenPoint(entity.Graphics.entity.transform.position + TileMapManager.Instance.GetTileOffset()));
         
 
     }

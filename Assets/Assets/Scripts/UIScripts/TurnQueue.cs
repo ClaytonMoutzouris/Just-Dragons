@@ -18,8 +18,7 @@ public class TurnQueue : MonoBehaviour {
         prefab = Resources.Load<QueueObject>("Prefabs/QueueObject");
         queuedObjects = new List<QueueObject>();
     }
-
-    public void FillQueue(List<ITurnHandler> characters)
+    public void FillQueue(List<Entity> characters)
     { 
         for(int i = 0; i < characters.Count; i++)
         {
@@ -27,7 +26,7 @@ public class TurnQueue : MonoBehaviour {
             QueueObject newObject = Instantiate(prefab);
             newObject.transform.SetParent(transform);
 
-            newObject.SetObject(characters[i].Character.Portrait, characters[i].Character.Hostility);
+            newObject.SetObject(characters[i].Graphics.sRenderer.sprite, Hostility.Friendly);
             queuedObjects.Add(newObject);
         }
 
@@ -50,18 +49,18 @@ public class TurnQueue : MonoBehaviour {
 
     }
 
-    public void AddToQueue(ITurnHandler c)
+    public void AddToQueue(Entity c)
     {
         QueueObject newObject = Instantiate(prefab);
         newObject.transform.SetParent(transform);
 
-        newObject.SetObject(c.Character.Portrait, c.Character.Hostility);
+        newObject.SetObject(c.Graphics.sRenderer.sprite, Hostility.Friendly);
         queuedObjects.Add(newObject);
     }
 
     public void UpdateQueue(int index)
     {
-        print("TurnQueue queue index " + index);
+
         queuedObjects[index].transform.SetAsFirstSibling();
 
         

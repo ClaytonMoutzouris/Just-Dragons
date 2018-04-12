@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public GameObject selectionPrefab;
     public Dictionary<string, Item> itemLibrary;
     public Dictionary<int, Skill> actionDatabase;
+    public Entity currentSelected;
     
     
 
@@ -57,55 +58,32 @@ public class GameManager : MonoBehaviour {
         characters = new List<Entity>();
         Entity characterTemp = null;
         //create the player
-        var prefab = Resources.Load<Entity>("Prefabs/Entity") as Entity;
-        characterTemp = Instantiate(prefab);
-        characterTemp.GetComponent<Entity>().Name = "Player " + 1;
-        PlayerCharacter.CreateComponent(characterTemp.gameObject);
-
-
+        characterTemp = new Entity(new PlayerInputComponent(), new PlayerMovementComponent());
+        characterTemp.character = new PlayerCharacterComponent(characterTemp);
+        characterTemp.Name = "Player " + 1;
 
         //print(UIManager.Instance);
-        UIManager.Instance.SetCurrentPlayer(characterTemp.GetComponent<PlayerCharacter>());
+        UIManager.Instance.SetCurrentPlayer(characterTemp);
         //create the enemies
-        characters.Add(characterTemp.GetComponent<Entity>());
-        Cursor.instance.currentPlayer = characters[0].GetComponent<PlayerCharacter>();
+        characters.Add(characterTemp);
+        Cursor.instance.currentPlayer = characterTemp;
 
 
         currentCharacterIndex = 0;
         
-
-        var structPrefab = Resources.Load<Entity>("Prefabs/Structure");
-        Entity structureTemp = null;
-        for (int i = 0; i < 2; i++)
-        {
-            structureTemp = Instantiate(structPrefab);
-            structureTemp.GetComponent<Structure>().SetStructureParameters(Random.Range(1, 45), Random.Range(1, 45), 2, 2);
-            structureTemp.GetComponent<Structure>().SetToTiles();
-            structureTemp.GetComponent<Entity>().Name = "Struct " + i;
-
-            //structureTemp.Add
-        }
-
-        var objPrefab = Resources.Load<Entity>("Prefabs/Tree");
-        Entity objTemp = null;
-        for (int i = 0; i < 5; i++)
-        {
-            objTemp = Instantiate(objPrefab);
-            objTemp.GetComponent<Entity>().SetToTile(MapManager.GetTile(Random.Range(1,48), Random.Range(1,48)));
-            objTemp.GetComponent<Entity>().Name = "Tree " + i;
-
-        }
-
-
-        //UIManager.Instance.SetCurrentPlayer(characters[0].GetComponent<Player>());
-        //UIManager.Instance.
-        //Camera.main.GetComponent<CameraController>().target = characters[0].transform;
     }
 
     private void Update()
     {
+        foreach(Entity e in characters)
+        {
+            e.Update();
+        }
 
-        
+        foreach (Entity c in MapManager.entities)
+        {
+            c.Update();
+        }
 
     }
 
