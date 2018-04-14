@@ -1,15 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public interface ILootable
-{
-    List<Item> Loot { get; set; }
-    Entity Entity { get; set; }
-    bool LootFlag { get; set; }
-    void OnClick();
-}
 
-public class Lootable : MonoBehaviour, ILootable {
+public class LootableComponent {
     List<Item> loot;
     Entity entity;
     bool lootFlag = true;
@@ -54,17 +47,17 @@ public class Lootable : MonoBehaviour, ILootable {
     }
 
     // Use this for initialization
-    void Start () {
-        Entity = GetComponent<Entity>();
+    public LootableComponent(Entity entity) {
+
         loot = new List<Item>();
 
-        for(int i = 0; i < Random.Range(1,5); i++)
-        loot.Add(ItemDatabase.GetRandomItem());
-        
+        for (int i = 0; i < Random.Range(1, 5); i++)
+            loot.Add(ItemDatabase.GetRandomItem());
+
 
     }
 
-    public void OnClick()
+    public void ShowLootWindow()
     {
         if(LootFlag)
         LootWindow.instance.ShowLootWindow(this);

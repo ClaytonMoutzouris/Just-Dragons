@@ -42,6 +42,7 @@ public abstract class CharacterCombatComponent {
 
     public virtual void StartPhase()
     {
+        TextLog.instance.AddEntry(entity.Name + " turn start!");
         guard = false;
         endTurnFlag = false;
         turnstate = TurnState.ActionPhase;

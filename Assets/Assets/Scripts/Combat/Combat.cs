@@ -59,7 +59,7 @@ public class Combat {
 
     public void EndCombat()
     {
-        Debug.Log("End Combat");
+        TextLog.instance.AddEntry("End of combat");
         foreach (Entity c in combatants)
         {
             c.character.controller.combat = null;
@@ -83,20 +83,20 @@ public class Combat {
         switch (CurrentState)
         {
             case CombatState.Initializing:
-                Debug.Log("Initializing combat");
-
+                TextLog.instance.AddEntry("Combat!");
                 CombatSetUp();
                 break;
             case CombatState.ActiveCombat:
 
                 //Debug.Log(combatants[currentCombatantIndex]);
-
+                
                 combatants[currentCombatantIndex].character.controller.HandleTurn();
                 break;
 
             case CombatState.End:
-                Debug.Log("End Of combat");
-                
+                //NEVER ACTUALLY CALLED
+                TextLog.instance.AddEntry("End of combat");
+
                 break;
         }
 

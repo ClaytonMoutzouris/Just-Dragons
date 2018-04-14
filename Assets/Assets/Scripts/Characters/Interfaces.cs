@@ -9,7 +9,6 @@ public interface ITurnHandler {
     void HandleTurn();
     Combat Combat { get; set; }
     int Initiative { get; set; }
-    Character Character { get; }
     void DeactivateTurnHandler();
     Entity Target { get; set; }
     bool Guard { get; set; }
@@ -18,7 +17,6 @@ public interface ITurnHandler {
 public interface ICharacterInfo
 {
     Sprite Sprite { get; }
-    IMovementController movement { get; }
     Stats Stats { get; set; }
     bool ActivePlayer { get; set; }
     Hostility Hostility { get; set; }

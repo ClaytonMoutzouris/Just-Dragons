@@ -49,6 +49,7 @@ public class NPCCharacterComponent : CharacterComponent
 {
     int sightRange = 10;
     NPCPrototype prototype;
+    LootableComponent loot;
 
     public NPCCharacterComponent(Entity entity, NPCPrototype proto) : base(entity)
     {
@@ -56,6 +57,9 @@ public class NPCCharacterComponent : CharacterComponent
         prototype = proto;
         entity.Name = prototype.characterName;
         entity.Graphics.sRenderer.sprite = proto.image;
+        loot = new LootableComponent(entity);
+
+        
 
     }
 

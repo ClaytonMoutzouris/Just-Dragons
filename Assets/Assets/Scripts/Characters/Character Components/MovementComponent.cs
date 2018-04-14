@@ -48,7 +48,8 @@ public abstract class MovementComponent {
 
     public void MoveToEntity(Entity mover, Entity target)
     {
-
+        if (mover == target)
+            return;
         MoveToTile(mover, TileMapManager.Instance.GetNearestNeighbour(mover.CurrentTile, target.CurrentTile));
 
 
