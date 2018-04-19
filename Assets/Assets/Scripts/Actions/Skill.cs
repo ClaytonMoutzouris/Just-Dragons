@@ -9,11 +9,11 @@ public enum Targeting { Single, Area, Self };
 //=== Individual Skills: =============================
 public interface IAction
 {
-    void Use(Entity user);
-    void Use(Entity user, List<Entity> targets);
-    bool CheckValid(Entity user);
-    void Select(Entity user);
-    void Deselect(Entity user);
+    void Use(IEntity user);
+    void Use(IEntity user, List<IEntity> targets);
+    bool CheckValid(IEntity user);
+    void Select(IEntity user);
+    void Deselect(IEntity user);
     string ActionName { get; set; }
 }
 
@@ -44,23 +44,23 @@ public abstract class Skill
 
     }
 
-    public virtual void Use(Entity user)
+    public virtual void Use(Character user)
     { // Coroutine so it can do stuff over time.
 
         
     }
 
-    public virtual bool CheckValid(Entity user)
+    public virtual bool CheckValid(Character user)
     {
         return true;
     }
 
-    public virtual void Select(Entity user)
+    public virtual void Select(Character user)
     {
 
     }
 
-    public virtual void Deselect(Entity user)
+    public virtual void Deselect(Character user)
     {
 
     }

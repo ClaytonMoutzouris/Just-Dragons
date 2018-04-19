@@ -11,7 +11,7 @@ public class GuardAction : Skill
         image = Resources.Load<Sprite>("Textures and Sprites/SwordSprite_1");
     }
 
-    public override void Use(Entity user)
+    public override void Use(Character user)
     {
         Debug.Log("Guarding!");
        // user.character.controller.Guard = true;

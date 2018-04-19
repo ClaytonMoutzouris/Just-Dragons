@@ -10,7 +10,7 @@ public class Tile
     TileType _tileType;
     int tileX;
     int tileY;
-    Entity occupant = null;
+    IEntity occupant = null;
     Exit exit;
     public TileType TileType
     {
@@ -52,7 +52,7 @@ public class Tile
         }
     }
 
-    public Entity Occupant
+    public IEntity Occupant
     {
         get
         {

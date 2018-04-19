@@ -15,8 +15,8 @@ public class HealthBarScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void UpdateHealth() {
-        healthText.text = health.currentHealth + " / " + health.MaxHealth;
-        visHealth.transform.localScale = new Vector3((float)health.currentHealth/(float)health.MaxHealth, 1.0f, 1.0f);
+        healthText.text = health.CurrentHealth + " / " + health.MaxHealth;
+        //visHealth.transform.localScale = new Vector3((float)health.CurrentHealth/(float)health.MaxHealth, 1.0f, 1.0f);
     }
 
     public void setHealth(Health health) {

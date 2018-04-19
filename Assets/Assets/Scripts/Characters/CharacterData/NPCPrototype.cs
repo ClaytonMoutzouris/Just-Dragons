@@ -18,5 +18,7 @@ public class NPCPrototype : ScriptableObject
     public Hostility hostility;
     [SerializeField]
     CharacterRace race;
+    [SerializeField]
+    public Stats stats;
 
 }

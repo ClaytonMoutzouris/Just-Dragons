@@ -59,13 +59,12 @@ public static class CharacterDatabase {
         return ScriptableObject.Instantiate(cData) as NPCPrototype;
     }
 
-    static public Entity CreateCharacter(NPCPrototype cd)
+    static public IEntity CreateCharacter(NPCPrototype cd)
     {
-        Entity entity = null;
-        entity = new Entity(new CharacterAIInputComponent(), new NPCMovementComponent());
-        entity.character = new NPCCharacterComponent(entity, cd);
+        IEntity IEntity = null;
+        IEntity = new NonPlayerCharacter(cd);
 
-        return entity;
+        return IEntity;
     }
 
 }

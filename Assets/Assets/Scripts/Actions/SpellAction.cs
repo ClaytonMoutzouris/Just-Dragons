@@ -13,7 +13,7 @@ public class SpellAction : Skill
         image = spell.image;
     }
 
-    public override void Use(Entity user)
+    public override void Use(Character user)
     {
             spell.Select(user);
             Cursor.instance.cursorState = CursorState.ConfirmTarget;

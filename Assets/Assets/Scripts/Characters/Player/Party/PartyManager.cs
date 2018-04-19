@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class PartyManager : MonoBehaviour {
 
-    List<Entity> partyMembers;
+    List<IEntity> partyMembers;
 
     
-    public void AddMember(Entity entity)
+    public void AddMember(IEntity IEntity)
     {
-        partyMembers.Add(entity);
+        partyMembers.Add(IEntity);
     }
 
 
-    public List<Entity> GetParty()
+    public List<IEntity> GetParty()
     {
         return partyMembers;
     }

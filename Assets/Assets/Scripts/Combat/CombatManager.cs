@@ -14,7 +14,7 @@ public class CombatManager : MonoBehaviour {
         instance = this;
     }
 
-    public void NewCombat(List<Entity> entities)
+    public void NewCombat(List<Character> entities)
     {
 
         Combat temp = new Combat(entities);
@@ -49,15 +49,15 @@ public class CombatManager : MonoBehaviour {
 
     //Right now only ever called by the player
 
-    public void CheckForCombat(Entity e)
+    public void CheckForCombat(Character e)
     {
         
-        List<Entity> temp = new List<Entity>();
+        List<Character> temp = new List<Character>();
         foreach(Tile t in TileMapManager.Instance.GetTilesInRange(e.CurrentTile, 5))
         {
-            if(t.Occupant != null && t.Occupant != e && !t.Occupant.Stats.GetHealth().isDead && !temp.Contains(t.Occupant) && t.Occupant.character is NPCCharacterComponent)
+            if(t.Occupant != null && t.Occupant != e && (t.Occupant is Character && !((Character)t.Occupant).Stats.GetHealth().IsDead) && !temp.Contains((Character)t.Occupant))
             {
-                temp.Add(t.Occupant);
+                temp.Add((Character)t.Occupant);
             }
         }
 
@@ -65,11 +65,11 @@ public class CombatManager : MonoBehaviour {
 
         if(temp.Count > 0)
         {
-            if (e.character.controller.combat != null)
+            if (((Character)e).controller.combat != null)
             {
-                foreach(Entity it in temp)
+                foreach(Character it in temp)
                 {
-                    e.character.controller.combat.JoinCombat(it);
+                    ((Character)e).controller.combat.JoinCombat(it);
                 }
             } else
             {

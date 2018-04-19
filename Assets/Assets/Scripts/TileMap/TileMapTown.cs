@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TileMapTown : TileMapData {
 
-    List<Entity> objects;
+    List<IEntity> objects;
 
     public TileMapTown(int xSize, int ySize, int ID) : base(xSize, ySize, ID)
     {
@@ -47,22 +47,6 @@ public class TileMapTown : TileMapData {
         
     }
 
-    public void AddObjects()
-    {
-        int numObjs = Random.Range(3, 6);
-        var treePrefab = Resources.Load<GameObject>("Prefabs/Tree");
-        GameObject treeTemp = null;
-
-        for (int i = 0; i < numObjs; i++)
-        {
-
-            treeTemp = Object.Instantiate(treePrefab);
-            treeTemp.GetComponent<Entity>().SetToTile(TileMapManager.Instance.GetTile(Random.Range(1, 48), Random.Range(1, 48)));
-            
-            treeTemp.GetComponent<Entity>().Name = "Tree " + i;
-            objects.Add(treeTemp.GetComponent<Entity>());
-        }
-
-    }
+   
 
     }

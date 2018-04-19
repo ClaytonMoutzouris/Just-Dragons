@@ -8,24 +8,37 @@ public class DrawComponent {
     public SpriteRenderer sRenderer;
     public GameObject selected;
 
-    public DrawComponent(Entity entity)
+    public DrawComponent()
     {
-        this.entity = new GameObject();
-        sRenderer = this.entity.AddComponent<SpriteRenderer>();
+        entity = new GameObject();
+        sRenderer = entity.AddComponent<SpriteRenderer>();
         sRenderer.sprite = Resources.Load<Sprite>("Textures and Sprites/CharacterSprite_1");
-        this.entity.layer = LayerMask.NameToLayer("Characters");
+        entity.layer = LayerMask.NameToLayer("Characters");
 
-        selected = Object.Instantiate(GameManager.instance.selectionPrefab, this.entity.transform.position, Quaternion.identity, this.entity.transform);
+        selected = Object.Instantiate(GameManager.instance.selectionPrefab, entity.transform.position, Quaternion.identity, entity.transform);
         selected.SetActive(false);
 
     }
 
 
-    public virtual void Update(Entity entity)
+    public virtual void Update()
     {
-
-        this.entity.transform.position = entity.worldPosition;
-        selected.SetActive(entity.isSelected);
+       //this.IEntity.transform.position = IEntity.worldPosition;
+        //selected.SetActive(IEntity.isSelected);
     }
 
+    public virtual Vector3 GetWorldPosition()
+    {
+        return entity.transform.position;
+    }
+
+    public virtual void SetWorldPosition(Vector3 pos)
+    {
+        entity.transform.position = pos;
+    }
+
+    public virtual void Destroy()
+    {
+        Object.Destroy(entity);
+    }
 }

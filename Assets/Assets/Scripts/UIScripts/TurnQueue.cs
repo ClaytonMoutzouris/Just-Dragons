@@ -18,7 +18,7 @@ public class TurnQueue : MonoBehaviour {
         prefab = Resources.Load<QueueObject>("Prefabs/QueueObject");
         queuedObjects = new List<QueueObject>();
     }
-    public void FillQueue(List<Entity> characters)
+    public void FillQueue(List<Character> characters)
     { 
         for(int i = 0; i < characters.Count; i++)
         {
@@ -49,7 +49,7 @@ public class TurnQueue : MonoBehaviour {
 
     }
 
-    public void AddToQueue(Entity c)
+    public void AddToQueue(IEntity c)
     {
         QueueObject newObject = Instantiate(prefab);
         newObject.transform.SetParent(transform);

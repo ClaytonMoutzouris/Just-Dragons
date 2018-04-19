@@ -6,16 +6,16 @@ public class GameManager : MonoBehaviour {
 
     ITileMapObject MapView;
     TileMapManager MapManager;
-    public List<Entity> characters;
+    public List<IEntity> characters;
     int currentCharacterIndex;
-    public Entity selectedEntity = null;
+    public IEntity selectedEntity = null;
     //IEnemyView EnemyViews;
     // Use this for initialization
     public static GameManager instance;
     public GameObject selectionPrefab;
     public Dictionary<string, Item> itemLibrary;
     public Dictionary<int, Skill> actionDatabase;
-    public Entity currentSelected;
+    public IEntity currentSelected;
     
     
 
@@ -49,21 +49,23 @@ public class GameManager : MonoBehaviour {
         //MapHandler.NewMap(MapModel);
         List<ITileMapModel> models = new List<ITileMapModel>();
         models.Add(new TileMapTown(50, 50, models.Count));
+        models.Add(new TileMapTown(25, 25, models.Count));
+        models.Add(new TileMapTown(75, 75, models.Count));
+        models.Add(new TileMapTown(50, 25, models.Count));
 
 
 
         //give the map manager the list of maps we've made
         MapManager.SetUpTestWorld(models);
 
-        characters = new List<Entity>();
-        Entity characterTemp = null;
+        characters = new List<IEntity>();
+        IEntity characterTemp = null;
         //create the player
-        characterTemp = new Entity(new PlayerInputComponent(), new PlayerMovementComponent());
-        characterTemp.character = new PlayerCharacterComponent(characterTemp);
-        characterTemp.Name = "Player " + 1;
+        characterTemp = new PlayerCharacter();
+        characterTemp.EntityName = "Player " + 1;
 
         //print(UIManager.Instance);
-        UIManager.Instance.SetCurrentPlayer(characterTemp);
+        UIManager.Instance.SetCurrentPlayer((PlayerCharacter)characterTemp);
         //create the enemies
         characters.Add(characterTemp);
         Cursor.instance.currentPlayer = characterTemp;
@@ -75,16 +77,23 @@ public class GameManager : MonoBehaviour {
 
     private void Update()
     {
-        foreach(Entity e in characters)
+
+        foreach(IEntity e in characters)
         {
+            Debug.Log("IEntity " + e.EntityName);
+
             e.Update();
         }
 
-        foreach (Entity c in MapManager.entities)
+        foreach (IEntity c in MapManager.entities)
         {
             c.Update();
         }
 
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            MapManager.ChangeMap();
+        }
     }
 
     public void ClearSelected()

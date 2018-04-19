@@ -26,13 +26,13 @@ public class Item : ScriptableObject {
 public class ConsumableItem : Item
 {
 
-    public virtual void Use(Entity user)
+    public virtual void Use(IEntity user)
     {
         if (!CheckValid(user))
             return;
     }
 
-    public virtual bool CheckValid(Entity user)
+    public virtual bool CheckValid(IEntity user)
     {
         return true;
     }
@@ -43,12 +43,12 @@ public class Potion : ConsumableItem
     [SerializeField]
     string color;
 
-    public override void Use(Entity user)
+    public override void Use(IEntity user)
     {
         base.Use(user);
     }
 
-    public override bool CheckValid(Entity user)
+    public override bool CheckValid(IEntity user)
     {
         return true;
     }

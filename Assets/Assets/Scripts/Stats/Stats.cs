@@ -1,44 +1,45 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Stats {
-    Dictionary<string, Attribute> statList;
+[Serializable]
+public class Stats
+{
+
+    [SerializeField]
     Health health;
-    Entity entity;
+
+    [SerializeField]
+    CharacterStat[] stats;
+
     // Use this for initialization
 
-    public Stats(Entity entity)
+    public Stats()
     {
-        this.entity = entity;
-        statList = new Dictionary<string, Attribute>();
-        health = new Health(entity);
-        health.Initialise(15);
-        InitializeStats();
+        health = new Health();
+        health.Initialise(10);
+        //New stats get created with these default values
+        //Movement is the max value of the stat
+        stats = new CharacterStat[(int)StatType.Movement];
+        for (int i = 0; i < (int)StatType.Movement; i++)
+        {
+            stats[i] = new CharacterStat((StatType)i, 10);
+        }
+
     }
 
-	
-    void InitializeStats()
-    {
-        statList.Add("Constitution", new Attribute(10));
-        statList.Add("Strength", new Attribute(10));
-        statList.Add("Dexterity", new Attribute(10));
-        statList.Add("Intelligence", new Attribute(10));
-        statList.Add("Charisma", new Attribute(10));
-        statList.Add("Wisdom", new Attribute(10));
-        statList.Add("Movement", new DependantAttribute(10));
-    }
 
-    public Attribute GetStat(string statname)
+
+    public CharacterStat GetStatByType(StatType type)
     {
-        return statList[statname];
+        return stats[(int)type];
     }
 
     public Health GetHealth()
     {
         return health;
     }
-
 
 }

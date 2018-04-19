@@ -2,23 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ITurnHandler {
-
-    TurnState GetTurnState();
-    void SetTurnState(TurnState state);
-    void HandleTurn();
-    Combat Combat { get; set; }
-    int Initiative { get; set; }
-    void DeactivateTurnHandler();
-    Entity Target { get; set; }
-    bool Guard { get; set; }
-}
-
-public interface ICharacterInfo
+public interface IEntity
 {
-    Sprite Sprite { get; }
+
+    string EntityName { get; set; }
+    Tile CurrentTile { get; set; }
+    void SetToTile(Tile t);
+    DrawComponent Graphics { get; set; }
+    MovementComponent Movement { get; set; }
+    void Select();
     Stats Stats { get; set; }
-    bool ActivePlayer { get; set; }
-    Hostility Hostility { get; set; }
+    string GetTooltip();
+    void Update();
 
 }

@@ -17,9 +17,9 @@ public class Tooltip : MonoBehaviour {
         
     }
 
-    public void SetTooltipText(Entity entity)
+    public void SetTooltipText(IEntity IEntity)
     {
-        tooltipText.text = entity.GetTooltip();
+        tooltipText.text = IEntity.GetTooltip();
     }
 
     public void SetPosition(Vector3 position)

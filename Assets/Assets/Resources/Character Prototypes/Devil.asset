@@ -11,7 +11,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8857ef7caeac78644bf92455c8130d3d, type: 3}
   m_Name: Devil
   m_EditorClassIdentifier: 
+  charID: 0
   image: {fileID: 21300188, guid: cd77d07a116c23c4483a0fcd6f44e0d2, type: 3}
   characterName: Devil
   hostility: 2
   race: 0
+  stats:
+    health:
+      MaxHealth: 15
+    stats:
+    - BaseValue: 0
+      type: 0
+    - BaseValue: 0
+      type: 0
+    - BaseValue: 0
+      type: 0
+    - BaseValue: 0
+      type: 0
+    - BaseValue: 0
+      type: 0
+    - BaseValue: 0
+      type: 0
+    - BaseValue: 0
+      type: 0
+    - BaseValue: 0
+      type: 0
+    - BaseValue: 0
+      type: 0
+    - BaseValue: 0
+      type: 0

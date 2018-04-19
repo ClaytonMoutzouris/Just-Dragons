@@ -4,12 +4,12 @@ using UnityEngine;
 
 public abstract class InputComponent {
 
-    public virtual void Update(Entity entity)
+    public virtual void Update(Character IEntity)
     {
 
     }
 
-    public virtual void UpdateCombatInput(Entity entity)
+    public virtual void UpdateCombatInput(Character IEntity)
     {
 
     }
@@ -19,36 +19,36 @@ public abstract class InputComponent {
 public class PlayerInputComponent : InputComponent
 {
 
-    public override void Update(Entity entity)
+    public override void Update(Character IEntity)
     {
         //Handle Orthogonal movement
         //Left
-        if (entity.character.controller.combat != null && entity.character.controller.turnstate != TurnState.ActionPhase)
+        if (IEntity.controller.combat != null && IEntity.controller.turnstate != TurnState.ActionPhase)
             return;
 
         if (Input.GetAxisRaw("Horizontal") == 1)
         {
-            entity.Movement.MoveXYSpaces(entity, 1, 0);
+            IEntity.Movement.MoveXYSpaces(IEntity, 1, 0);
 
         }
 
         //Right
         else if (Input.GetAxisRaw("Horizontal") == -1)
         {
-            entity.Movement.MoveXYSpaces(entity, -1, 0);
+            IEntity.Movement.MoveXYSpaces(IEntity, -1, 0);
         }
 
         //Up
         else if (Input.GetAxisRaw("Vertical") == 1)
         {
-            entity.Movement.MoveXYSpaces(entity, 0, 1);
+            IEntity.Movement.MoveXYSpaces(IEntity, 0, 1);
         }
 
         //Down
         else if (Input.GetAxisRaw("Vertical") == -1)
         {
 
-            entity.Movement.MoveXYSpaces(entity, 0, -1);
+            IEntity.Movement.MoveXYSpaces(IEntity, 0, -1);
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -59,11 +59,11 @@ public class PlayerInputComponent : InputComponent
                 if(t.Occupant != null)
                 {
                     t.Occupant.Select();
-                    entity.character.controller.target = t.Occupant;
-                    entity.Movement.MoveToEntity(entity, t.Occupant);
+                    IEntity.controller.target = t.Occupant;
+                    IEntity.Movement.MoveToEntity(IEntity, t.Occupant);
                 } else
                 {
-                    entity.Movement.MoveToTile(entity, t);
+                    IEntity.Movement.MoveToTile(IEntity, t);
 
                 }
             }
@@ -71,20 +71,20 @@ public class PlayerInputComponent : InputComponent
 
    }
     
-    public override void UpdateCombatInput(Entity entity)
+    public override void UpdateCombatInput(Character IEntity)
     {
         if (Input.GetButtonDown("Fire1"))
         {
             Debug.Log("Pressed");
-            if (entity.character.controller.target != null)
+            if (IEntity.controller.target != null)
             {
-                entity.character.actions[0].Use(entity);
+                IEntity.actions[0].Use(IEntity);
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            entity.character.controller.turnstate = TurnState.EndPhase;
+            IEntity.controller.turnstate = TurnState.EndPhase;
         }
     }
     
@@ -93,13 +93,13 @@ public class PlayerInputComponent : InputComponent
 public class CharacterAIInputComponent : InputComponent
 {
 
-    public override void Update(Entity entity)
+    public override void Update(Character IEntity)
     {
-        //if(entity.character.controller.combat == null)
-        //entity.Movement.MoveXYSpaces(entity, Random.Range(0,3)-1, Random.Range(0, 3) - 1);
+        //if(IEntity.character.controller.combat == null)
+        //IEntity.Movement.MoveXYSpaces(IEntity, Random.Range(0,3)-1, Random.Range(0, 3) - 1);
     }
 
-    public override void UpdateCombatInput(Entity entity)
+    public override void UpdateCombatInput(Character IEntity)
     {
        
     }

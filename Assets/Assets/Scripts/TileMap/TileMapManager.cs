@@ -16,7 +16,8 @@ public class TileMapManager : MonoBehaviour
     private List<ITileMapModel> mapModels;
     private ITileMapModel currentMap;
     private ITileMapObject mapView;
-    public List<Entity> entities;
+    public List<IEntity> entities;
+    public int currentMapIndex;
 
     public static TileMapManager Instance { get; private set; }
     public ITileMapModel CurrentMap
@@ -51,13 +52,12 @@ public class TileMapManager : MonoBehaviour
     public void Initialize( ITileMapObject view)
     {
 
-        entities = new List<Entity>();
+        entities = new List<IEntity>();
         mapModels = new List<ITileMapModel>();
         // Listen to input from the view
-        view.OnClicked += HandleClicked;
 
         mapView = view;
-
+        currentMapIndex = 0;
     }
 
 
@@ -91,7 +91,6 @@ public class TileMapManager : MonoBehaviour
     
     public Tile GetTile(int x , int y)
     {
-
         if (x < 0 || x >= CurrentMap.mapSize.x || y < 0 || y >= CurrentMap.mapSize.y)
             return null;
 
@@ -205,21 +204,28 @@ public class TileMapManager : MonoBehaviour
 
     }
 
-    public void ChangeMap(Exit e)
+    public void ChangeMap()
     {
-        if(e.GetDestinationID() > mapModels.Count - 1)
+        currentMapIndex++;
+        if(currentMapIndex > mapModels.Count - 1)
         {
             CurrentMap = mapModels[0];
+            currentMapIndex = 0;
         } else
         {
-            CurrentMap = mapModels[e.GetDestinationID()];
+            CurrentMap = mapModels[currentMapIndex];
 
         }
 
         Debug.Log("Changed to Map: " + currentMap.mapID);
+
         SyncCurrentMap();
-        DelegatesAndEvents.TileMapChanged(e, currentMap);
-        //GameManager.instance.characters[0].SetTile(currentMap.tiles[e.Destination_X, e.Destination_Y], true);
+        GameManager.instance.characters[0].SetToTile(currentMap.tiles[(int)CurrentMap.mapSize.x/2, (int)CurrentMap.mapSize.y / 2]);
+
+    }
+
+    private void Update()
+    {
 
     }
 
@@ -231,10 +237,11 @@ public class TileMapManager : MonoBehaviour
 
     private void SyncCurrentMap()
     {
-        foreach(Entity e in entities)
+        foreach(IEntity e in entities)
         {
             Destroy(e.Graphics.entity);
         }
+
         mapView.DrawMap(CurrentMap.tiles, (int)CurrentMap.mapSize.x, (int)CurrentMap.mapSize.y);
         
 
@@ -244,27 +251,7 @@ public class TileMapManager : MonoBehaviour
         }
     }
 
-    // Called when the view is clicked
-    private void HandleClicked(object sender, OnMapClickedEventArgs e)
-    {
-        /*
-        Entity temp = GetTile(e.x, e.y).Occupant;
 
-        if (temp != null)
-        {
-            Debug.Log("Clicked on " + temp.Name);
-            temp.GetComponent<Selectable>().Select();
-        } else
-        {
-            GameManager.instance.ClearSelected();
-        }
-        //GameManager.instance.characters[0].SetTile(currentMap.tiles[e.x, e.y]);
-        
-
-        //mapView.DrawTile(cTile);
-        //CameraController.instance.SetToTile(e.x, e.y);
-        */
-    }
 
 
 }

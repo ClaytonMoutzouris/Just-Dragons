@@ -7,7 +7,7 @@ public enum CursorState { FreeRoam, InCombat, ConfirmTarget };
 public class Cursor : MonoBehaviour {
     public static Cursor instance;
     CameraRaycaster cameraRaycaster;
-    public Entity currentPlayer;
+    public IEntity currentPlayer;
     public CursorState cursorState;
     bool Looting = false;
 	// Use this for initialization
@@ -49,7 +49,7 @@ public class Cursor : MonoBehaviour {
             Vector2 TilePos = TileMapManager.Instance.MouseToTilePosition(cameraRaycaster.hit2D.point);
             Tile t = TileMapManager.Instance.GetTile((int)TilePos.x, (int)TilePos.y);
 
-            if (t.Occupant != null)
+            if (t != null && t.Occupant != null)
             {
                 UIManager.Instance.ShowTooltip(t.Occupant);
                 TileSelectionIndicator.Instance.SetPosition(new Vector2(-10, -10));

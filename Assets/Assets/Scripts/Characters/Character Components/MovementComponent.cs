@@ -4,21 +4,22 @@ using UnityEngine;
 
 public abstract class MovementComponent {
 
-    protected bool moving = false; //if the entity is currently moving
+    protected bool moving = false; //if the IEntity is currently moving
     protected Tile destinationTile = null; //Where we want to be
     protected int speed = 5; //this is just a constant, determines the actual speed a sprite moves around
+    protected IEntity IEntity;
     
-    public MovementComponent()
+    public MovementComponent(IEntity IEntity)
+    {
+        this.IEntity = IEntity;
+    }
+
+    public virtual void Update()
     {
 
     }
 
-    public virtual void Update(Entity entity)
-    {
-
-    }
-
-    public void MoveToTile(Entity entity, Tile target)
+    public void MoveToTile(IEntity IEntity, Tile target)
     {
         if (moving)
             return;
@@ -28,25 +29,17 @@ public abstract class MovementComponent {
 
         destinationTile = target;
         //check to see if where we want to be is where we already are
-        if (entity.CurrentTile == destinationTile)
+        if (IEntity.CurrentTile == destinationTile)
             return;
 
-        entity.CurrentTile.Occupant = null;
+        IEntity.CurrentTile.Occupant = null;
         if (!moving)
         {
             moving = true;
         }
     }
 
-    public void SetToTile(Entity entity, Tile target)
-    {
-        entity.CurrentTile = target;
-        entity.worldPosition = entity.CurrentTile.GetWorldPos();
-        Debug.Log("setting " + entity + " to " + target);
-        entity.CurrentTile.Occupant = entity;
-    }
-
-    public void MoveToEntity(Entity mover, Entity target)
+    public void MoveToEntity(IEntity mover, IEntity target)
     {
         if (mover == target)
             return;
@@ -55,16 +48,16 @@ public abstract class MovementComponent {
 
     }
 
-    public void MoveXYSpaces(Entity entity, int x, int y)
+    public void MoveXYSpaces(IEntity IEntity, int x, int y)
         
     {
         if (moving)
             return;
 
-        Tile temp = TileMapManager.Instance.GetTile(entity.CurrentTile.TileX + x, entity.CurrentTile.TileY + y);
+        Tile temp = TileMapManager.Instance.GetTile(IEntity.CurrentTile.TileX + x, IEntity.CurrentTile.TileY + y);
         if (temp != null)
         {
-            MoveToTile(entity, temp);
+            MoveToTile(IEntity, temp);
         }
     }
 }
@@ -72,24 +65,24 @@ public abstract class MovementComponent {
 public class PlayerMovementComponent : MovementComponent
 {
 
-    public PlayerMovementComponent()
+    public PlayerMovementComponent(IEntity IEntity):base(IEntity)
     {
         speed = 10;
     }
 
-    public override void Update(Entity entity)
+    public override void Update()
     {
         if (moving && destinationTile != null)
         {
             float step = speed * Time.deltaTime;
-            entity.worldPosition = Vector3.MoveTowards(entity.worldPosition, destinationTile.GetWorldPos(), step);
-            if (entity.worldPosition == destinationTile.GetWorldPos() /*|| entity.Stats.GetStat("Movement").finalValue() <= 0*/)
+            IEntity.Graphics.SetWorldPosition(Vector3.MoveTowards(IEntity.Graphics.GetWorldPosition(), destinationTile.GetWorldPos(), step));
+            if (IEntity.Graphics.GetWorldPosition() == destinationTile.GetWorldPos() /*|| IEntity.Stats.GetStat("Movement").finalValue() <= 0*/)
             {
                 moving = false;
-                entity.CurrentTile = destinationTile;
-                entity.CurrentTile.Occupant = entity;
+                IEntity.CurrentTile = destinationTile;
+                IEntity.CurrentTile.Occupant = IEntity;
 
-                CombatManager.instance.CheckForCombat(entity);
+                CombatManager.instance.CheckForCombat((Character)IEntity);
 
             }
         }
@@ -100,17 +93,22 @@ public class PlayerMovementComponent : MovementComponent
 public class NPCMovementComponent : MovementComponent
 {
 
-    public override void Update(Entity entity)
+    public NPCMovementComponent(IEntity IEntity):base(IEntity)
+    {
+        speed = 5;
+    }
+
+    public override void Update()
     {
         if (moving && destinationTile != null)
         {
             float step = speed * Time.deltaTime;
-            entity.worldPosition = Vector3.MoveTowards(entity.worldPosition, destinationTile.GetWorldPos(), step);
-            if (entity.worldPosition == destinationTile.GetWorldPos() /*|| entity.Stats.GetStat("Movement").finalValue() <= 0*/)
+            IEntity.Graphics.SetWorldPosition(Vector3.MoveTowards(IEntity.Graphics.GetWorldPosition(), destinationTile.GetWorldPos(), step));
+            if (IEntity.Graphics.GetWorldPosition() == destinationTile.GetWorldPos() /*|| IEntity.Stats.GetStat("Movement").finalValue() <= 0*/)
             {
                 moving = false;
-                entity.CurrentTile = destinationTile;
-                entity.CurrentTile.Occupant = entity;
+                IEntity.CurrentTile = destinationTile;
+                IEntity.CurrentTile.Occupant = IEntity;
             }
         }
     }

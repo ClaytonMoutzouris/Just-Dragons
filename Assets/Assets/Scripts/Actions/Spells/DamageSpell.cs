@@ -9,7 +9,7 @@ public class DamageSpell : Spell
     Vector2 DamageRange;
     
 
-    public override void Use(Entity caster, List<Entity> Targets)
+    public override void Use(IEntity caster, List<IEntity> Targets)
     {
 
         switch (targeting)
@@ -25,13 +25,13 @@ public class DamageSpell : Spell
         Deselect(caster);
     }
 
-    public override void Select(Entity caster)
+    public override void Select(IEntity caster)
     {
         //Check to see if the requirements are met
         //caster.character.controller.spellToConfirm = this;
     }
 
-    public override void Deselect(Entity caster)
+    public override void Deselect(IEntity caster)
     {
         //Check to see if the requirements are met
         //caster.character.GetComponent<PlayerTurnHandler>().spellToConfirm = null;

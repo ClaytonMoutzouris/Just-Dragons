@@ -11,20 +11,21 @@ public class AttackAction : Skill
         image = Resources.Load<Sprite>("Textures and Sprites/SwordSprite_1");
     }
 
-    public override void Use(Entity user)
+    public override void Use(Character user)
     {
-        CharacterCombatComponent turnhandler = user.character.controller;
-        if (turnhandler.target != null && !turnhandler.target.Stats.GetHealth().isDead)
+        
+        //Health target = user.controller.target;
+        if (user.controller.target != null && !user.controller.target.Stats.GetHealth().IsDead)
         {
             Debug.Log("Attacking");
 
-            turnhandler.target.Stats.GetHealth().TakeDamage(Random.Range(0,2));
+            user.controller.target.Stats.GetHealth().TakeDamage(Random.Range(1,3));
         } else
         {
             Debug.Log("Target dead or null");
         }
 
-
+    
     }
 
 }

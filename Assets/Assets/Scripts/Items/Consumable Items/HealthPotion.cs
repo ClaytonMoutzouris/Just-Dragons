@@ -7,15 +7,16 @@ public class HealthPotion : Potion
     [SerializeField]
     int hpValue;
 
-    public override void Use(Entity user)
+    public override void Use(IEntity user)
     {
         base.Use(user);
 
-        user.Stats.GetHealth().GainLife(hpValue);
+        //user.Stats.GetHealth().GainLife(hpValue);
     }
 
-    public override bool CheckValid(Entity user)
+    public override bool CheckValid(IEntity user)
     {
+        /*
         if (user.Stats.GetHealth().IsHealthMax())
         {
             return false;
@@ -23,6 +24,7 @@ public class HealthPotion : Potion
         {
             return true;
         }
-
+        */
+        return true;
     }
 }

@@ -34,26 +34,26 @@ public class Spell : ScriptableObject, IAction {
         }
     }
 
-    public virtual void Use(Entity caster)
+    public virtual void Use(IEntity caster)
     {
 
     }
-    public virtual void Use(Entity caster, List<Entity> targets)
+    public virtual void Use(IEntity caster, List<IEntity> targets)
     {
 
     }
 
-    public virtual bool CheckValid(Entity caster)
+    public virtual bool CheckValid(IEntity caster)
     {
         return true;
     }
     
-    public virtual void Select(Entity caster)
+    public virtual void Select(IEntity caster)
     {
 
     }
 
-    public virtual void Deselect(Entity caster)
+    public virtual void Deselect(IEntity caster)
     {
 
     }

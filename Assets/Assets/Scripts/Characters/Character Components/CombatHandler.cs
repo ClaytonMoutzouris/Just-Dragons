@@ -4,19 +4,18 @@ using UnityEngine;
 
 public enum TurnState { StartPhase, ActionPhase, SelectingTarget, Attacking, EndPhase, Waiting };
 
-public abstract class CharacterCombatComponent {
+public abstract class CombatHandler {
 
     public TurnState turnstate;
     public Combat combat = null;
     public int initiative;
-    public Entity target;
+    public IEntity target;
     public bool guard = false;
     public bool endTurnFlag = false;
-    public Entity entity;
+    public Character character;
 
-    public CharacterCombatComponent(Entity entity)
+    public CombatHandler()
     {
-        this.entity = entity;
     }
 
     public virtual void HandleTurn()
@@ -42,7 +41,7 @@ public abstract class CharacterCombatComponent {
 
     public virtual void StartPhase()
     {
-        TextLog.instance.AddEntry(entity.Name + " turn start!");
+        TextLog.instance.AddEntry(character.EntityName + " turn start!");
         guard = false;
         endTurnFlag = false;
         turnstate = TurnState.ActionPhase;
@@ -61,7 +60,7 @@ public abstract class CharacterCombatComponent {
 
     public bool TargetInRange(int range)
     {
-        if (Mathf.Abs(target.CurrentTile.TileX - entity.CurrentTile.TileX) <= range && Mathf.Abs(target.CurrentTile.TileY - entity.CurrentTile.TileY) <= range)
+        if (Mathf.Abs(target.CurrentTile.TileX - character.CurrentTile.TileX) <= range && Mathf.Abs(target.CurrentTile.TileY - character.CurrentTile.TileY) <= range)
         {
             return true;
         }
@@ -71,12 +70,12 @@ public abstract class CharacterCombatComponent {
 
     public void GetTarget()
     {
-        List<Tile> tiles = TileMapManager.Instance.GetTilesInRange(entity.CurrentTile, 10);
+        List<Tile> tiles = TileMapManager.Instance.GetTilesInRange(character.CurrentTile, 10);
         foreach (Tile t in tiles)
         {
             if (t.Occupant != null)
             {
-                if (t.Occupant.character is PlayerCharacterComponent)
+                if (t.Occupant is PlayerCharacter)
                 {
                     target = t.Occupant;
                 }
@@ -86,26 +85,26 @@ public abstract class CharacterCombatComponent {
 
 }
 
-public class PlayerCharacterCombatComponent: CharacterCombatComponent
+public class PlayerCombatHandler: CombatHandler
 {
     Spell spellToConfirm = null;
 
-    public PlayerCharacterCombatComponent(Entity entity): base(entity)
+    public PlayerCombatHandler(PlayerCharacter IEntity)
     {
-
+        character = IEntity;
     }
 
     public override void StartPhase()
     {
         base.StartPhase();
-        Cursor.instance.currentPlayer = entity;
+        Cursor.instance.currentPlayer = character;
         spellToConfirm = null;
     }
 
     public override void ActionPhase()
     {
         //get input for the turn, selecting skills and whatever
-        entity.Input.UpdateCombatInput(entity);
+        ((PlayerCharacter)character).Input.UpdateCombatInput(character);
         
 
     }
@@ -117,13 +116,14 @@ public class PlayerCharacterCombatComponent: CharacterCombatComponent
 
 }
 
-public class NPCCharacterCombatComponent : CharacterCombatComponent
+public class NPCCombatHandler : CombatHandler
 {
     bool hasMoved;
     int actionIndex;
 
-    public NPCCharacterCombatComponent(Entity entity): base(entity)
+    public NPCCombatHandler(Character IEntity)
     {
+        character = IEntity;
 
     }
 
@@ -137,19 +137,19 @@ public class NPCCharacterCombatComponent : CharacterCombatComponent
     public override void ActionPhase()
     {
         //get input for the turn, selecting skills and whatever
-        //entity.Input.UpdateCombatInput(entity);
+        //IEntity.Input.UpdateCombatInput(IEntity);
         
         GetTarget();
         if (target != null)
         {
             if (TargetInRange(1))
             {
-                entity.character.actions[0].Use(entity);
+                character.actions[0].Use(character);
                 turnstate = TurnState.EndPhase;
             }
             else
             {
-                entity.Movement.MoveToEntity(entity, target);
+                character.Movement.MoveToEntity(character, target);
             }
         } else
         {
