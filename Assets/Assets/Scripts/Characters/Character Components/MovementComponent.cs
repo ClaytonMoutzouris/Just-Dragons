@@ -54,7 +54,7 @@ public abstract class MovementComponent {
         if (moving)
             return;
 
-        Tile temp = TileMapManager.Instance.GetTile(IEntity.CurrentTile.TileX + x, IEntity.CurrentTile.TileY + y);
+        Tile temp = TileMapManager.Instance.CurrentMap.GetTile(IEntity.CurrentTile.TileX + x, IEntity.CurrentTile.TileY + y);
         if (temp != null)
         {
             MoveToTile(IEntity, temp);

@@ -86,17 +86,10 @@ public class TileMapManager : MonoBehaviour
     {
 
         Vector2 tilePos = MouseToTilePosition(mousePos);
-        return GetTile((int)tilePos.x, (int)tilePos.y);
-    }
-    
-    public Tile GetTile(int x , int y)
-    {
-        if (x < 0 || x >= CurrentMap.mapSize.x || y < 0 || y >= CurrentMap.mapSize.y)
-            return null;
-
-        return CurrentMap.tiles[x, y];
+        return CurrentMap.GetTile((int)tilePos.x, (int)tilePos.y);
     }
 
+    /*
     public Tile[] GetNeighbours(Tile target)
     {
         Tile[] tiles = new Tile[9];
@@ -126,15 +119,20 @@ public class TileMapManager : MonoBehaviour
 
     }
 
+        */
+
+
+    
+
     public Tile GetNearestNeighbour(Tile start, Tile target)
     {
-        Tile[] neighbours = GetNeighbours(target);
+        Tile[] neighbours = target.Neighbours;
         Tile nearestNeighbour = null;
         if (start.TileX < target.TileX)
         {
             if (start.TileY < target.TileY)
             {
-                nearestNeighbour = neighbours[6];
+                nearestNeighbour = neighbours[5];
             }
             else if (start.TileY == target.TileY)
             {
@@ -152,7 +150,7 @@ public class TileMapManager : MonoBehaviour
         {
             if (start.TileY < target.TileY)
             {
-                nearestNeighbour = neighbours[7];
+                nearestNeighbour = neighbours[6];
             }
             else if (start.TileY > target.TileY)
             {
@@ -165,11 +163,11 @@ public class TileMapManager : MonoBehaviour
         {
             if (start.TileY < target.TileY)
             {
-                nearestNeighbour = neighbours[8];
+                nearestNeighbour = neighbours[7];
             }
             else if (start.TileY == target.TileY)
             {
-                nearestNeighbour = neighbours[5];
+                nearestNeighbour = neighbours[4];
             }
             else if (start.TileY > target.TileY)
             {
@@ -182,6 +180,7 @@ public class TileMapManager : MonoBehaviour
         return nearestNeighbour;
     }
 
+    
 
     public List<Tile> GetTilesInRange(Tile tile, int range)
     {
@@ -193,7 +192,7 @@ public class TileMapManager : MonoBehaviour
             {
                 //Starting in the bottom left
                 
-                temp = GetTile(i, j);
+                temp = currentMap.GetTile(i, j);
                 if(temp != null)
                 tilesInRange.Add(temp);
 
@@ -248,6 +247,15 @@ public class TileMapManager : MonoBehaviour
         foreach (NPCPrototype cd in currentMap.Characters)
         {
             entities.Add(CharacterDatabase.CreateCharacter(cd));
+        }
+
+        TileMapPathfinder.SetMap(currentMap);
+        
+        List<Tile> path = TileMapPathfinder.Path(currentMap.GetTile((int)currentMap.mapSize.x / 2, (int)currentMap.mapSize.y / 2), currentMap.GetTile((int)UnityEngine.Random.Range(1,currentMap.mapSize.x-1), (int)UnityEngine.Random.Range(1, currentMap.mapSize.y - 1)));
+
+        foreach(Tile t in path)
+        {
+            mapView.DrawTile(t);
         }
     }
 

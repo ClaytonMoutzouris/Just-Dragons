@@ -7,6 +7,7 @@ public enum TileMoveCost { Invalid, Walkable };
 
 public class Tile
 {
+    Tile[] neighbours;
     TileType _tileType;
     int tileX;
     int tileY;
@@ -66,16 +67,34 @@ public class Tile
         }
     }
 
-    public Tile() { }
+    public Tile[] Neighbours
+    {
+        get
+        {
+            return neighbours;
+        }
+
+        set
+        {
+            neighbours = value;
+        }
+    }
+
+    public Tile() {
+
+        
+
+    }
 
     public Tile(int x, int y, TileType t, Exit e = null)
     {
-
+        neighbours = new Tile[9];
         tileX = x;
         tileY = y;
         TileType = t;
         exit = e;
     }
+
 
     public bool IsWalkable()
     {

@@ -149,7 +149,7 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
     //If we need to update 1 tile
     public void DrawTile(Tile tile)
     {
-        texture.SetPixels(tile.TileX * tileResolution, tile.TileY * tileResolution, tileResolution, tileResolution, tileTextures[(int)tile.TileType]);
+        texture.SetPixels(tile.TileX * tileResolution, tile.TileY * tileResolution, tileResolution, tileResolution, tileTextures[2]);
         texture.Apply();
     }
 

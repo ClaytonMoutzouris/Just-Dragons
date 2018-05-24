@@ -30,7 +30,7 @@ public class Cursor : MonoBehaviour {
         {
 
             Vector2 TilePos = TileMapManager.Instance.MouseToTilePosition(cameraRaycaster.hit2D.point);
-            return TileMapManager.Instance.GetTile((int)TilePos.x, (int)TilePos.y);
+            return TileMapManager.Instance.CurrentMap.GetTile((int)TilePos.x, (int)TilePos.y);
         }
         else
         {
@@ -47,7 +47,7 @@ public class Cursor : MonoBehaviour {
         {
 
             Vector2 TilePos = TileMapManager.Instance.MouseToTilePosition(cameraRaycaster.hit2D.point);
-            Tile t = TileMapManager.Instance.GetTile((int)TilePos.x, (int)TilePos.y);
+            Tile t = TileMapManager.Instance.CurrentMap.GetTile((int)TilePos.x, (int)TilePos.y);
 
             if (t != null && t.Occupant != null)
             {

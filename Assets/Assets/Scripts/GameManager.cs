@@ -50,8 +50,6 @@ public class GameManager : MonoBehaviour {
         List<ITileMapModel> models = new List<ITileMapModel>();
         models.Add(new TileMapTown(50, 50, models.Count));
         models.Add(new TileMapTown(25, 25, models.Count));
-        models.Add(new TileMapTown(75, 75, models.Count));
-        models.Add(new TileMapTown(50, 25, models.Count));
 
 
 
@@ -80,7 +78,7 @@ public class GameManager : MonoBehaviour {
 
         foreach(IEntity e in characters)
         {
-            Debug.Log("IEntity " + e.EntityName);
+            //Debug.Log("IEntity " + e.EntityName);
 
             e.Update();
         }
@@ -94,6 +92,8 @@ public class GameManager : MonoBehaviour {
         {
             MapManager.ChangeMap();
         }
+
+
     }
 
     public void ClearSelected()

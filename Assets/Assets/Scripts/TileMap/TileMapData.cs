@@ -12,6 +12,8 @@ public interface ITileMapModel
     void BuildMap();
     void ChangeTile(int x, int y);
     Tile[,] tiles { get; }
+    Tile GetTile(int x, int y);
+    Tile[] GetNeighbours(Tile t, bool diagOK = true);
     Vector2 mapSize { get; }
     int mapID { get; }
     List<NPCPrototype> Characters { get; set; }
@@ -54,6 +56,8 @@ public class TileMapData : ITileMapModel
 
     public Tile GetTile(int x, int y)
     {
+        if (x < 0 || y < 0 || x >= mapSize.x || y >= mapSize.y)
+            return null;
         return tiles[x, y];
     }
 
@@ -102,6 +106,7 @@ public class TileMapData : ITileMapModel
                     {
                         tiles[x, y] = new Tile(x, y, TileType.Floor);
                     }
+
                 }
                 
                 //tiles[x, y] = new Tile(x, y, TileType.Floor);
@@ -120,6 +125,57 @@ public class TileMapData : ITileMapModel
         }
     }
 
+    public Tile[] GetNeighbours(Tile target, bool diagOkay = true)
+    {
+        Tile[] ns;
 
+        if (diagOkay == false)
+        {
+            ns = new Tile[4];   // Tile order: N E S W
+        }
+        else
+        {
+            ns = new Tile[8];   // Tile order : N E S W NE SE SW NW
+        }
+
+        Tile n;
+
+        n = GetTile(target.TileX, target.TileY + 1);
+        ns[0] = n;  // Could be null, but that's okay.
+        n = GetTile(target.TileX + 1, target.TileY);
+        ns[1] = n;  // Could be null, but that's okay.
+        n = GetTile(target.TileX, target.TileY - 1);
+        ns[2] = n;  // Could be null, but that's okay.
+        n = GetTile(target.TileX - 1, target.TileY);
+        ns[3] = n;  // Could be null, but that's okay.
+
+        if (diagOkay == true)
+        {
+            n = GetTile(target.TileX + 1, target.TileY + 1);
+            ns[4] = n;  // Could be null, but that's okay.
+            n = GetTile(target.TileX + 1, target.TileY - 1);
+            ns[5] = n;  // Could be null, but that's okay.
+            n = GetTile(target.TileX - 1, target.TileY - 1);
+            ns[6] = n;  // Could be null, but that's okay.
+            n = GetTile(target.TileX - 1, target.TileY + 1);
+            ns[7] = n;  // Could be null, but that's okay.
+        }
+
+        
+        return ns;
+    }
+
+    public void SetTileNeighbours()
+    {
+        foreach(Tile t in tiles)
+        {
+            
+            t.Neighbours = GetNeighbours(t);
+           
+            //Debug.Log(neighbs);
+        }
+
+
+    }
 
 }

@@ -151,7 +151,7 @@ public class PlayerCharacter : Character
         controller = new PlayerCombatHandler(this);
         input = new PlayerInputComponent();
         Movement = new PlayerMovementComponent(this);
-        SetToTile(TileMapManager.Instance.GetTile((int)TileMapManager.Instance.CurrentMap.mapSize.x / 2, (int)TileMapManager.Instance.CurrentMap.mapSize.y / 2));
+        SetToTile(TileMapManager.Instance.CurrentMap.GetTile((int)TileMapManager.Instance.CurrentMap.mapSize.x / 2, (int)TileMapManager.Instance.CurrentMap.mapSize.y / 2));
         Stats.GetHealth().Initialise(this);
         CameraController.instance.target = Graphics.entity.transform;
         //IEntity.isSelected = true;
@@ -178,7 +178,7 @@ public class NonPlayerCharacter : Character
         prototype = proto;
         EntityName = prototype.characterName;
         Movement = new NPCMovementComponent(this);
-        SetToTile(TileMapManager.Instance.GetTile(Random.Range(1,(int)TileMapManager.Instance.CurrentMap.mapSize.x), Random.Range(1, (int)TileMapManager.Instance.CurrentMap.mapSize.y)));
+        SetToTile(TileMapManager.Instance.CurrentMap.GetTile(Random.Range(1,(int)TileMapManager.Instance.CurrentMap.mapSize.x), Random.Range(1, (int)TileMapManager.Instance.CurrentMap.mapSize.y)));
         Stats = proto.stats;
         Stats.GetHealth().Initialise(this);
         Graphics.sRenderer.sprite = proto.image;

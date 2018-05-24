@@ -78,10 +78,11 @@ public class Health {
     public void TakeDamage(int damage)
     {
         CurrentHealth -= damage;
+        TextLog.instance.AddEntry(entity.EntityName + " was hit for " + damage + " damage.");
         if (CurrentHealth <= 0)
         {
 
-
+            
             CurrentHealth = 0;
             IsDead = true;
             OnDeath();
@@ -101,6 +102,8 @@ public class Health {
                 entity.controller.combat.RemoveFromCombat(entity);
             }
         }
+
+        TextLog.instance.AddEntry(entity.EntityName + " has died.");
         // if(GetComponent<ILootable>() != null) 
         //  GetComponent<ILootable>().LootFlag = true;
 

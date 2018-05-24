@@ -36,7 +36,6 @@ public class Combat {
     {
         foreach(Character c in combatants)
         {
-            Debug.Log("Adding to combat");
             c.controller.combat = this;
         }
         currentState = CombatState.ActiveCombat;
@@ -50,7 +49,6 @@ public class Combat {
 
         if (!combatants.Contains(e))
         {
-            Debug.Log("Joining combat!");
             e.controller.combat = this;
             combatants.Add(e);
             TurnQueue.Instance.AddToQueue(e);
@@ -83,7 +81,7 @@ public class Combat {
         switch (CurrentState)
         {
             case CombatState.Initializing:
-                TextLog.instance.AddEntry("Combat!");
+                TextLog.instance.AddEntry("<color=red>Entering Combat</color>");
                 CombatSetUp();
                 break;
             case CombatState.ActiveCombat:

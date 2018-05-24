@@ -10,6 +10,7 @@ public class TileMapTown : TileMapData {
     {
         BuildMap();
         AddEntities();
+        SetTileNeighbours();
 
     }
 
@@ -47,6 +48,6 @@ public class TileMapTown : TileMapData {
         
     }
 
-   
+
 
     }

@@ -10,13 +10,13 @@ public class ItemEditor
         ScriptableObjectUtility.CreateAsset<Item>();
     }
 
-    [MenuItem("Assets/Create/Item/Consumable Item/Potion/HealthPotion")]
+    [MenuItem("Assets/Create/Item/Consumable Item/HealthPotion")]
     public static void CreateHealthPotionAsset()
     {
         ScriptableObjectUtility.CreateAsset<HealthPotion>();
     }
 
-    [MenuItem("Assets/Create/Item/Consumable Item/Potion/TransformPotion")]
+    [MenuItem("Assets/Create/Item/Consumable Item/TransformPotion")]
     public static void CreateTransformnPotionAsset()
     {
         ScriptableObjectUtility.CreateAsset<TransformPotion>();
