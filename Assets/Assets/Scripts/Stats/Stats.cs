@@ -19,7 +19,7 @@ public class Stats
     public Stats()
     {
         health = new Health();
-        health.Initialise(10);
+        health.Initialise(1000);
         //New stats get created with these default values
         //Movement is the max value of the stat
         stats = new CharacterStat[(int)StatType.Movement];

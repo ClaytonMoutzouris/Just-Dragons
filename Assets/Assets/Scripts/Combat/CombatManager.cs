@@ -51,7 +51,8 @@ public class CombatManager : MonoBehaviour {
 
     public void CheckForCombat(Character e)
     {
-        
+
+
         List<Character> temp = new List<Character>();
         foreach(Tile t in TileMapManager.Instance.GetTilesInRange(e.CurrentTile, 5))
         {
@@ -69,6 +70,7 @@ public class CombatManager : MonoBehaviour {
             {
                 foreach(Character it in temp)
                 {
+                    if(it.controller.combat == null)
                     ((Character)e).controller.combat.JoinCombat(it);
                 }
             } else

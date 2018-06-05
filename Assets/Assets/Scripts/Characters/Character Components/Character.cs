@@ -153,6 +153,7 @@ public class PlayerCharacter : Character
         Movement = new PlayerMovementComponent(this);
         SetToTile(TileMapManager.Instance.CurrentMap.GetTile((int)TileMapManager.Instance.CurrentMap.mapSize.x / 2, (int)TileMapManager.Instance.CurrentMap.mapSize.y / 2));
         Stats.GetHealth().Initialise(this);
+        //Stats.GetHealth().
         CameraController.instance.target = Graphics.entity.transform;
         //IEntity.isSelected = true;
     }

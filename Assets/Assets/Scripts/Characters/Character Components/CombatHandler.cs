@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TurnState { StartPhase, ActionPhase, SelectingTarget, Attacking, EndPhase, Waiting };
+public enum TurnState { StartPhase, MovementPhase, ActionPhase, SelectingTarget, Attacking, EndPhase, Waiting };
 
 public abstract class CombatHandler {
 
@@ -13,6 +13,7 @@ public abstract class CombatHandler {
     public bool guard = false;
     public bool endTurnFlag = false;
     public Character character;
+    public bool hasMoved = false;
 
     public CombatHandler()
     {
@@ -20,10 +21,14 @@ public abstract class CombatHandler {
 
     public virtual void HandleTurn()
     {
+
         switch (turnstate)
         {
             case TurnState.StartPhase:
                 StartPhase();
+                break;
+            case TurnState.MovementPhase:
+                MovementPhase();
                 break;
             case TurnState.ActionPhase:
                 ActionPhase();
@@ -45,6 +50,16 @@ public abstract class CombatHandler {
         guard = false;
         endTurnFlag = false;
         turnstate = TurnState.ActionPhase;
+        hasMoved = false;
+    }
+
+    public virtual void MovementPhase()
+    {
+        Debug.Log(character.EntityName + " path empty " + character.Movement.PathEmpty());
+        if (character.Movement.PathEmpty())
+        {
+            turnstate = TurnState.ActionPhase;
+        }
     }
 
     public virtual void ActionPhase()
@@ -60,6 +75,7 @@ public abstract class CombatHandler {
 
     public bool TargetInRange(int range)
     {
+        Debug.Log("X Range: " + Mathf.Abs(target.CurrentTile.TileX - character.CurrentTile.TileX) + ", Y Range: " + Mathf.Abs(target.CurrentTile.TileY - character.CurrentTile.TileY));
         if (Mathf.Abs(target.CurrentTile.TileX - character.CurrentTile.TileX) <= range && Mathf.Abs(target.CurrentTile.TileY - character.CurrentTile.TileY) <= range)
         {
             return true;
@@ -99,6 +115,14 @@ public class PlayerCombatHandler: CombatHandler
         base.StartPhase();
         Cursor.instance.currentPlayer = character;
         spellToConfirm = null;
+        
+    }
+
+    public override void MovementPhase()
+    {
+
+        base.MovementPhase();
+
     }
 
     public override void ActionPhase()
@@ -118,7 +142,6 @@ public class PlayerCombatHandler: CombatHandler
 
 public class NPCCombatHandler : CombatHandler
 {
-    bool hasMoved;
     int actionIndex;
 
     public NPCCombatHandler(Character IEntity)
@@ -134,6 +157,27 @@ public class NPCCombatHandler : CombatHandler
         
     }
 
+
+    public override void MovementPhase()
+    {
+        if (!hasMoved)
+        {
+            character.Movement.MoveToEntity(target);
+            hasMoved = true;
+
+            if (character.Movement.PathEmpty())
+            {
+                turnstate = TurnState.EndPhase;
+                return;
+            }
+        }
+
+        base.MovementPhase();
+
+
+    }
+
+
     public override void ActionPhase()
     {
         //get input for the turn, selecting skills and whatever
@@ -142,6 +186,7 @@ public class NPCCombatHandler : CombatHandler
         GetTarget();
         if (target != null)
         {
+            
             if (TargetInRange(1))
             {
                 character.actions[0].Use(character);
@@ -149,7 +194,10 @@ public class NPCCombatHandler : CombatHandler
             }
             else
             {
-                character.Movement.MoveToEntity(character, target);
+                if (!hasMoved)
+                    turnstate = TurnState.MovementPhase;
+                else
+                    turnstate = TurnState.EndPhase;
             }
         } else
         {

@@ -28,17 +28,17 @@ public class TileMapTown : TileMapData {
 
                 if (x == 0 || x == mapSize.x - 1 || y == 0 || y == mapSize.y - 1)
                 {
-                    tiles[x, y] = new Tile(x, y, TileType.Wall);
+                    tiles[x, y] = new Tile(this, x, y, TileType.Wall);
                 }
                 else
                 {
                     if (x == exit_x && y == exit_y)
                     {
-                        tiles[x, y] = new Tile(x, y, TileType.Exit, new Exit(this, mapID + 1, 25, 25));
+                        tiles[x, y] = new Tile(this, x, y, TileType.Exit, new Exit(this, mapID + 1, 25, 25));
                     }
                     else
                     {
-                        tiles[x, y] = new Tile(x, y, TileType.Floor);
+                        tiles[x, y] = new Tile(this, x, y, TileType.Floor);
                     }
                 }
 

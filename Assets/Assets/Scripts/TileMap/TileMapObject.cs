@@ -16,6 +16,7 @@ public interface ITileMapObject
     // Dispatched when the tilemap is clicked
     event EventHandler<OnMapClickedEventArgs> OnClicked;
     void DrawTile(Tile tile);
+    void RedrawTile(Tile tile);
     void DrawMap(Tile[,] tiles, int xSize, int ySize);
     Vector3 TileOffset();
     float TileSize();
@@ -154,10 +155,10 @@ public class TileMapObject : MonoBehaviour, ITileMapObject {
     }
 
     //redraw a tile, using a new random one (for test purposes)
-    public void RedrawTile(int x, int y)
+    public void RedrawTile(Tile tile)
     {
         Color[] p = tileTextures[UnityEngine.Random.Range(0, 4)];
-        texture.SetPixels(x * tileResolution, y * tileResolution, tileResolution, tileResolution, p);
+        texture.SetPixels(tile.TileX * tileResolution, tile.TileY * tileResolution, tileResolution, tileResolution, p);
         texture.Apply();
     }
 

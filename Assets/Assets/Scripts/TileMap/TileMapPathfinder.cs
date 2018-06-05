@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using Priority_Queue;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,68 +19,6 @@ public class TileNode<T>
 public static class TileMapPathfinder {
     public static Dictionary<Tile, TileNode<Tile>> TileNodes;
     static ITileMapModel CurrentMap;
-    static Queue<Tile> path;
-
-    public static void CreateNodes()
-    {
-
-        //Queue tilenodes;
-        //tilenodes.Enqueue
-        TileNodes = new Dictionary<Tile, TileNode<Tile>>();
-
-        for (int x = 0; x< CurrentMap.mapSize.x; x++)
-        {
-            for (int y = 0; y < CurrentMap.mapSize.y; y++)
-            {
-                Tile t = CurrentMap.GetTile(x, y);
-
-                //if(t.movementCost > 0) {	// Tiles with a move cost of 0 are unwalkable
-                TileNode<Tile> n = new TileNode<Tile>
-                {
-                    data = CurrentMap.GetTile(x, y)
-                };
-
-                TileNodes.Add(t, n);
-
-
-            }
-
-        }
-
-        int edgeCount = 0;
-
-        foreach (Tile t in TileNodes.Keys)
-        {
-            TileNode<Tile> n = TileNodes[t];
-
-            List<TileNodeEdge<Tile>> edges = new List<TileNodeEdge<Tile>>();
-
-            // Get a list of neighbours for the tile
-            Tile[] neighbours = CurrentMap.GetNeighbours(t, true);  // NOTE: Some of the array spots could be null.
-
-            // If neighbour is walkable, create an edge to the relevant node.
-            for (int i = 0; i < neighbours.Length; i++)
-            {
-                if (neighbours[i] != null && neighbours[i].GetMovementCost() > 0 && IsClippingCorner(t, neighbours[i]) == false)
-                {
-                    // This neighbour exists, is walkable, and doesn't requiring clipping a corner --> so create an edge.
-
-                    TileNodeEdge<Tile> e = new TileNodeEdge<Tile>();
-                    e.cost = neighbours[i].GetMovementCost();
-                    e.node = TileNodes[neighbours[i]];
-
-                    // Add the edge to our temporary (and growable!) list
-                    edges.Add(e);
-
-                    edgeCount++;
-                }
-            }
-
-            n.edges = edges.ToArray();
-        }
-
-
-    }
 
     static bool IsClippingCorner(Tile curr, Tile neigh)
     {
@@ -116,43 +54,78 @@ public static class TileMapPathfinder {
     public static void SetMap(ITileMapModel newMap)
     {
         CurrentMap = newMap;
-        //CreateNodes();
-        //Debug.Log("Number of TileNodes "+ TileNodes.Count);
     }
 
     public static List<Tile> Path(Tile startTile, Tile goal)
     {
-        Queue<Tile> frontier = new Queue<Tile>();
+        SimplePriorityQueue<Tile> frontier = new SimplePriorityQueue<Tile>();
         Dictionary<Tile, Tile> cameFrom = new Dictionary<Tile, Tile>();
+        Dictionary<Tile, float> costSoFar = new Dictionary<Tile, float>();
+        bool reachedGoal = false;
+        //if we dont find a path, this will give us the closest we could have got
+        Tile altEnd = null;
+        float altEndScore = Mathf.Infinity; 
 
         Tile temp;
-        frontier.Enqueue(startTile);
+        frontier.Enqueue(startTile,0);
         cameFrom.Add(startTile, null);
+        costSoFar.Add(startTile, 0);
 
-        while(!(frontier.Count <= 0))
+        while (!(frontier.Count <= 0))
         {
             temp = frontier.Dequeue();
             if(temp == goal)
             {
+                reachedGoal = true;
                 //then we are there
                 break;
             }
+
             foreach(Tile next in temp.Neighbours)
             {
-                if (next!= null && !cameFrom.ContainsKey(next))
+                if (next == null || next.GetMovementCost() == 0)
+                    continue;
+
+                var newCost = costSoFar[temp] + next.GetMovementCost();
+                if (!costSoFar.ContainsKey(next) || newCost < costSoFar[next])
                 {
-                    frontier.Enqueue(next);
-                    cameFrom.Add(next, temp);
+                    costSoFar[next] = newCost;
+                    var priority = newCost + DistanceEstimate(goal, next);
+                    if (altEnd == null || DistanceEstimate(goal, next) < altEndScore)
+                    {
+                        altEnd = next;
+                        altEndScore = DistanceEstimate(goal, next);
+                    }
+
+                    frontier.Enqueue(next, priority);
+                    cameFrom[next] = temp;
                 }
             }
+
         }
 
-        Tile current = goal;
+        Tile current = null;
+
+        if (reachedGoal)
+        {
+            current = goal;
+        }
+        else
+        {
+
+            current = altEnd;
+        }
+
         List<Tile> path = new List<Tile>();
 
         while(current != startTile)
         {
+            if (current == null)
+                break;
+
             path.Add(current);
+            //this happens if there isnt any paths, so we will break out of the loop
+
             cameFrom.TryGetValue(current, out current);
             //Might be some error here in the future
         }
@@ -162,5 +135,30 @@ public static class TileMapPathfinder {
 
 
         return path;
+    }
+
+    static float DistanceEstimate(Tile a, Tile b)
+    {
+        return Mathf.Abs(a.TileX - b.TileX) + Mathf.Abs(a.TileY - b.TileY);
+    }
+
+    static float DistanceBetween(Tile a, Tile b)
+    {
+        //we can make assumptions because we know we're on the grid
+
+
+        if (Mathf.Abs(a.TileX - b.TileX) + Mathf.Abs(a.TileY - b.TileY) == 1)
+        {
+            return 1f;
+        } // Check hori/vert adjacency
+        if ((Mathf.Abs(a.TileX - b.TileX) == 1 && Mathf.Abs(a.TileY - b.TileY) == 1))
+        {
+            return 1.41421356237f;
+        } // Check diag adjacency
+
+        return Mathf.Sqrt(
+            Mathf.Pow(a.TileX - b.TileX, 2) +
+            Mathf.Pow(a.TileY - b.TileY, 2));
+
     }
 }

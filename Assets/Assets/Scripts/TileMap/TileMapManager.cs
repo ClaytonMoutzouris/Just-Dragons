@@ -255,7 +255,8 @@ public class TileMapManager : MonoBehaviour
 
         foreach(Tile t in path)
         {
-            mapView.DrawTile(t);
+            t.TileType = TileType.Wall;
+            mapView.RedrawTile(t);
         }
     }
 

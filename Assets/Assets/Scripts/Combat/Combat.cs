@@ -86,7 +86,7 @@ public class Combat {
                 break;
             case CombatState.ActiveCombat:
 
-                //Debug.Log(combatants[currentCombatantIndex]);
+
                 
                 combatants[currentCombatantIndex].controller.HandleTurn();
                 break;

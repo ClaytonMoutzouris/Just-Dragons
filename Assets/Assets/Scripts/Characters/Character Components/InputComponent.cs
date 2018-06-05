@@ -28,31 +28,34 @@ public class PlayerInputComponent : InputComponent
 
         if (Input.GetAxisRaw("Horizontal") == 1)
         {
-            IEntity.Movement.MoveXYSpaces(IEntity, 1, 0);
+            IEntity.Movement.MoveXYSpaces(1, 0);
 
         }
 
         //Right
         else if (Input.GetAxisRaw("Horizontal") == -1)
         {
-            IEntity.Movement.MoveXYSpaces(IEntity, -1, 0);
+            IEntity.Movement.MoveXYSpaces(-1, 0);
         }
 
         //Up
         else if (Input.GetAxisRaw("Vertical") == 1)
         {
-            IEntity.Movement.MoveXYSpaces(IEntity, 0, 1);
+            IEntity.Movement.MoveXYSpaces(0, 1);
         }
 
         //Down
         else if (Input.GetAxisRaw("Vertical") == -1)
         {
 
-            IEntity.Movement.MoveXYSpaces(IEntity, 0, -1);
+            IEntity.Movement.MoveXYSpaces(0, -1);
         }
 
         if (Input.GetMouseButtonDown(0))
         {
+            if (IEntity.Movement.moving)
+                return;
+
             Tile t = Cursor.instance.SelectedTile();
             if(t != null)
             {
@@ -60,10 +63,10 @@ public class PlayerInputComponent : InputComponent
                 {
                     t.Occupant.Select();
                     IEntity.controller.target = t.Occupant;
-                    IEntity.Movement.MoveToEntity(IEntity, t.Occupant);
+                    IEntity.Movement.MoveToEntity(t.Occupant);
                 } else
                 {
-                    IEntity.Movement.MoveToTile(IEntity, t);
+                    IEntity.Movement.MoveToTile(t);
 
                 }
             }
@@ -75,7 +78,7 @@ public class PlayerInputComponent : InputComponent
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            Debug.Log("Pressed");
+
             if (IEntity.controller.target != null)
             {
                 IEntity.actions[0].Use(IEntity);
