@@ -14,7 +14,6 @@ public class OnMapClickedEventArgs : EventArgs
 public interface ITileMapObject
 {
     // Dispatched when the tilemap is clicked
-    event EventHandler<OnMapClickedEventArgs> OnClicked;
     void DrawTile(Tile tile);
     void RedrawTile(Tile tile);
     void DrawMap(Tile[,] tiles, int xSize, int ySize);

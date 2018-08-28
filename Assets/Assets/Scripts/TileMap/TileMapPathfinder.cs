@@ -18,7 +18,7 @@ public class TileNode<T>
 
 public static class TileMapPathfinder {
     public static Dictionary<Tile, TileNode<Tile>> TileNodes;
-    static ITileMapModel CurrentMap;
+    static ITileMapData CurrentMap;
 
     static bool IsClippingCorner(Tile curr, Tile neigh)
     {
@@ -51,7 +51,7 @@ public static class TileMapPathfinder {
         return false;
     }
 
-    public static void SetMap(ITileMapModel newMap)
+    public static void SetMap(ITileMapData newMap)
     {
         CurrentMap = newMap;
     }
@@ -83,18 +83,19 @@ public static class TileMapPathfinder {
 
             foreach(Tile next in temp.Neighbours)
             {
+
                 if (next == null || next.GetMovementCost() == 0)
                     continue;
 
-                var newCost = costSoFar[temp] + next.GetMovementCost();
+                var newCost = costSoFar[temp] + (next.GetMovementCost()*DistanceBetween(temp, next));
                 if (!costSoFar.ContainsKey(next) || newCost < costSoFar[next])
                 {
                     costSoFar[next] = newCost;
-                    var priority = newCost + DistanceEstimate(goal, next);
-                    if (altEnd == null || DistanceEstimate(goal, next) < altEndScore)
+                    var priority = newCost + DistanceBetween(goal, next);
+                    if (altEnd == null || DistanceBetween(goal, temp) < altEndScore)
                     {
-                        altEnd = next;
-                        altEndScore = DistanceEstimate(goal, next);
+                        altEnd = temp;
+                        altEndScore = DistanceBetween(goal, temp);
                     }
 
                     frontier.Enqueue(next, priority);
@@ -139,7 +140,7 @@ public static class TileMapPathfinder {
 
     static float DistanceEstimate(Tile a, Tile b)
     {
-        return Mathf.Abs(a.TileX - b.TileX) + Mathf.Abs(a.TileY - b.TileY);
+        return Mathf.Sqrt(Mathf.Pow(a.TileX - b.TileX, 2) + Mathf.Pow(a.TileY - b.TileY,2));
     }
 
     static float DistanceBetween(Tile a, Tile b)
@@ -153,7 +154,7 @@ public static class TileMapPathfinder {
         } // Check hori/vert adjacency
         if ((Mathf.Abs(a.TileX - b.TileX) == 1 && Mathf.Abs(a.TileY - b.TileY) == 1))
         {
-            return 1.41421356237f;
+            return 1f;
         } // Check diag adjacency
 
         return Mathf.Sqrt(

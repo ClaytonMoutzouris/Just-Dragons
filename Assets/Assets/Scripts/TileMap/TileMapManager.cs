@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class MapChangedEventArgs : EventArgs
 {
     public Exit exit;
-    public ITileMapModel map;
+    public ITileMapData map;
 }
 
 // This will serve as a sort of database for the tilemaps
@@ -13,14 +13,14 @@ public class TileMapManager : MonoBehaviour
 {
     // Keep references to the model and view
     //This is a list of all the maps in the game, ~TODO~ Make a better way to organize these, a list will do for now
-    private List<ITileMapModel> mapModels;
-    private ITileMapModel currentMap;
+    private List<ITileMapData> mapModels;
+    private ITileMapData currentMap;
     private ITileMapObject mapView;
     public List<IEntity> entities;
     public int currentMapIndex;
 
     public static TileMapManager Instance { get; private set; }
-    public ITileMapModel CurrentMap
+    public ITileMapData CurrentMap
     {
         get
         {
@@ -53,7 +53,7 @@ public class TileMapManager : MonoBehaviour
     {
 
         entities = new List<IEntity>();
-        mapModels = new List<ITileMapModel>();
+        mapModels = new List<ITileMapData>();
         // Listen to input from the view
 
         mapView = view;
@@ -61,10 +61,10 @@ public class TileMapManager : MonoBehaviour
     }
 
 
-    public void SetUpTestWorld(List<ITileMapModel> models)
+    public void SetUpTestWorld(List<ITileMapData> models)
     {
         //draws the initial map
-        foreach(ITileMapModel m in models)
+        foreach(ITileMapData m in models)
         {
             mapModels.Add(m);
         }

@@ -2,6 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface ILootable
+{
+    List<Item> GetLoot();
+}
+
+public interface ICombatant
+{
+
+}
+
 public interface IEntity
 {
 

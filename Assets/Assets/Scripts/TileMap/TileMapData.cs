@@ -6,7 +6,7 @@ using UnityEngine;
 
 
 // Interface for the model
-public interface ITileMapModel
+public interface ITileMapData
 {
     // Dispatched when a Tiles type has been changed
     void BuildMap();
@@ -21,7 +21,7 @@ public interface ITileMapModel
 }
 
 // Implementation of the enemy model interface
-public class TileMapData : ITileMapModel
+public class TileMapData : ITileMapData
 {
     public Vector2 mapSize { get; set; }
     //public List<IEnemyController> enemyList { get; set; }

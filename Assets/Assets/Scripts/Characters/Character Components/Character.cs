@@ -5,7 +5,7 @@ using UnityEngine;
 public enum Hostility { Friendly, Neutral, Hostile };
 
 
-public abstract class Character : IEntity {
+public abstract class Character : IEntity, ILootable {
 
     #region ENTITYFIELDS
     //IEntity variables
@@ -118,6 +118,13 @@ public abstract class Character : IEntity {
         CurrentTile = target;
         Graphics.SetWorldPosition(CurrentTile.GetWorldPos());
         CurrentTile.Occupant = this;
+    }
+
+    public List<Item> GetLoot()
+    {
+        List<Item> loot = new List<Item>();
+
+        return loot;
     }
 
     public string GetTooltip()

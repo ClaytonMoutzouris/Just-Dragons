@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour {
     {
         //create a list of maps, this is for testing purposes at the moment
         //MapHandler.NewMap(MapModel);
-        List<ITileMapModel> models = new List<ITileMapModel>();
+        List<ITileMapData> models = new List<ITileMapData>();
         models.Add(new TileMapTown(50, 50, models.Count));
         models.Add(new TileMapTown(25, 25, models.Count));
 

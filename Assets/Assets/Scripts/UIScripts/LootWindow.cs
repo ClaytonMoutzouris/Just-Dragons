@@ -5,7 +5,7 @@ using UnityEngine;
 public class LootWindow : MonoBehaviour {
     public static LootWindow instance;
     public LootItemObject prefab;
-    LootableComponent currentlyLooting;
+    ILootable currentlyLooting;
 
 
 
@@ -16,10 +16,10 @@ public class LootWindow : MonoBehaviour {
 
     }
 
-    void SetLoot(LootableComponent l)
+    void SetLoot(ILootable l)
     {
         currentlyLooting = l;
-        foreach(Item i in currentlyLooting.Loot)
+        foreach(Item i in currentlyLooting.GetLoot())
         {
             LootItemObject temp = Instantiate(prefab, transform.position, Quaternion.identity, transform);
             temp.SetItem(i);
@@ -28,7 +28,7 @@ public class LootWindow : MonoBehaviour {
 
     }
 
-    public void ShowLootWindow(LootableComponent l)
+    public void ShowLootWindow(ILootable l)
     {
         if (!gameObject.activeSelf)
         {
